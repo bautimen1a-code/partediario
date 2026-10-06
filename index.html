@@ -31,45 +31,20 @@ header.app-head .user-box .r{font-size:.7rem;text-transform:uppercase;color:var(
 header.app-head .user-box button{background:transparent;color:var(--accent);font-weight:600;padding:4px 8px;border-radius:6px;font-size:.8rem}
 header.app-head .user-box button:hover{background:rgba(255,255,255,.5)}
 
-/* TOOLBAR FIJA Y LIMPIA */
 .toolbar{
-  position:sticky;
-  top:12px;
-  z-index:50;
-  background:var(--panel);
-  border-radius:12px;
-  padding:10px 12px;
-  margin-bottom:14px;
+  position:sticky;top:12px;z-index:50;
+  background:var(--panel);border-radius:12px;padding:10px 12px;margin-bottom:14px;
   box-shadow:0 4px 12px rgba(0,0,0,.08);
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  align-items:center;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
 }
 .toolbar .btn{flex-shrink:0}
 .toolbar-spacer{flex:1;min-width:20px}
 
-.search-box{
-  position:relative;
-  flex:1;
-  min-width:180px;
-  max-width:340px;
-  display:flex;
-  align-items:center;
-}
-.search-box .search-icon{
-  position:absolute;left:12px;color:var(--muted);font-size:.95rem;pointer-events:none;
-}
-.search-box input{
-  width:100%;padding:11px 36px 11px 34px;border:1px solid var(--line);
-  border-radius:8px;background:#fafbfc;font-size:.95rem;transition:.15s;
-}
+.search-box{position:relative;flex:1;min-width:180px;max-width:340px;display:flex;align-items:center}
+.search-box .search-icon{position:absolute;left:12px;color:var(--muted);font-size:.95rem;pointer-events:none}
+.search-box input{width:100%;padding:11px 36px 11px 34px;border:1px solid var(--line);border-radius:8px;background:#fafbfc;font-size:.95rem;transition:.15s}
 .search-box input:focus{outline:2px solid var(--accent);border-color:var(--accent);background:#fff}
-.search-box .search-clear{
-  position:absolute;right:8px;background:transparent;color:var(--muted);
-  font-size:1rem;width:26px;height:26px;border-radius:6px;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-}
+.search-box .search-clear{position:absolute;right:8px;background:transparent;color:var(--muted);font-size:1rem;width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .search-box .search-clear:hover{background:#eef1f5;color:var(--ink)}
 
 .btn{padding:11px 14px;font-size:.95rem;font-weight:600;border-radius:8px;transition:.15s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
@@ -85,7 +60,6 @@ header.app-head .user-box button:hover{background:rgba(255,255,255,.5)}
 .btn.cfg:hover{background:#e4ebf2;color:var(--accent)}
 .hidden{display:none !important}
 
-/* Login screen */
 #login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#4a6b8a,#2b3440);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;overflow-y:auto}
 #login-screen.show{display:flex}
 .login-card{background:#fff;border-radius:16px;padding:32px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4);margin:auto}
@@ -101,7 +75,6 @@ header.app-head .user-box button:hover{background:rgba(255,255,255,.5)}
 .login-badge{background:var(--accent-soft);color:var(--accent);font-size:.72rem;padding:3px 8px;border-radius:20px;display:inline-block;margin-bottom:14px;font-weight:600;letter-spacing:.4px}
 .pending-card{background:#fff4ce;border-left:4px solid #ffb900;padding:14px;border-radius:8px;font-size:.9rem;color:#6b5a1a;margin-top:16px;line-height:1.5}
 
-/* Summary */
 #screen-summary{display:block}
 #screen-system{display:none}
 .summary-actions{background:var(--panel);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
@@ -113,7 +86,6 @@ header.app-head .user-box button:hover{background:rgba(255,255,255,.5)}
 .totals-head.batcys{color:var(--batcys)}
 .totals-head .count-badge{background:#fff;color:var(--muted);font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.3px}
 
-/* Excel-like tables */
 table.xl{width:100%;border-collapse:collapse;font-size:.92rem;font-family:'Segoe UI',Calibri,Arial,sans-serif;color:var(--xl-text);background:#fff}
 table.xl thead th{
   position:sticky;top:0;z-index:2;
@@ -136,10 +108,7 @@ table.xl td.empty{color:#9aa0a6;font-style:italic;text-transform:none;text-align
 table.xl td.name{font-weight:400}
 table.xl td.lugar{color:#5f6368}
 table.xl td.lugar.vacio{color:#c0c8d0;font-style:italic}
-table.xl td.date-val{
-  text-align:center;color:#5f6368;font-variant-numeric:tabular-nums;
-  font-size:7.5pt;white-space:nowrap;
-}
+table.xl td.date-val{text-align:center;color:#5f6368;font-variant-numeric:tabular-nums;font-size:7.5pt;white-space:nowrap}
 table.xl tbody td.num-det{text-align:center;width:50px;color:var(--muted);font-weight:600}
 table.xl tbody td.date{text-align:center;width:110px;color:var(--muted);font-variant-numeric:tabular-nums;font-size:7.5pt;white-space:nowrap}
 table.xl tbody tr.empty-row{cursor:default}
@@ -159,13 +128,8 @@ table.xl tbody tr.empty-row td{text-align:center;color:var(--muted);font-style:i
 tr.dragging td{opacity:.4;background:var(--accent-soft)!important}
 tr.drag-over td{border-top:2px solid var(--accent)!important}
 
-.table-scroll{
-  max-height:420px;
-  overflow-y:auto;
-  position:relative;
-}
+.table-scroll{max-height:420px;overflow-y:auto;position:relative}
 
-/* Modales */
 .overlay{position:fixed;inset:0;background:rgba(30,40,50,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;animation:fadeIn .15s ease}
 .overlay.show{display:flex}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -180,14 +144,11 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 .modal-body{padding:20px}
 .modal-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;position:sticky;bottom:0;background:var(--panel);border-radius:0 0 14px 14px}
 
-/* Modal edición simplificado */
 .form-grid{display:grid;grid-template-columns:90px 1fr;gap:12px 14px;align-items:center}
 .form-grid label{font-size:.85rem;font-weight:600;color:var(--muted);text-align:right;padding-right:4px}
 .form-grid input[type="text"],
 .form-grid input[type="date"],
-.form-grid select{
-  width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fafbfc;font-size:.95rem;
-}
+.form-grid select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fafbfc;font-size:.95rem}
 .form-grid input:focus,
 .form-grid select:focus{outline:2px solid var(--accent);border-color:var(--accent);background:#fff}
 .form-grid .check-inline{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
@@ -197,16 +158,11 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 .form-grid .dates-row input{padding:10px 8px;font-size:.85rem}
 .form-grid .dates-row .sep-lbl{font-size:.72rem;color:var(--muted);text-align:center}
 
-/* Modal configuración */
 .cfg-section{margin-bottom:18px}
 .cfg-section:last-child{margin-bottom:0}
 .cfg-section-title{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;padding-left:4px}
 .cfg-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));gap:10px}
-.cfg-card{
-  background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 12px;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  cursor:pointer;transition:.15s;text-align:center;
-}
+.cfg-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:.15s;text-align:center}
 .cfg-card:hover{background:var(--accent-soft);border-color:var(--accent);transform:translateY(-1px)}
 .cfg-card .ic{font-size:1.6rem}
 .cfg-card .tt{font-size:.85rem;font-weight:700;color:var(--ink);line-height:1.2}
@@ -225,7 +181,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 .detail-head h2{font-size:1.05rem;color:var(--accent);text-transform:uppercase;letter-spacing:.4px}
 .detail-head .badge{background:#fff;border-radius:20px;padding:4px 12px;font-size:.78rem;font-weight:600;color:var(--muted)}
 
-/* Auditoría y usuarios */
 .filters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .filters input,.filters select{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fafbfc}
 .audit-list{max-height:60vh;overflow-y:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
@@ -256,7 +211,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 .toast.warn{background:var(--warn)} .toast.ok{background:var(--ok)} .toast.danger{background:var(--danger)}
 @keyframes toastIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-/* Word */
 .word-app{display:flex;flex-direction:column;height:82vh;min-height:600px;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:13px;color:#323130;background:#f3f2f1;border-radius:0 0 14px 14px;overflow:hidden}
 .word-titlebar{background:#2b579a;color:#fff;padding:6px 12px;display:flex;align-items:center;gap:12px;font-size:12px;flex-shrink:0}
 .word-titlebar .wname{flex:1;text-align:center;opacity:.95}
@@ -277,10 +231,10 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 .ribbon-row .sep{width:1px;height:20px;background:#d2d0ce;margin:0 3px}
 .word-main{flex:1;display:grid;grid-template-columns:1fr 300px;overflow:hidden;background:#e6e6e6}
 .word-canvas{overflow:auto;padding:24px 12px;display:flex;justify-content:center;align-items:flex-start}
-.word-page{background:#fff;width:100%;max-width:780px;padding:40px 50px;box-shadow:0 2px 10px rgba(0,0,0,.18);min-height:1000px;font-family:Arial,sans-serif;font-size:8pt;line-height:1.15;color:#000;outline:none}
+.word-page{background:#fff;width:100%;max-width:780px;padding:40px 50px;box-shadow:0 2px 10px rgba(0,0,0,.18);min-height:1000px;font-family:Arial,sans-serif;font-size:7pt;line-height:1.15;color:#000;outline:none}
 .word-page [contenteditable="true"]:focus{outline:2px dashed #7aa8e0;outline-offset:2px}
 .word-page table{border-collapse:collapse}
-.word-page table td,.word-page table th{border:0.5px solid #000;padding:1px 4px}
+.word-page table td,.word-page table th{border:1px solid #000;padding:1px 4px}
 .word-side{background:#faf9f8;border-left:1px solid #d2d0ce;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
 .word-side h4{font-size:11px;text-transform:uppercase;color:#605e5c;letter-spacing:.5px;font-weight:700}
 .preview-box{background:#fff;border:1px solid #d2d0ce;border-radius:4px;padding:6px;flex:1;overflow:auto;min-height:200px}
@@ -291,18 +245,21 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 .design-grid .field{margin-bottom:0}
 
 #print-root{display:none}
+
+/* ⭐⭐⭐ IMPRESIÓN: BORDES ULTRA FINOS ⭐⭐⭐ */
 @media print{
   @page{size:letter portrait;margin:8mm}
   body *{visibility:hidden !important}
   #print-root,#print-root *{visibility:visible !important}
   #print-root{display:block !important;position:absolute;top:0;left:0;width:100%}
-  .print-sheet{width:100%;display:grid;gap:6mm;font-family:Arial,sans-serif;font-size:8pt;color:#000}
+  .print-sheet{width:100%;display:grid;gap:6mm;font-family:Arial,sans-serif;font-size:7pt;color:#000}
   .print-sheet.cols-2{grid-template-columns:1fr 1fr}
   .print-sheet.cols-1{grid-template-columns:1fr}
   .print-copy{page-break-inside:avoid}
   .print-copy p,.print-copy div,.print-copy table{margin:0;padding:0}
   .print-batcys-block{page-break-inside:avoid}
 
+  /* BORDES DELGADOS EN IMPRESIÓN */
   .print-copy table,
   .print-copy table td,
   .print-copy table th{
@@ -310,8 +267,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
     border-color: #000 !important;
     border-style: solid !important;
   }
-
-
 }
 
 @media (max-width:1000px){.word-main{grid-template-columns:1fr}.word-side{display:none}.word-app{height:84vh}}
@@ -335,7 +290,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 </head>
 <body>
 
-<!-- ==================== PANTALLA RESUMEN (pública) ==================== -->
 <div id="screen-summary">
   <div class="app">
     <header class="app-head">
@@ -380,7 +334,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- ==================== PANTALLA SISTEMA (CRUD) ==================== -->
 <div id="screen-system">
   <div class="app">
     <header class="app-head">
@@ -481,7 +434,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- ==================== LOGIN / REGISTRO ==================== -->
 <div id="login-screen">
   <div class="login-card">
     <div style="text-align:center"><span class="login-badge">CONTROL DE PERSONAL</span></div>
@@ -527,9 +479,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- ==================== MODALES ==================== -->
-
-<!-- Modal detalle -->
 <div class="overlay" id="modal-detail">
   <div class="modal medium">
     <div class="detail-head">
@@ -556,7 +505,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal edición simplificado -->
 <div class="overlay" id="modal-edit">
   <div class="modal">
     <div class="modal-head"><h2 id="edit-title">Editar registro</h2><button class="x" data-close>×</button></div>
@@ -601,7 +549,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal configuración -->
 <div class="overlay" id="modal-cfg">
   <div class="modal medium">
     <div class="modal-head"><h2>⚙ Configuraciones</h2><button class="x" data-close>×</button></div>
@@ -675,7 +622,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal lugares -->
 <div class="overlay" id="modal-lista">
   <div class="modal">
     <div class="modal-head"><h2>Lugares / observaciones</h2><button class="x" data-close>×</button></div>
@@ -684,7 +630,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal tipos -->
 <div class="overlay" id="modal-tipos">
   <div class="modal">
     <div class="modal-head"><h2>Tipos de situación especial</h2><button class="x" data-close>×</button></div>
@@ -697,7 +642,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal firma -->
 <div class="overlay" id="modal-firma">
   <div class="modal">
     <div class="modal-head"><h2>✍ Configurar firma</h2><button class="x" data-close>×</button></div>
@@ -715,7 +659,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal diseño -->
 <div class="overlay" id="modal-diseno">
   <div class="modal">
     <div class="modal-head"><h2>📐 Diseño del reporte</h2><button class="x" data-close>×</button></div>
@@ -726,14 +669,13 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
         <div class="field"><label>Orientación</label><select id="d-orient"><option value="portrait">Vertical</option><option value="landscape">Horizontal</option></select></div>
         <div class="field"><label>Margen (mm)</label><input type="number" id="d-margin" min="0" max="30" value="8"></div>
         <div class="field"><label>Padding celdas (px)</label><input type="number" id="d-cellpad" min="0" max="10" value="1"></div>
-        <div class="field"><label>Tamaño base (pt)</label><input type="number" id="d-basesize" min="5" max="20" value="8"></div>
+        <div class="field"><label>Tamaño base (pt)</label><input type="number" id="d-basesize" min="5" max="20" value="7"></div>
       </div>
     </div>
     <div class="modal-foot"><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="diseno-guardar">Guardar</button></div>
   </div>
 </div>
 
-<!-- Modal importar -->
 <div class="overlay" id="modal-import">
   <div class="modal">
     <div class="modal-head"><h2>📥 Importar desde Excel</h2><button class="x" data-close>×</button></div>
@@ -750,7 +692,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal Word -->
 <div class="overlay" id="modal-word">
   <div class="modal wide">
     <div class="modal-head"><h2>Configuración del reporte (Word)</h2><button class="x" data-close>×</button></div>
@@ -776,7 +717,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
                 <option>Georgia</option><option>Cambria</option><option>Consolas</option>
               </select>
               <select id="w-size" class="rbtn sel" style="min-width:56px">
-                <option>6</option><option>7</option><option selected>8</option>
+                <option>6</option><option selected>7</option><option>8</option>
                 <option>9</option><option>10</option><option>11</option>
                 <option>12</option><option>14</option><option>16</option>
                 <option>18</option><option>20</option><option>24</option>
@@ -846,7 +787,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal usuarios -->
 <div class="overlay" id="modal-users">
   <div class="modal medium">
     <div class="modal-head"><h2>👥 Gestión de usuarios</h2><button class="x" data-close>×</button></div>
@@ -863,7 +803,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal auditoría -->
 <div class="overlay" id="modal-audit">
   <div class="modal wide">
     <div class="modal-head"><h2>🔍 Auditoría de movimientos</h2><button class="x" data-close>×</button></div>
@@ -905,7 +844,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   </div>
 </div>
 
-<!-- Modal fecha de impresión -->
 <div class="overlay" id="modal-print-date">
   <div class="modal" style="max-width:400px">
     <div class="modal-head">
@@ -933,9 +871,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 <div id="print-root"></div>
 
 <script type="module">
-/* ============================================================
-   IMPORTS FIREBASE
-   ============================================================ */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
   getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
@@ -947,9 +882,6 @@ import {
   writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* ============================================================
-   CONFIG
-   ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyAw7CG02hxkzwl4QdyVeOVFC-SBdtDvhBg",
   authDomain: "control-personal-parte.firebaseapp.com",
@@ -964,9 +896,6 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-/* ============================================================
-   ESTADO GLOBAL
-   ============================================================ */
 let currentUser = null;
 let unsubPersonal = null;
 let unsubConfigLugares = null;
@@ -983,7 +912,7 @@ let state = {
   cellPad: 1,
   word: {
     html: '',
-    design: { cols: 2, pageSize: 'letter', orient: 'portrait', margin: 8, baseFont: 'Arial', baseSize: 8 }
+    design: { cols: 2, pageSize: 'letter', orient: 'portrait', margin: 8, baseFont: 'Arial', baseSize: 7 }
   }
 };
 
@@ -993,9 +922,6 @@ let savedRange = null;
 let importRows = [];
 let auditCache = [];
 
-/* ============================================================
-   UTILIDADES
-   ============================================================ */
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 const uid = () => '_' + Math.random().toString(36).slice(2,9);
@@ -1031,9 +957,6 @@ function toast(msg, tipo=''){
   setTimeout(()=> t.remove(), 2600);
 }
 
-/* ============================================================
-   AUDITORÍA
-   ============================================================ */
 async function logAudit(action, descripcion, extra = {}){
   if(!currentUser) return;
   try{
@@ -1049,9 +972,6 @@ async function logAudit(action, descripcion, extra = {}){
   }catch(e){ console.warn('No se pudo registrar auditoría:', e); }
 }
 
-/* ============================================================
-   LOGIN / LOGOUT / REGISTRO
-   ============================================================ */
 function showLoginScreen(){ $('#login-screen').classList.add('show'); }
 function hideLoginScreen(){ $('#login-screen').classList.remove('show'); }
 function showPanel(panel){
@@ -1161,9 +1081,6 @@ $('#btn-ingresar').addEventListener('click', ()=>{
   }
 });
 
-/* ============================================================
-   AUTH STATE
-   ============================================================ */
 onAuthStateChanged(auth, async (user)=>{
   if(!user){
     currentUser = null;
@@ -1235,9 +1152,6 @@ function labelRol(role){
   return '👤 Usuario';
 }
 
-/* ============================================================
-   PERMISOS
-   ============================================================ */
 function aplicarPermisos(){
   const esAdminOJefe = currentUser && (currentUser.role === 'admin' || currentUser.role === 'jefe');
   $$('.data-perm').forEach(btn => {
@@ -1245,9 +1159,6 @@ function aplicarPermisos(){
   });
 }
 
-/* ============================================================
-   SINCRONIZACIÓN FIRESTORE
-   ============================================================ */
 function sincronizarTodo(){
   if(unsubPersonal) unsubPersonal();
   const qPersonal = query(collection(db, 'personal'), orderBy('orden', 'asc'));
@@ -1297,9 +1208,6 @@ function sincronizarTodo(){
   });
 }
 
-/* ============================================================
-   NAVEGACIÓN
-   ============================================================ */
 function irAResumen(){
   $('#screen-summary').style.display = 'block';
   $('#screen-system').style.display = 'none';
@@ -1314,9 +1222,6 @@ function irAlSistema(){
   window.scrollTo(0,0);
 }
 
-/* ============================================================
-   CÁLCULOS
-   ============================================================ */
 function calcularPorDestino(destino){
   const normales = state.personal.filter(p => (p.destino || 'DIV-10') === destino && !p.especial);
   const total = normales.length;
@@ -1338,9 +1243,6 @@ function calcularEspecialesPorTipo(){
   return mapa;
 }
 
-/* ============================================================
-   RENDER RESUMEN
-   ============================================================ */
 function renderResumen(){
   const div10 = calcularPorDestino('DIV-10');
   const batcys = calcularPorDestino('BAT. CYS-X');
@@ -1380,9 +1282,6 @@ function filaResumen(label, valor, tabla, key, estilo){
   return tr;
 }
 
-/* ============================================================
-   MODAL DETALLE
-   ============================================================ */
 function abrirDetalle(tabla, key, label){
   const div10 = calcularPorDestino('DIV-10');
   const batcys = calcularPorDestino('BAT. CYS-X');
@@ -1417,9 +1316,6 @@ function abrirDetalle(tabla, key, label){
   $('#modal-detail').classList.add('show');
 }
 
-/* ============================================================
-   RENDER TABLAS CRUD
-   ============================================================ */
 function renderTablaPorDestino(destino, tbodyId){
   const tbody = $(tbodyId);
   tbody.innerHTML = '';
@@ -1502,9 +1398,6 @@ async function moverRegistro(fromId, toId){
   }catch(e){ toast('Error al reordenar', 'danger'); }
 }
 
-/* ============================================================
-   MODAL EDICIÓN
-   ============================================================ */
 function llenarSelectLugares(){
   const sel = $('#e-lugar');
   if(!sel) return;
@@ -1618,9 +1511,6 @@ function limpiarForm(){
   toast('Campos limpiados', 'warn');
 }
 
-/* ============================================================
-   MODALES: LUGARES, TIPOS, FIRMA, DISEÑO
-   ============================================================ */
 function abrirLista(){ renderListaItems(state.lugares); $('#modal-lista').classList.add('show'); }
 function renderListaItems(items){
   const cont = $('#lista-items'); cont.innerHTML = '';
@@ -1679,13 +1569,10 @@ function abrirDiseno(){
   $('#d-orient').value = d.orient || 'portrait';
   $('#d-margin').value = d.margin != null ? d.margin : 8;
   $('#d-cellpad').value = state.cellPad != null ? state.cellPad : 1;
-  $('#d-basesize').value = d.baseSize || 8;
+  $('#d-basesize').value = d.baseSize || 7;
   $('#modal-diseno').classList.add('show');
 }
 
-/* ============================================================
-   IMPORTAR EXCEL
-   ============================================================ */
 function abrirImport(){
   importRows = [];
   $('#import-file').value = '';
@@ -1748,9 +1635,10 @@ async function confirmarImportacion(){
   }catch(e){ console.error(e); toast('Error al importar', 'danger'); }
 }
 
-/* ============================================================
-   GENERAR PLANTILLA Y REPORTE
-   ============================================================ */
+/* ⭐⭐⭐ FUNCIONES DE REPORTE CON BORDES ULTRA FINOS ⭐⭐⭐ */
+const BORDE = 'border:0.5px solid #000';           // grosor 0.5px
+const BORDE_PAD = 'padding:1px 3px';
+
 function generarSecciones(lista, porLugar, pad){
   return Object.entries(porLugar)
     .filter(([k,v]) => v > 0)
@@ -1758,60 +1646,60 @@ function generarSecciones(lista, porLugar, pad){
       const personas = lista.filter(p => p.lugar === k);
       const filas = personas.map((p,i)=>`
         <tr>
-          <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${i+1}</td>
-          <td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(p.nombre)}</td>
-          <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${p.desde?fmtDate(p.desde):''}</td>
-          <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${p.hasta?fmtDate(p.hasta):''}</td>
+          <td style="${BORDE};text-align:center;${BORDE_PAD}">${i+1}</td>
+          <td style="${BORDE};${BORDE_PAD}">${escapeHtml(p.nombre)}</td>
+          <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.desde?fmtDate(p.desde):''}</td>
+          <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.hasta?fmtDate(p.hasta):''}</td>
         </tr>`).join('');
       return `
-        <div style="text-align:left;font-weight:bold;margin-top:6px">${escapeHtml(upper(k))}</div>
-        <table style="width:100%;border-collapse:collapse;border:0.5px solid #000;margin-bottom:6px">
+        <div style="text-align:left;font-weight:bold;margin-top:4px">${escapeHtml(upper(k))}</div>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:3px">
           <thead><tr>
-            <th style="border:0.5px solid #000;width:6%;text-align:center;padding:${pad}px 4px">N°</th>
-            <th style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">GRADO, NOMBRES Y APELLIDOS</th>
-            <th style="border:0.5px solid #000;width:16%;text-align:center;padding:${pad}px 4px">DESDE</th>
-            <th style="border:0.5px solid #000;width:16%;text-align:center;padding:${pad}px 4px">HASTA</th>
+            <th style="${BORDE};width:6%;text-align:center;${BORDE_PAD}">N°</th>
+            <th style="${BORDE};text-align:center;${BORDE_PAD}">GRADO, NOMBRES Y APELLIDOS</th>
+            <th style="${BORDE};width:16%;text-align:center;${BORDE_PAD}">DESDE</th>
+            <th style="${BORDE};width:16%;text-align:center;${BORDE_PAD}">HASTA</th>
           </tr></thead>
-          <tbody>${filas || '<tr><td colspan="4" style="border:0.5px solid #000">&nbsp;</td></tr>'}</tbody>
+          <tbody>${filas || `<tr><td colspan="4" style="${BORDE}">&nbsp;</td></tr>`}</tbody>
         </table>`;
     }).join('');
 }
 function generarTablaTotalesDiv10(porLugar, total, noforman, forman, tiposConteo, pad){
   const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr><td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
+    .map(([k,v]) => `<tr><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
   const filasEsp = Object.entries(tiposConteo).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr data-especial-tipo="${escapeHtml(k)}"><td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="esp-tipo:${escapeHtml(k)}">${v}</td></tr>`).join('');
+    .map(([k,v]) => `<tr data-especial-tipo="${escapeHtml(k)}"><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="esp-tipo:${escapeHtml(k)}">${v}</td></tr>`).join('');
   return `
-    <table style="border-collapse:collapse;border:0.5px solid #000;margin:4px auto;width:70%">
+    <table style="border-collapse:collapse;margin:3px auto;width:70%">
       <thead><tr>
-        <th style="border:0.5px solid #000;padding:${pad}px 4px;text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
-        <th style="border:0.5px solid #000;padding:${pad}px 4px;width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
+        <th style="${BORDE};${BORDE_PAD};text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
+        <th style="${BORDE};${BORDE_PAD};width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
       </tr></thead>
       <tbody>
-        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">EFECTIVO</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="efectivo">${total}</td></tr>
+        <tr><td style="${BORDE};${BORDE_PAD}">EFECTIVO</td><td style="${BORDE};${BORDE_PAD};text-align:center" data-total="efectivo">${total}</td></tr>
         ${detalle}
-        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">NO FORMAN</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="noforman">${noforman}</td></tr>
-        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">FORMAN</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="forman">${forman}</td></tr>
-        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px;font-weight:bold">TOTAL</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
+        <tr><td style="${BORDE};${BORDE_PAD}">NO FORMAN</td><td style="${BORDE};${BORDE_PAD};text-align:center" data-total="noforman">${noforman}</td></tr>
+        <tr><td style="${BORDE};${BORDE_PAD}">FORMAN</td><td style="${BORDE};${BORDE_PAD};text-align:center" data-total="forman">${forman}</td></tr>
+        <tr><td style="${BORDE};${BORDE_PAD};font-weight:bold">TOTAL</td><td style="${BORDE};${BORDE_PAD};text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
         ${filasEsp}
       </tbody>
     </table>`;
 }
 function generarTablaTotalesBatcys(porLugar, total, noforman, forman, pad){
   const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr><td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
+    .map(([k,v]) => `<tr><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
   return `
-    <table style="border-collapse:collapse;border:0.5px solid #000;margin:4px auto;width:70%">
+    <table style="border-collapse:collapse;margin:3px auto;width:70%">
       <thead><tr>
-        <th style="border:0.5px solid #000;padding:${pad}px 4px;text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
-        <th style="border:0.5px solid #000;padding:${pad}px 4px;width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
+        <th style="${BORDE};${BORDE_PAD};text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
+        <th style="${BORDE};${BORDE_PAD};width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
       </tr></thead>
       <tbody>
-        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">EFECTIVO</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="efectivo">${total}</td></tr>
+        <tr><td style="${BORDE};${BORDE_PAD}">EFECTIVO</td><td style="${BORDE};${BORDE_PAD};text-align:center" data-total="efectivo">${total}</td></tr>
         ${detalle}
-        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">NO FORMAN</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="noforman">${noforman}</td></tr>
-        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">FORMAN</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="forman">${forman}</td></tr>
-        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px;font-weight:bold">TOTAL</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
+        <tr><td style="${BORDE};${BORDE_PAD}">NO FORMAN</td><td style="${BORDE};${BORDE_PAD};text-align:center" data-total="noforman">${noforman}</td></tr>
+        <tr><td style="${BORDE};${BORDE_PAD}">FORMAN</td><td style="${BORDE};${BORDE_PAD};text-align:center" data-total="forman">${forman}</td></tr>
+        <tr><td style="${BORDE};${BORDE_PAD};font-weight:bold">TOTAL</td><td style="${BORDE};${BORDE_PAD};text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
       </tbody>
     </table>`;
 }
@@ -1821,19 +1709,19 @@ function generarSeccionesTiposEspecial(pad){
     if(!personas.length) return '';
     const filas = personas.map((p,i)=>`
       <tr>
-        <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${i+1}</td>
-        <td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(p.nombre)}</td>
-        <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${p.desde?fmtDate(p.desde):''}</td>
-        <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${p.hasta?fmtDate(p.hasta):''}</td>
+        <td style="${BORDE};text-align:center;${BORDE_PAD}">${i+1}</td>
+        <td style="${BORDE};${BORDE_PAD}">${escapeHtml(p.nombre)}</td>
+        <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.desde?fmtDate(p.desde):''}</td>
+        <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.hasta?fmtDate(p.hasta):''}</td>
       </tr>`).join('');
     return `
-      <div style="text-align:left;font-weight:bold;margin-top:6px">${escapeHtml(upper(tipo))}</div>
-      <table style="width:100%;border-collapse:collapse;border:0.5px solid #000;margin-bottom:6px">
+      <div style="text-align:left;font-weight:bold;margin-top:4px">${escapeHtml(upper(tipo))}</div>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:3px">
         <thead><tr>
-          <th style="border:0.5px solid #000;width:6%;text-align:center;padding:${pad}px 4px">N°</th>
-          <th style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">GRADO, NOMBRES Y APELLIDOS</th>
-          <th style="border:0.5px solid #000;width:16%;text-align:center;padding:${pad}px 4px">DESDE</th>
-          <th style="border:0.5px solid #000;width:16%;text-align:center;padding:${pad}px 4px">HASTA</th>
+          <th style="${BORDE};width:6%;text-align:center;${BORDE_PAD}">N°</th>
+          <th style="${BORDE};text-align:center;${BORDE_PAD}">GRADO, NOMBRES Y APELLIDOS</th>
+          <th style="${BORDE};width:16%;text-align:center;${BORDE_PAD}">DESDE</th>
+          <th style="${BORDE};width:16%;text-align:center;${BORDE_PAD}">HASTA</th>
         </tr></thead>
         <tbody>${filas}</tbody>
       </table>`;
@@ -1845,9 +1733,9 @@ function generarBloqueFirma(){
   const cargo = escapeHtml(f.cargo || '');
   if(!nombre && !cargo) return '';
   return `
-    <div class="print-firma" style="text-align:center;margin-top:24px;padding-top:8px">
-      <div style="font-size:8pt">${nombre}</div>
-      <div style="font-size:8pt;font-weight:bold">${cargo}</div>
+    <div class="print-firma" style="text-align:center;margin-top:18px;padding-top:6px">
+      <div style="font-size:7pt">${nombre}</div>
+      <div style="font-size:7pt;font-weight:bold">${cargo}</div>
     </div>`;
 }
 function generarPlantilla(){
@@ -1866,15 +1754,15 @@ function generarPlantilla(){
     <div contenteditable="true" data-field="h1" style="font-weight:bold">COMANDO PRINCIPAL</div>
     <div contenteditable="true" data-field="h2">COMANDO SECUNDARIO</div>
     <div contenteditable="true" data-field="h3">PERSONAL</div>
-    <div style="text-align:center;font-weight:bold;margin:4px 0" contenteditable="true" data-field="tituloDiv10">${escapeHtml(tituloDiv10)}</div>
+    <div style="text-align:center;font-weight:bold;margin:3px 0" contenteditable="true" data-field="tituloDiv10">${escapeHtml(tituloDiv10)}</div>
     <div data-block="totales-div10">${tablaDiv10}</div>
-    <div style="text-align:center;font-weight:bold;margin:6px 0 4px" contenteditable="true" data-field="subtitulo">DEMOSTRACIÓN</div>
+    <div style="text-align:center;font-weight:bold;margin:4px 0 2px" contenteditable="true" data-field="subtitulo">DEMOSTRACIÓN</div>
     <div data-dynamic="secciones-div10">
       <div data-dynamic="tipos-especial-div10">${secTiposEsp}</div>
       <div data-dynamic="normales-div10">${seccionesDiv10}</div>
     </div>
     <div class="print-batcys-block">
-      <div style="text-align:center;font-weight:bold;margin:10px 0 4px" contenteditable="true" data-field="tituloBatcys">PARTE DIARIO DEL PERSONAL DEL BAT. C Y S -X</div>
+      <div style="text-align:center;font-weight:bold;margin:8px 0 2px" contenteditable="true" data-field="tituloBatcys">PARTE DIARIO DEL PERSONAL DEL BAT. C Y S -X</div>
       <div data-block="totales-batcys">${tablaBatcys}</div>
       <div data-dynamic="secciones-batcys">
         <div data-dynamic="normales-batcys">${seccionesBatcys}</div>
@@ -1914,7 +1802,7 @@ function inyectarDatosDinamicos(html){
       if(ref0){
         const nuevas = Object.entries(div10.porLugar).filter(([k,v]) => v > 0).map(([k,v]) => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
+          tr.innerHTML = `<td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
           return tr;
         });
         let ref = ref0;
@@ -1923,7 +1811,7 @@ function inyectarDatosDinamicos(html){
       Object.entries(tiposConteo).filter(([k,v]) => v > 0).forEach(([k,v]) => {
         const tr = document.createElement('tr');
         tr.setAttribute('data-especial-tipo', k);
-        tr.innerHTML = `<td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="esp-tipo:${escapeHtml(k)}">${v}</td>`;
+        tr.innerHTML = `<td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="esp-tipo:${escapeHtml(k)}">${v}</td>`;
         tb.appendChild(tr);
       });
     }
@@ -1941,7 +1829,7 @@ function inyectarDatosDinamicos(html){
       if(ref0){
         const nuevas = Object.entries(batcys.porLugar).filter(([k,v]) => v > 0).map(([k,v]) => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
+          tr.innerHTML = `<td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
           return tr;
         });
         let ref = ref0;
@@ -1962,9 +1850,6 @@ function inyectarDatosDinamicos(html){
   return cont.innerHTML;
 }
 
-/* ============================================================
-   WORD
-   ============================================================ */
 function abrirWord(){
   const w = state.word;
   const d = w.design;
@@ -2044,7 +1929,7 @@ async function guardarConfigWord(){
     const html = $('#word-page').innerHTML;
     const d = state.word.design;
     d.baseFont = $('#w-font').value || 'Arial';
-    d.baseSize = parseInt($('#w-size').value, 10) || 8;
+    d.baseSize = parseInt($('#w-size').value, 10) || 7;
     await setDoc(doc(db, 'config', 'word'), {
       html, design: d, cellPad: state.cellPad, actualizado: serverTimestamp()
     }, { merge: true });
@@ -2059,9 +1944,6 @@ function aplicarEstiloPagina(d){
   styleEl.textContent = `@media print { @page { size: ${d.pageSize||'letter'} ${d.orient||'portrait'}; margin: ${(d.margin!=null?d.margin:8)}mm; } }`;
 }
 
-/* ============================================================
-   IMPRIMIR — modal con fecha
-   ============================================================ */
 function imprimir(){
   const input = $('#print-fecha');
   input.value = fechaHoy();
@@ -2078,7 +1960,6 @@ async function imprimirConFecha(fechaTexto){
   const tmp = document.createElement('div');
   tmp.innerHTML = htmlActualizado;
 
-  // Actualizar título DIV-10 con la fecha elegida
   const tituloDiv10El = tmp.querySelector('[data-field="tituloDiv10"]');
   if(tituloDiv10El){
     const textoActual = tituloDiv10El.textContent || '';
@@ -2094,7 +1975,7 @@ async function imprimirConFecha(fechaTexto){
   htmlActualizado = tmp.innerHTML;
 
   const copias = d.cols === 1 ? 1 : 2;
-  const copyHtml = `<div class="print-copy" style="font-family:${d.baseFont||'Arial'};font-size:${d.baseSize||8}pt;line-height:1.15;color:#000">${htmlActualizado}</div>`;
+  const copyHtml = `<div class="print-copy" style="font-family:${d.baseFont||'Arial'};font-size:${d.baseSize||7}pt;line-height:1.1;color:#000">${htmlActualizado}</div>`;
   aplicarEstiloPagina(d);
 
   const sheet = document.createElement('div');
@@ -2109,9 +1990,6 @@ async function imprimirConFecha(fechaTexto){
   setTimeout(()=> window.print(), 150);
 }
 
-/* ============================================================
-   USUARIOS
-   ============================================================ */
 async function abrirUsers(){
   if(!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'jefe')) return;
   $('#modal-users').classList.add('show');
@@ -2185,9 +2063,6 @@ async function accionUsuario(uid, accion, users){
   }catch(e){ console.error(e); toast('Error: ' + e.code, 'danger'); }
 }
 
-/* ============================================================
-   AUDITORÍA
-   ============================================================ */
 async function abrirAudit(){
   if(!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'jefe')) return;
   $('#modal-audit').classList.add('show');
@@ -2243,9 +2118,6 @@ function renderAuditoria(){
   }).join('');
 }
 
-/* ============================================================
-   EVENTOS
-   ============================================================ */
 function cerrarModales(){
   $$('.overlay').forEach(o => o.classList.remove('show'));
   savedRange = null;
@@ -2297,7 +2169,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
-  // Modal de impresión
   $('#print-confirmar').addEventListener('click', async ()=>{
     const fechaTexto = $('#print-fecha').value.trim().toUpperCase();
     if(!fechaTexto){
@@ -2372,7 +2243,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       d.orient = $('#d-orient').value || 'portrait';
       d.margin = parseInt($('#d-margin').value, 10);
       if(isNaN(d.margin)) d.margin = 8;
-      d.baseSize = parseInt($('#d-basesize').value, 10) || 8;
+      d.baseSize = parseInt($('#d-basesize').value, 10) || 7;
       const cellPad = parseInt($('#d-cellpad').value, 10);
       state.cellPad = isNaN(cellPad) ? 1 : cellPad;
       await setDoc(doc(db, 'config', 'word'), { design: d, cellPad: state.cellPad, actualizado: serverTimestamp() }, { merge: true });
@@ -2418,7 +2289,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   selFuente.addEventListener('focus', guardarRango);
   selTamano.addEventListener('focus', guardarRango);
   selFuente.addEventListener('change', ()=>{ restaurarRango(); aplicarFuente(selFuente.value); setTimeout(()=> page.focus(), 0); });
-  selTamano.addEventListener('change', ()=>{ restaurarRango(); aplicarTamanoPt(parseInt(selTamano.value, 10) || 8); setTimeout(()=> page.focus(), 0); });
+  selTamano.addEventListener('change', ()=>{ restaurarRango(); aplicarTamanoPt(parseInt(selTamano.value, 10) || 7); setTimeout(()=> page.focus(), 0); });
 
   $('#w-undo').addEventListener('mousedown', e => e.preventDefault());
   $('#w-undo').addEventListener('click', ()=> ejecutar('undo'));
