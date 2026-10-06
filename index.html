@@ -900,6 +900,30 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
     <div class="modal-foot"><button class="btn ghost" data-close>Salir</button></div>
   </div>
 </div>
+<!-- Modal fecha de impresión -->
+<div class="overlay" id="modal-print-date">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-head">
+      <h2>🖨 Imprimir reporte</h2>
+      <button class="x" data-close>×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.9rem;color:var(--muted);margin-bottom:14px">
+        ¿Con qué fecha deseas imprimir el parte diario?
+      </p>
+      <div class="field">
+        <label>Fecha del reporte</label>
+        <input type="text" id="print-fecha" placeholder="Ej: 06-OCT-26" style="text-transform:uppercase">
+        <div class="hint">Formato: DD-MMM-AA · Por defecto se muestra la fecha actual</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" data-close>Cancelar</button>
+      <button class="btn primary" id="print-confirmar">🖨 Imprimir</button>
+    </div>
+  </div>
+</div>
+
 
 <div id="toast-wrap"></div>
 <div id="print-root"></div>
@@ -2036,19 +2060,56 @@ function aplicarEstiloPagina(d){
   if(!styleEl){ styleEl = document.createElement('style'); styleEl.id = 'print-page-style'; document.head.appendChild(styleEl); }
   styleEl.textContent = `@media print { @page { size: ${d.pageSize||'letter'} ${d.orient||'portrait'}; margin: ${(d.margin!=null?d.margin:8)}mm; } }`;
 }
-async function imprimir(){
+// Abre el modal preguntando la fecha
+function imprimir(){
+  const input = $('#print-fecha');
+  input.value = fechaHoy();
+  $('#modal-print-date').classList.add('show');
+  setTimeout(()=> input.focus(), 100);
+}
+
+// Realiza la impresión con la fecha indicada
+async function imprimirConFecha(fechaTexto){
   const w = state.word;
   const d = w.design || {};
   let baseHtml = (w.html && w.html.trim()) ? w.html : generarPlantilla();
   let htmlActualizado = inyectarDatosDinamicos(baseHtml);
+
+  // ⭐ Reemplazar la fecha del título con la fecha indicada
   const tmp = document.createElement('div');
   tmp.innerHTML = htmlActualizado;
+  
+  // Actualizar título DIV-10
+  const tituloDiv10El = tmp.querySelector('[data-field="tituloDiv10"]');
+  if(tituloDiv10El){
+    const textoActual = tituloDiv10El.textContent || '';
+    const nuevoTexto = textoActual.replace(/\d{2}-[A-Z]{3}-\d{2}\s*$/, fechaTexto);
+    tituloDiv10El.textContent = nuevoTexto;
+  }
+  
+  // Asegurar bloque BAT.CYS-X + firma
   if(!tmp.querySelector('.print-batcys-block')) tmp.innerHTML = `<div class="print-batcys-block">${tmp.innerHTML}</div>`;
   if(!tmp.querySelector('.print-firma')){
     const bB = tmp.querySelector('.print-batcys-block');
     if(bB) bB.insertAdjacentHTML('beforeend', generarBloqueFirma());
   }
   htmlActualizado = tmp.innerHTML;
+
+  const copias = d.cols === 1 ? 1 : 2;
+  const copyHtml = `<div class="print-copy" style="font-family:${d.baseFont||'Arial'};font-size:${d.baseSize||8}pt;line-height:1.15;color:#000">${htmlActualizado}</div>`;
+  aplicarEstiloPagina(d);
+
+  const sheet = document.createElement('div');
+  sheet.className = 'print-sheet cols-' + copias;
+  for(let i=0;i<copias;i++) sheet.insertAdjacentHTML('beforeend', copyHtml);
+
+  const root = $('#print-root');
+  root.innerHTML = '';
+  root.appendChild(sheet);
+
+  await logAudit('print', `Imprimió el reporte con fecha ${fechaTexto} (${copias} copia${copias>1?'s':''})`);
+  setTimeout(()=> window.print(), 150);
+}  htmlActualizado = tmp.innerHTML;
   const copias = d.cols === 1 ? 1 : 2;
   const copyHtml = `<div class="print-copy" style="font-family:${d.baseFont||'Arial'};font-size:${d.baseSize||8}pt;line-height:1.15;color:#000">${htmlActualizado}</div>`;
   aplicarEstiloPagina(d);
@@ -2212,6 +2273,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   $('#btn-volver').addEventListener('click', irAResumen);
   $('#btn-imprimir').addEventListener('click', imprimir);
+// Confirmar impresión con la fecha del modal
+$('#print-confirmar').addEventListener('click', async ()=>{
+  const fechaTexto = $('#print-fecha').value.trim().toUpperCase();
+  if(!fechaTexto){
+    toast('Ingrese una fecha', 'warn');
+    return;
+  }
+  // Validar formato DD-MMM-AA
+  if(!/^\d{2}-[A-Z]{3}-\d{2}$/.test(fechaTexto)){
+    toast('Formato inválido. Use DD-MMM-AA (ej: 06-OCT-26)', 'warn');
+    return;
+  }
+  cerrarModales();
+  await imprimirConFecha(fechaTexto);
+});
+
+// Enter en el input dispara la impresión
+$('#print-fecha').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter') $('#print-confirmar').click();
+});
 
   // Botón configuración
   $('#btn-cfg').addEventListener('click', ()=>{
