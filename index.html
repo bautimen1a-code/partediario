@@ -87,12 +87,7 @@ header.app-head .user-box button:hover{background:rgba(255,255,255,.5)}
 .totals-head .count-badge{background:#fff;color:var(--muted);font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.3px}
 
 table.xl{width:100%;border-collapse:collapse;font-size:.92rem;font-family:'Segoe UI',Calibri,Arial,sans-serif;color:var(--xl-text);background:#fff}
-table.xl thead th{
-  position:sticky;top:0;z-index:2;
-  background:var(--xl-header);color:#3c4043;font-size:.74rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.4px;text-align:left;padding:9px 12px;
-  border:1px solid var(--xl-border);border-top:none;
-}
+table.xl thead th{position:sticky;top:0;z-index:2;background:var(--xl-header);color:#3c4043;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:left;padding:9px 12px;border:1px solid var(--xl-border);border-top:none}
 table.xl thead th.num{text-align:center;width:80px}
 table.xl thead th.date-col{text-align:center;width:100px}
 table.xl tbody td{padding:7px 12px;border:1px solid var(--xl-border);vertical-align:middle}
@@ -246,7 +241,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 
 #print-root{display:none}
 
-/* ⭐⭐⭐ IMPRESIÓN: BORDES ULTRA FINOS + ESPACIADO COMPACTO ⭐⭐⭐ */
 @media print{
   @page{size:letter portrait;margin:8mm}
   body *{visibility:hidden !important}
@@ -259,25 +253,12 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   .print-copy p,.print-copy div,.print-copy table{margin:0;padding:0}
   .print-batcys-block{page-break-inside:avoid}
 
-  /* Sin espacio entre líneas del membrete y el título */
-  .print-copy > div{
-    line-height:1.05 !important;
-    margin:0 !important;
-    padding:0 !important;
-  }
-  .print-copy > div[contenteditable="true"]{
-    line-height:1.05 !important;
-    margin:0 !important;
-  }
+  .print-copy > div{line-height:1.05 !important;margin:0 !important;padding:0 !important}
+  .print-copy > div[contenteditable="true"]{line-height:1.05 !important;margin:0 !important}
 
-  /* Bordes ultra finos */
   .print-copy table,
   .print-copy table td,
-  .print-copy table th{
-    border-width: 0.2mm !important;
-    border-color: #000 !important;
-    border-style: solid !important;
-  }
+  .print-copy table th{border-width:0.2mm !important;border-color:#000 !important;border-style:solid !important}
 }
 
 @media (max-width:1000px){.word-main{grid-template-columns:1fr}.word-side{display:none}.word-app{height:84vh}}
@@ -381,15 +362,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       </div>
       <div class="table-scroll">
         <table class="xl">
-          <thead>
-            <tr>
-              <th style="width:36px"></th>
-              <th>Nombre completo</th>
-              <th>Lugar u observación</th>
-              <th class="date-col">Desde</th>
-              <th class="date-col">Hasta</th>
-            </tr>
-          </thead>
+          <thead><tr><th style="width:36px"></th><th>Nombre completo</th><th>Lugar u observación</th><th class="date-col">Desde</th><th class="date-col">Hasta</th></tr></thead>
           <tbody id="tbody-div10"></tbody>
         </table>
       </div>
@@ -406,15 +379,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       </div>
       <div class="table-scroll">
         <table class="xl">
-          <thead>
-            <tr>
-              <th style="width:36px"></th>
-              <th>Nombre completo</th>
-              <th>Lugar u observación</th>
-              <th class="date-col">Desde</th>
-              <th class="date-col">Hasta</th>
-            </tr>
-          </thead>
+          <thead><tr><th style="width:36px"></th><th>Nombre completo</th><th>Lugar u observación</th><th class="date-col">Desde</th><th class="date-col">Hasta</th></tr></thead>
           <tbody id="tbody-batcys"></tbody>
         </table>
       </div>
@@ -429,15 +394,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       </div>
       <div class="table-scroll">
         <table class="xl">
-          <thead>
-            <tr>
-              <th style="width:36px"></th>
-              <th>Nombre completo</th>
-              <th>Tipo de situación</th>
-              <th class="date-col">Desde</th>
-              <th class="date-col">Hasta</th>
-            </tr>
-          </thead>
+          <thead><tr><th style="width:36px"></th><th>Nombre completo</th><th>Tipo de situación</th><th class="date-col">Desde</th><th class="date-col">Hasta</th></tr></thead>
           <tbody id="tbody-especial"></tbody>
         </table>
       </div>
@@ -501,14 +458,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
     </div>
     <div class="modal-body" style="padding:0;overflow:hidden">
       <table class="xl" style="border-radius:0">
-        <thead>
-          <tr>
-            <th style="width:50px;text-align:center">N°</th>
-            <th>GRADO, NOMBRES Y APELLIDOS</th>
-            <th class="date-col">DESDE</th>
-            <th class="date-col">HASTA</th>
-          </tr>
-        </thead>
+        <thead><tr><th style="width:50px;text-align:center">N°</th><th>GRADO, NOMBRES Y APELLIDOS</th><th class="date-col">DESDE</th><th class="date-col">HASTA</th></tr></thead>
         <tbody id="detail-body"></tbody>
       </table>
     </div>
@@ -564,70 +514,32 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   <div class="modal medium">
     <div class="modal-head"><h2>⚙ Configuraciones</h2><button class="x" data-close>×</button></div>
     <div class="modal-body">
-
       <div class="cfg-section">
         <div class="cfg-section-title">Datos y reporte</div>
         <div class="cfg-grid">
-          <div class="cfg-card" data-open="nuevo">
-            <div class="ic">＋</div>
-            <div class="tt">Nuevo registro</div>
-            <div class="ds">Agregar persona</div>
-          </div>
-          <div class="cfg-card" data-open="lugares">
-            <div class="ic">⚙</div>
-            <div class="tt">Lugares</div>
-            <div class="ds">Editar lista</div>
-          </div>
-          <div class="cfg-card" data-open="tipos">
-            <div class="ic">🏷</div>
-            <div class="tt">Tipos Especial</div>
-            <div class="ds">Configurar tipos</div>
-          </div>
-          <div class="cfg-card data-perm" data-open="firma">
-            <div class="ic">✍</div>
-            <div class="tt">Firma</div>
-            <div class="ds">Jefe de control</div>
-          </div>
-          <div class="cfg-card data-perm" data-open="diseno">
-            <div class="ic">📐</div>
-            <div class="tt">Diseño</div>
-            <div class="ds">Del reporte</div>
-          </div>
-          <div class="cfg-card data-perm" data-open="word">
-            <div class="ic">📄</div>
-            <div class="tt">Word</div>
-            <div class="ds">Plantilla</div>
-          </div>
+          <div class="cfg-card" data-open="nuevo"><div class="ic">＋</div><div class="tt">Nuevo registro</div><div class="ds">Agregar persona</div></div>
+          <div class="cfg-card" data-open="lugares"><div class="ic">⚙</div><div class="tt">Lugares</div><div class="ds">Editar lista</div></div>
+          <div class="cfg-card" data-open="tipos"><div class="ic">🏷</div><div class="tt">Tipos Especial</div><div class="ds">Configurar tipos</div></div>
+          <div class="cfg-card data-perm" data-open="firma"><div class="ic">✍</div><div class="tt">Firma</div><div class="ds">Jefe de control</div></div>
+          <div class="cfg-card data-perm" data-open="diseno"><div class="ic">📐</div><div class="tt">Diseño</div><div class="ds">Del reporte</div></div>
+          <div class="cfg-card data-perm" data-open="word"><div class="ic">📄</div><div class="tt">Word</div><div class="ds">Plantilla</div></div>
         </div>
       </div>
 
       <div class="cfg-section data-perm">
         <div class="cfg-section-title">Importar</div>
         <div class="cfg-grid">
-          <div class="cfg-card" data-open="importar">
-            <div class="ic">📥</div>
-            <div class="tt">Importar Excel</div>
-            <div class="ds">Desde archivo</div>
-          </div>
+          <div class="cfg-card" data-open="importar"><div class="ic">📥</div><div class="tt">Importar Excel</div><div class="ds">Desde archivo</div></div>
         </div>
       </div>
 
       <div class="cfg-section data-perm">
         <div class="cfg-section-title">Administración</div>
         <div class="cfg-grid">
-          <div class="cfg-card" data-open="audit">
-            <div class="ic">🔍</div>
-            <div class="tt">Auditoría</div>
-            <div class="ds">Ver movimientos</div>
-          </div>
-          <div class="cfg-card" data-open="users">
-            <div class="ic">👥</div>
-            <div class="tt">Usuarios</div>
-            <div class="ds">Gestión de accesos</div>
-          </div>
+          <div class="cfg-card" data-open="audit"><div class="ic">🔍</div><div class="tt">Auditoría</div><div class="ds">Ver movimientos</div></div>
+          <div class="cfg-card" data-open="users"><div class="ic">👥</div><div class="tt">Usuarios</div><div class="ds">Gestión de accesos</div></div>
         </div>
       </div>
-
     </div>
     <div class="modal-foot"><button class="btn ghost" data-close>Cerrar</button></div>
   </div>
@@ -710,7 +622,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       <div class="word-app">
         <div class="word-titlebar"><div class="wname">Reporte — Parte Diario</div></div>
         <div class="word-tabs"><button class="tab active">Inicio</button></div>
-
         <div class="word-ribbon" id="tab-inicio">
           <div class="ribbon-group">
             <div class="ribbon-row">
@@ -862,9 +773,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       <button class="x" data-close>×</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:.9rem;color:var(--muted);margin-bottom:14px">
-        ¿Con qué fecha deseas imprimir el parte diario?
-      </p>
+      <p style="font-size:.9rem;color:var(--muted);margin-bottom:14px">¿Con qué fecha deseas imprimir el parte diario?</p>
       <div class="field">
         <label>Fecha del reporte</label>
         <input type="text" id="print-fecha" placeholder="Ej: 06-OCT-26" style="text-transform:uppercase;font-size:1.05rem;text-align:center;font-weight:600;letter-spacing:1px">
@@ -1011,10 +920,7 @@ $('#link-forgot').addEventListener('click', async ()=>{
     toast('Correo enviado, revisa tu bandeja', 'ok');
   }catch(e){ toast('No se pudo enviar el correo', 'danger'); }
 });
-$('#btn-cerrar-login').addEventListener('click', ()=>{
-  hideLoginScreen();
-  window.scrollTo(0,0);
-});
+$('#btn-cerrar-login').addEventListener('click', ()=>{ hideLoginScreen(); window.scrollTo(0,0); });
 $('#btn-pending-logout').addEventListener('click', async ()=>{
   await logAudit('logout', 'Cierre de sesión desde espera');
   await signOut(auth);
@@ -1050,21 +956,10 @@ $('#btn-do-register').addEventListener('click', async ()=>{
   try{
     const cred = await createUserWithEmailAndPassword(auth, email, pass);
     const newUid = cred.user.uid;
-    await setDoc(doc(db, 'users', newUid), {
-      email, nombre,
-      role: 'user',
-      estado: 'pendiente',
-      creado: serverTimestamp()
-    });
-    await addDoc(collection(db, 'audit'), {
-      action: 'user_register',
-      descripcion: `Nuevo registro: ${email} (${nombre})`,
-      uid: newUid, email, nombre, role: 'user',
-      fecha: serverTimestamp()
-    });
+    await setDoc(doc(db, 'users', newUid), { email, nombre, role: 'user', estado: 'pendiente', creado: serverTimestamp() });
+    await addDoc(collection(db, 'audit'), { action: 'user_register', descripcion: `Nuevo registro: ${email} (${nombre})`, uid: newUid, email, nombre, role: 'user', fecha: serverTimestamp() });
     toast('Cuenta creada. Espera la validación.', 'ok');
   }catch(e){
-    console.error(e);
     const map = {
       'auth/email-already-in-use':'El correo ya está registrado',
       'auth/invalid-email':'Correo inválido',
@@ -1083,13 +978,8 @@ async function doLogout(){
 }
 
 $('#btn-ingresar').addEventListener('click', ()=>{
-  if(currentUser && currentUser.estado === 'activo'){
-    irAlSistema();
-  } else {
-    showLoginScreen();
-    showPanel('login');
-    setLoginError('');
-  }
+  if(currentUser && currentUser.estado === 'activo'){ irAlSistema(); }
+  else { showLoginScreen(); showPanel('login'); setLoginError(''); }
 });
 
 onAuthStateChanged(auth, async (user)=>{
@@ -1108,19 +998,9 @@ onAuthStateChanged(auth, async (user)=>{
   }
 
   const snap = await getDoc(doc(db, 'users', user.uid));
-  if(!snap.exists()){
-    toast('Perfil no encontrado. Contacta al administrador.', 'danger');
-    await signOut(auth);
-    return;
-  }
+  if(!snap.exists()){ toast('Perfil no encontrado. Contacta al administrador.', 'danger'); await signOut(auth); return; }
   const data = snap.data();
-  currentUser = {
-    uid: user.uid,
-    email: user.email,
-    nombre: data.nombre || user.email,
-    role: data.role || 'user',
-    estado: data.estado || 'pendiente'
-  };
+  currentUser = { uid: user.uid, email: user.email, nombre: data.nombre || user.email, role: data.role || 'user', estado: data.estado || 'pendiente' };
 
   try{ await updateDoc(doc(db, 'users', user.uid), { ultimoLogin: serverTimestamp() }); }catch(e){}
 
@@ -1133,19 +1013,9 @@ onAuthStateChanged(auth, async (user)=>{
   if(currentUser.estado !== 'activo'){
     showLoginScreen();
     showPanel('pending');
-    if(currentUser.estado === 'rechazado'){
-      $('#pending-title').textContent = 'Acceso rechazado';
-      $('#pending-sub').textContent = 'Tu solicitud fue rechazada.';
-      $('#pending-msg').textContent = 'Contacta al jefe de personal o al administrador para más información.';
-    } else if(currentUser.estado === 'bloqueado'){
-      $('#pending-title').textContent = 'Acceso bloqueado';
-      $('#pending-sub').textContent = 'Tu cuenta ha sido bloqueada.';
-      $('#pending-msg').textContent = 'Contacta al administrador para más información.';
-    } else {
-      $('#pending-title').textContent = 'Esperando aprobación';
-      $('#pending-sub').textContent = 'Tu cuenta está en revisión.';
-      $('#pending-msg').textContent = 'El jefe de personal o un administrador validará tu cuenta pronto.';
-    }
+    if(currentUser.estado === 'rechazado'){ $('#pending-title').textContent = 'Acceso rechazado'; $('#pending-sub').textContent = 'Tu solicitud fue rechazada.'; $('#pending-msg').textContent = 'Contacta al jefe de personal o al administrador para más información.'; }
+    else if(currentUser.estado === 'bloqueado'){ $('#pending-title').textContent = 'Acceso bloqueado'; $('#pending-sub').textContent = 'Tu cuenta ha sido bloqueada.'; $('#pending-msg').textContent = 'Contacta al administrador para más información.'; }
+    else { $('#pending-title').textContent = 'Esperando aprobación'; $('#pending-sub').textContent = 'Tu cuenta está en revisión.'; $('#pending-msg').textContent = 'El jefe de personal o un administrador validará tu cuenta pronto.'; }
     await logAudit('login', `Intento de login con estado ${currentUser.estado}`);
     return;
   }
@@ -1165,9 +1035,7 @@ function labelRol(role){
 
 function aplicarPermisos(){
   const esAdminOJefe = currentUser && (currentUser.role === 'admin' || currentUser.role === 'jefe');
-  $$('.data-perm').forEach(btn => {
-    btn.classList.toggle('hidden', !esAdminOJefe);
-  });
+  $$('.data-perm').forEach(btn => { btn.classList.toggle('hidden', !esAdminOJefe); });
 }
 
 function sincronizarTodo(){
@@ -1175,37 +1043,22 @@ function sincronizarTodo(){
   const qPersonal = query(collection(db, 'personal'), orderBy('orden', 'asc'));
   unsubPersonal = onSnapshot(qPersonal, (snap)=>{
     state.personal = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderTablas();
-    refrescarContadores();
-    renderResumen();
+    renderTablas(); refrescarContadores(); renderResumen();
   }, err => console.warn('personal:', err));
 
   if(unsubConfigLugares) unsubConfigLugares();
   unsubConfigLugares = onSnapshot(doc(db, 'config', 'lugares'), (snap)=>{
-    if(snap.exists() && Array.isArray(snap.data().items)){
-      state.lugares = snap.data().items;
-      llenarSelectLugares();
-      renderResumen();
-    }
+    if(snap.exists() && Array.isArray(snap.data().items)){ state.lugares = snap.data().items; llenarSelectLugares(); renderResumen(); }
   });
 
   if(unsubConfigTipos) unsubConfigTipos();
   unsubConfigTipos = onSnapshot(doc(db, 'config', 'tiposEspecial'), (snap)=>{
-    if(snap.exists() && Array.isArray(snap.data().items)){
-      state.tiposEspecial = snap.data().items;
-      llenarSelectTiposEspecial();
-      renderResumen();
-    }
+    if(snap.exists() && Array.isArray(snap.data().items)){ state.tiposEspecial = snap.data().items; llenarSelectTiposEspecial(); renderResumen(); }
   });
 
   if(unsubConfigFirma) unsubConfigFirma();
   unsubConfigFirma = onSnapshot(doc(db, 'config', 'firma'), (snap)=>{
-    if(snap.exists()){
-      state.firma = {
-        nombre: snap.data().nombre || '',
-        cargo: snap.data().cargo || ''
-      };
-    }
+    if(snap.exists()){ state.firma = { nombre: snap.data().nombre || '', cargo: snap.data().cargo || '' }; }
   });
 
   if(unsubConfigWord) unsubConfigWord();
@@ -1222,14 +1075,12 @@ function sincronizarTodo(){
 function irAResumen(){
   $('#screen-summary').style.display = 'block';
   $('#screen-system').style.display = 'none';
-  renderResumen();
-  window.scrollTo(0,0);
+  renderResumen(); window.scrollTo(0,0);
 }
 function irAlSistema(){
   $('#screen-summary').style.display = 'none';
   $('#screen-system').style.display = 'block';
-  renderTablas();
-  refrescarContadores();
+  renderTablas(); refrescarContadores();
   window.scrollTo(0,0);
 }
 
@@ -1262,23 +1113,17 @@ function renderResumen(){
   const tbDiv = $('#totals-div10');
   tbDiv.innerHTML = '';
   tbDiv.appendChild(filaResumen('EFECTIVO', div10.total, 'DIV-10', 'EFECTIVO', 'destacada'));
-  Object.entries(div10.porLugar).filter(([k,v]) => v > 0).forEach(([k,v]) => {
-    tbDiv.appendChild(filaResumen(upper(k), v, 'DIV-10', k, ''));
-  });
+  Object.entries(div10.porLugar).filter(([k,v]) => v > 0).forEach(([k,v]) => { tbDiv.appendChild(filaResumen(upper(k), v, 'DIV-10', k, '')); });
   tbDiv.appendChild(filaResumen('NO FORMAN', div10.noforman, 'DIV-10', '__NOFORMAN__', 'destacada'));
   tbDiv.appendChild(filaResumen('FORMAN', div10.forman, 'DIV-10', '__FORMAN__', 'destacada'));
   tbDiv.appendChild(filaResumen('TOTAL', div10.total, 'DIV-10', '__TOTAL__', 'destacada'));
-  Object.entries(esp).filter(([k,v]) => v > 0).forEach(([k,v]) => {
-    tbDiv.appendChild(filaResumen(upper(k), v, 'ESPECIAL', k, 'especial'));
-  });
+  Object.entries(esp).filter(([k,v]) => v > 0).forEach(([k,v]) => { tbDiv.appendChild(filaResumen(upper(k), v, 'ESPECIAL', k, 'especial')); });
   $('#badge-div10').textContent = div10.total + ' personas';
 
   const tbBat = $('#totals-batcys');
   tbBat.innerHTML = '';
   tbBat.appendChild(filaResumen('EFECTIVO', batcys.total, 'BAT. CYS-X', 'EFECTIVO', 'destacada'));
-  Object.entries(batcys.porLugar).filter(([k,v]) => v > 0).forEach(([k,v]) => {
-    tbBat.appendChild(filaResumen(upper(k), v, 'BAT. CYS-X', k, ''));
-  });
+  Object.entries(batcys.porLugar).filter(([k,v]) => v > 0).forEach(([k,v]) => { tbBat.appendChild(filaResumen(upper(k), v, 'BAT. CYS-X', k, '')); });
   tbBat.appendChild(filaResumen('NO FORMAN', batcys.noforman, 'BAT. CYS-X', '__NOFORMAN__', 'destacada'));
   tbBat.appendChild(filaResumen('FORMAN', batcys.forman, 'BAT. CYS-X', '__FORMAN__', 'destacada'));
   tbBat.appendChild(filaResumen('TOTAL', batcys.total, 'BAT. CYS-X', '__TOTAL__', 'destacada'));
@@ -1616,8 +1461,7 @@ function parseExcel(file){
         if(v) importRows.push(v);
       }
       $('#import-preview').classList.remove('hidden');
-      $('#import-preview-list').innerHTML = importRows.slice(0, 10)
-        .map((n,i) => `<div style="padding:4px 0;border-bottom:1px solid #eef1f5">${i+1}. ${escapeHtml(n)}</div>`).join('');
+      $('#import-preview-list').innerHTML = importRows.slice(0, 10).map((n,i) => `<div style="padding:4px 0;border-bottom:1px solid #eef1f5">${i+1}. ${escapeHtml(n)}</div>`).join('');
       $('#import-count').textContent = `Total: ${importRows.length} nombres detectados`;
       $('#import-confirmar').disabled = importRows.length === 0;
     }catch(err){ console.error(err); toast('Error al leer el archivo', 'danger'); }
@@ -1631,13 +1475,7 @@ async function confirmarImportacion(){
     const batch = writeBatch(db);
     importRows.forEach((nombre, idx) => {
       const ref = doc(collection(db, 'personal'));
-      batch.set(ref, {
-        nombre, destino: 'DIV-10', especial: false, tipoEspecial: null,
-        lugar: '', desde: '', hasta: '',
-        orden: maxOrden + 1 + idx,
-        creado: serverTimestamp(),
-        creadoPor: currentUser.uid
-      });
+      batch.set(ref, { nombre, destino: 'DIV-10', especial: false, tipoEspecial: null, lugar: '', desde: '', hasta: '', orden: maxOrden + 1 + idx, creado: serverTimestamp(), creadoPor: currentUser.uid });
     });
     await batch.commit();
     await logAudit('import_excel', `Importó ${importRows.length} registros desde Excel`);
@@ -1646,40 +1484,36 @@ async function confirmarImportacion(){
   }catch(e){ console.error(e); toast('Error al importar', 'danger'); }
 }
 
-/* ⭐ BORDES ULTRA FINOS en el HTML generado */
+/* ⭐ BORDES ULTRA FINOS */
 const BORDE = 'border:0.2mm solid #000';
 const BORDE_PAD = 'padding:0.5px 3px';
 
 function generarSecciones(lista, porLugar, pad){
-  return Object.entries(porLugar)
-    .filter(([k,v]) => v > 0)
-    .map(([k,v]) => {
-      const personas = lista.filter(p => p.lugar === k);
-      const filas = personas.map((p,i)=>`
-        <tr>
-          <td style="${BORDE};text-align:center;${BORDE_PAD}">${i+1}</td>
-          <td style="${BORDE};${BORDE_PAD}">${escapeHtml(p.nombre)}</td>
-          <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.desde?fmtDate(p.desde):''}</td>
-          <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.hasta?fmtDate(p.hasta):''}</td>
-        </tr>`).join('');
-      return `
-        <div style="text-align:left;font-weight:bold;margin:1px 0 0 0;line-height:1.05">${escapeHtml(upper(k))}</div>
-        <table style="width:100%;border-collapse:collapse;margin:0 0 2px 0">
-          <thead><tr>
-            <th style="${BORDE};width:6%;text-align:center;${BORDE_PAD}">N°</th>
-            <th style="${BORDE};text-align:center;${BORDE_PAD}">GRADO, NOMBRES Y APELLIDOS</th>
-            <th style="${BORDE};width:16%;text-align:center;${BORDE_PAD}">DESDE</th>
-            <th style="${BORDE};width:16%;text-align:center;${BORDE_PAD}">HASTA</th>
-          </tr></thead>
-          <tbody>${filas || `<tr><td colspan="4" style="${BORDE}">&nbsp;</td></tr>`}</tbody>
-        </table>`;
-    }).join('');
+  return Object.entries(porLugar).filter(([k,v]) => v > 0).map(([k,v]) => {
+    const personas = lista.filter(p => p.lugar === k);
+    const filas = personas.map((p,i)=>`
+      <tr>
+        <td style="${BORDE};text-align:center;${BORDE_PAD}">${i+1}</td>
+        <td style="${BORDE};${BORDE_PAD}">${escapeHtml(p.nombre)}</td>
+        <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.desde?fmtDate(p.desde):''}</td>
+        <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.hasta?fmtDate(p.hasta):''}</td>
+      </tr>`).join('');
+    return `
+      <div style="text-align:left;font-weight:bold;margin:1px 0 0 0;line-height:1.05">${escapeHtml(upper(k))}</div>
+      <table style="width:100%;border-collapse:collapse;margin:0 0 2px 0">
+        <thead><tr>
+          <th style="${BORDE};width:6%;text-align:center;${BORDE_PAD}">N°</th>
+          <th style="${BORDE};text-align:center;${BORDE_PAD}">GRADO, NOMBRES Y APELLIDOS</th>
+          <th style="${BORDE};width:16%;text-align:center;${BORDE_PAD}">DESDE</th>
+          <th style="${BORDE};width:16%;text-align:center;${BORDE_PAD}">HASTA</th>
+        </tr></thead>
+        <tbody>${filas || `<tr><td colspan="4" style="${BORDE}">&nbsp;</td></tr>`}</tbody>
+      </table>`;
+  }).join('');
 }
 function generarTablaTotalesDiv10(porLugar, total, noforman, forman, tiposConteo, pad){
-  const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
-  const filasEsp = Object.entries(tiposConteo).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr data-especial-tipo="${escapeHtml(k)}"><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="esp-tipo:${escapeHtml(k)}">${v}</td></tr>`).join('');
+  const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0).map(([k,v]) => `<tr><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
+  const filasEsp = Object.entries(tiposConteo).filter(([k,v]) => v > 0).map(([k,v]) => `<tr data-especial-tipo="${escapeHtml(k)}"><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="esp-tipo:${escapeHtml(k)}">${v}</td></tr>`).join('');
   return `
     <table style="border-collapse:collapse;margin:0 auto;width:70%">
       <thead><tr>
@@ -1697,8 +1531,7 @@ function generarTablaTotalesDiv10(porLugar, total, noforman, forman, tiposConteo
     </table>`;
 }
 function generarTablaTotalesBatcys(porLugar, total, noforman, forman, pad){
-  const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
+  const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0).map(([k,v]) => `<tr><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
   return `
     <table style="border-collapse:collapse;margin:0 auto;width:70%">
       <thead><tr>
@@ -1765,7 +1598,7 @@ function generarPlantilla(){
     <div contenteditable="true" data-field="h1" style="font-weight:bold;line-height:1.05;margin:0">COMANDO PRINCIPAL</div>
     <div contenteditable="true" data-field="h2" style="line-height:1.05;margin:0">COMANDO SECUNDARIO</div>
     <div contenteditable="true" data-field="h3" style="line-height:1.05;margin:0">PERSONAL</div>
-    <div style="text-align:center;font-weight:bold;margin:0;line-height:1.05" contenteditable="true" data-field="tituloDiv10">${escapeHtml(tituloDiv10)}</div>
+    <div style="text-align:center;font-weight:bold;margin:0;line-height:1.05" data-field="tituloDiv10" data-locked="1">${escapeHtml(tituloDiv10)}</div>
     <div data-block="totales-div10">${tablaDiv10}</div>
     <div style="text-align:center;font-weight:bold;margin:1px 0 0 0;line-height:1.05" contenteditable="true" data-field="subtitulo">DEMOSTRACIÓN</div>
     <div data-dynamic="secciones-div10">
@@ -1858,6 +1691,11 @@ function inyectarDatosDinamicos(html){
   firmas.forEach(f => f.remove());
   const bB = cont.querySelector('.print-batcys-block');
   if(bB) bB.insertAdjacentHTML('beforeend', generarBloqueFirma());
+  // ⭐ Regenerar el título con la fecha de HOY cada vez que se inyecta
+  const tituloElCont = cont.querySelector('[data-field="tituloDiv10"]');
+  if(tituloElCont){
+    tituloElCont.textContent = `PARTE DIARIO DEL PERSONAL DE LA DIV-10 DEL ${fechaHoy()}`;
+  }
   return cont.innerHTML;
 }
 
@@ -1927,9 +1765,7 @@ function ejecutar(cmd, val){
   guardarRango(); actualizarPreview();
 }
 function actualizarEstadoBotones(){
-  const cmds = ['bold','italic','underline','strikeThrough','subscript','superscript',
-                'justifyLeft','justifyCenter','justifyRight','justifyFull',
-                'insertUnorderedList','insertOrderedList'];
+  const cmds = ['bold','italic','underline','strikeThrough','subscript','superscript','justifyLeft','justifyCenter','justifyRight','justifyFull','insertUnorderedList','insertOrderedList'];
   $$('#tab-inicio .rbtn[data-cmd]').forEach(b=>{
     const cmd = b.dataset.cmd;
     if(cmds.includes(cmd)){ try{ b.classList.toggle('on', !!document.queryCommandState(cmd)); }catch(e){} }
@@ -1941,9 +1777,7 @@ async function guardarConfigWord(){
     const d = state.word.design;
     d.baseFont = $('#w-font').value || 'Arial';
     d.baseSize = parseInt($('#w-size').value, 10) || 7;
-    await setDoc(doc(db, 'config', 'word'), {
-      html, design: d, cellPad: state.cellPad, actualizado: serverTimestamp()
-    }, { merge: true });
+    await setDoc(doc(db, 'config', 'word'), { html, design: d, cellPad: state.cellPad, actualizado: serverTimestamp() }, { merge: true });
     state.word.html = html;
     await logAudit('save_word', 'Guardó la configuración del reporte Word');
     toast('💾 Configuración guardada', 'ok');
@@ -1971,15 +1805,19 @@ async function imprimirConFecha(fechaTexto){
   const tmp = document.createElement('div');
   tmp.innerHTML = htmlActualizado;
 
-  // ⭐ REEMPLAZO ROBUSTO DE LA FECHA
-  const tituloDiv10El = tmp.querySelector('[data-field="tituloDiv10"]');
-  if(tituloDiv10El){
-    const regexFecha = /\d{2}-[A-ZÁÉÍÓÚ]{3}-\d{2}/;
-    const textoActual = tituloDiv10El.textContent || '';
-    if(regexFecha.test(textoActual)){
-      tituloDiv10El.textContent = textoActual.replace(regexFecha, fechaTexto);
-    } else {
-      tituloDiv10El.textContent = `PARTE DIARIO DEL PERSONAL DE LA DIV-10 DEL ${fechaTexto}`;
+  // ⭐ TÍTULO DINÁMICO: sobrescribir con la fecha elegida (sin regex)
+  const tituloEl = tmp.querySelector('[data-field="tituloDiv10"]');
+  if(tituloEl){
+    tituloEl.textContent = `PARTE DIARIO DEL PERSONAL DE LA DIV-10 DEL ${fechaTexto}`;
+  } else {
+    // Fallback: buscar por texto si el data-field se perdió
+    const todos = tmp.querySelectorAll('div, p, span');
+    for(const el of todos){
+      const t = (el.textContent || '').trim();
+      if(/PARTE DIARIO DEL PERSONAL DE LA DIV-?10/i.test(t)){
+        el.textContent = `PARTE DIARIO DEL PERSONAL DE LA DIV-10 DEL ${fechaTexto}`;
+        break;
+      }
     }
   }
 
@@ -2039,28 +1877,17 @@ async function cargarUsuarios(){
           </div>
         </div>`;
     }).join('');
-    list.querySelectorAll('[data-action]').forEach(b => {
-      b.addEventListener('click', () => accionUsuario(b.dataset.uid, b.dataset.action, users));
-    });
+    list.querySelectorAll('[data-action]').forEach(b => { b.addEventListener('click', () => accionUsuario(b.dataset.uid, b.dataset.action, users)); });
   }catch(e){ console.error(e); list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Error al cargar</div>'; }
 }
 async function accionUsuario(uid, accion, users){
   const u = users.find(x => x.uid === uid);
   if(!u) return;
   try{
-    if(accion === 'activar'){
-      await updateDoc(doc(db, 'users', uid), { estado: 'activo', validadoPor: currentUser.uid, validadoEn: serverTimestamp() });
-      await logAudit('user_validate', `Validó usuario ${u.email}`, { targetId: uid });
-      toast('Usuario validado', 'ok');
-    } else if(accion === 'rechazar'){
-      await updateDoc(doc(db, 'users', uid), { estado: 'rechazado' });
-      await logAudit('user_reject', `Rechazó usuario ${u.email}`, { targetId: uid });
-      toast('Usuario rechazado', 'warn');
-    } else if(accion === 'bloquear'){
-      await updateDoc(doc(db, 'users', uid), { estado: 'bloqueado' });
-      await logAudit('user_block', `Bloqueó usuario ${u.email}`, { targetId: uid });
-      toast('Usuario bloqueado', 'warn');
-    } else if(accion === 'rol'){
+    if(accion === 'activar'){ await updateDoc(doc(db, 'users', uid), { estado: 'activo', validadoPor: currentUser.uid, validadoEn: serverTimestamp() }); await logAudit('user_validate', `Validó usuario ${u.email}`, { targetId: uid }); toast('Usuario validado', 'ok'); }
+    else if(accion === 'rechazar'){ await updateDoc(doc(db, 'users', uid), { estado: 'rechazado' }); await logAudit('user_reject', `Rechazó usuario ${u.email}`, { targetId: uid }); toast('Usuario rechazado', 'warn'); }
+    else if(accion === 'bloquear'){ await updateDoc(doc(db, 'users', uid), { estado: 'bloqueado' }); await logAudit('user_block', `Bloqueó usuario ${u.email}`, { targetId: uid }); toast('Usuario bloqueado', 'warn'); }
+    else if(accion === 'rol'){
       if(currentUser.role !== 'admin'){ toast('Solo el admin puede cambiar roles', 'warn'); return; }
       const nuevo = prompt(`Nuevo rol para ${u.email} (user/jefe/admin):`, u.role);
       if(!nuevo) return;
@@ -2068,7 +1895,8 @@ async function accionUsuario(uid, accion, users){
       await updateDoc(doc(db, 'users', uid), { role: nuevo });
       await logAudit('user_role', `Cambió rol de ${u.email} a ${nuevo}`, { targetId: uid });
       toast('Rol actualizado', 'ok');
-    } else if(accion === 'del'){
+    }
+    else if(accion === 'del'){
       if(currentUser.role !== 'admin'){ toast('Solo el admin puede eliminar', 'warn'); return; }
       if(!confirm(`¿Eliminar el perfil del usuario ${u.email}?`)) return;
       await deleteDoc(doc(db, 'users', uid));
@@ -2117,11 +1945,7 @@ function renderAuditoria(){
   if(!filtered.length){ list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Sin eventos</div>'; return; }
   list.innerHTML = filtered.map(e => {
     const fecha = e.fecha && e.fecha.toDate ? e.fecha.toDate().toLocaleString('es-PE') : '—';
-    const badgeClass = {
-      create:'ok', update:'warn', delete:'danger', login:'ok', logout:'warn',
-      user_create:'ok', user_delete:'danger', user_role:'warn',
-      user_register:'', user_validate:'ok', user_reject:'warn', user_block:'danger'
-    }[e.action] || '';
+    const badgeClass = { create:'ok', update:'warn', delete:'danger', login:'ok', logout:'warn', user_create:'ok', user_delete:'danger', user_role:'warn', user_register:'', user_validate:'ok', user_reject:'warn', user_block:'danger' }[e.action] || '';
     return `
       <div class="audit-item">
         <div class="meta">
@@ -2141,16 +1965,12 @@ function cerrarModales(){
 
 document.addEventListener('DOMContentLoaded', ()=>{
 
-  renderResumen();
-  renderTablas();
-  refrescarContadores();
+  renderResumen(); renderTablas(); refrescarContadores();
 
   $('#btn-volver').addEventListener('click', irAResumen);
   $('#btn-imprimir').addEventListener('click', imprimir);
 
-  $('#btn-cfg').addEventListener('click', ()=>{
-    $('#modal-cfg').classList.add('show');
-  });
+  $('#btn-cfg').addEventListener('click', ()=>{ $('#modal-cfg').classList.add('show'); });
 
   $$('.cfg-card').forEach(card => {
     card.addEventListener('click', ()=>{
@@ -2173,82 +1993,41 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const inputBuscador = $('#buscador-personal');
   const btnClearBuscador = $('#buscador-clear');
   if(inputBuscador){
-    inputBuscador.addEventListener('input', ()=>{
-      renderTablas();
-      btnClearBuscador.classList.toggle('hidden', !inputBuscador.value);
-    });
-    btnClearBuscador.addEventListener('click', ()=>{
-      inputBuscador.value = '';
-      renderTablas();
-      btnClearBuscador.classList.add('hidden');
-      inputBuscador.focus();
-    });
+    inputBuscador.addEventListener('input', ()=>{ renderTablas(); btnClearBuscador.classList.toggle('hidden', !inputBuscador.value); });
+    btnClearBuscador.addEventListener('click', ()=>{ inputBuscador.value = ''; renderTablas(); btnClearBuscador.classList.add('hidden'); inputBuscador.focus(); });
   }
 
   $('#print-confirmar').addEventListener('click', async ()=>{
     const fechaTexto = $('#print-fecha').value.trim().toUpperCase();
-    if(!fechaTexto){
-      toast('Ingrese una fecha', 'warn');
-      return;
-    }
-    if(!/^\d{2}-[A-Z]{3}-\d{2}$/.test(fechaTexto)){
-      toast('Formato inválido. Use DD-MMM-AA (ej: 06-OCT-26)', 'warn');
-      return;
-    }
+    if(!fechaTexto){ toast('Ingrese una fecha', 'warn'); return; }
+    if(!/^\d{2}-[A-Z]{3}-\d{2}$/.test(fechaTexto)){ toast('Formato inválido. Use DD-MMM-AA (ej: 06-OCT-26)', 'warn'); return; }
     cerrarModales();
     await imprimirConFecha(fechaTexto);
   });
-  $('#print-fecha').addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter') $('#print-confirmar').click();
-  });
+  $('#print-fecha').addEventListener('keydown', (e)=>{ if(e.key === 'Enter') $('#print-confirmar').click(); });
 
   $('#e-especial').addEventListener('change', actualizarVisibilidadCamposEdicion);
   $('#e-guardar').addEventListener('click', guardarEdicion);
   $('#e-eliminar').addEventListener('click', eliminarRegistro);
   $('#e-limpiar').addEventListener('click', limpiarForm);
 
-  $('#lista-add').addEventListener('click', ()=>{
-    const a = leerListaActual(); a.push(''); renderListaItems(a);
-    const ins = $('#lista-items').querySelectorAll('input');
-    if(ins.length) ins[ins.length-1].focus();
-  });
+  $('#lista-add').addEventListener('click', ()=>{ const a = leerListaActual(); a.push(''); renderListaItems(a); const ins = $('#lista-items').querySelectorAll('input'); if(ins.length) ins[ins.length-1].focus(); });
   $('#lista-guardar').addEventListener('click', async ()=>{
-    try{
-      const items = leerListaActual();
-      await setDoc(doc(db, 'config', 'lugares'), { items, actualizado: serverTimestamp() });
-      await logAudit('save_list', `Actualizó la lista de lugares (${items.length} opciones)`);
-      toast('Lugares guardados', 'ok');
-      cerrarModales();
-    }catch(e){ console.error(e); toast('Error al guardar: ' + (e.code || e.message), 'danger'); }
+    try{ const items = leerListaActual(); await setDoc(doc(db, 'config', 'lugares'), { items, actualizado: serverTimestamp() }); await logAudit('save_list', `Actualizó la lista de lugares (${items.length} opciones)`); toast('Lugares guardados', 'ok'); cerrarModales(); }
+    catch(e){ console.error(e); toast('Error al guardar: ' + (e.code || e.message), 'danger'); }
   });
 
-  $('#tipos-add').addEventListener('click', ()=>{
-    const a = leerTiposActual(); a.push(''); renderTiposItems(a);
-    const ins = $('#tipos-items').querySelectorAll('input');
-    if(ins.length) ins[ins.length-1].focus();
-  });
+  $('#tipos-add').addEventListener('click', ()=>{ const a = leerTiposActual(); a.push(''); renderTiposItems(a); const ins = $('#tipos-items').querySelectorAll('input'); if(ins.length) ins[ins.length-1].focus(); });
   $('#tipos-guardar').addEventListener('click', async ()=>{
-    try{
-      const items = leerTiposActual();
-      if(!items.length){ toast('Debe haber al menos un tipo', 'warn'); return; }
-      await setDoc(doc(db, 'config', 'tiposEspecial'), { items, actualizado: serverTimestamp() });
-      await logAudit('save_tipos', `Actualizó los tipos especiales (${items.length})`);
-      toast('Tipos guardados', 'ok');
-      cerrarModales();
-    }catch(e){ console.error(e); toast('Error al guardar: ' + (e.code || e.message), 'danger'); }
+    try{ const items = leerTiposActual(); if(!items.length){ toast('Debe haber al menos un tipo', 'warn'); return; } await setDoc(doc(db, 'config', 'tiposEspecial'), { items, actualizado: serverTimestamp() }); await logAudit('save_tipos', `Actualizó los tipos especiales (${items.length})`); toast('Tipos guardados', 'ok'); cerrarModales(); }
+    catch(e){ console.error(e); toast('Error al guardar: ' + (e.code || e.message), 'danger'); }
   });
 
   $('#f-nombre').addEventListener('input', actualizarPreviewFirma);
   $('#f-cargo').addEventListener('input', actualizarPreviewFirma);
   $('#firma-guardar').addEventListener('click', async ()=>{
-    try{
-      const nombre = $('#f-nombre').value.trim();
-      const cargo = $('#f-cargo').value.trim();
-      await setDoc(doc(db, 'config', 'firma'), { nombre, cargo, actualizado: serverTimestamp() });
-      await logAudit('save_firma', 'Actualizó la firma del jefe de control');
-      toast('✍ Firma guardada', 'ok');
-      cerrarModales();
-    }catch(e){ toast('Error al guardar', 'danger'); }
+    try{ const nombre = $('#f-nombre').value.trim(); const cargo = $('#f-cargo').value.trim(); await setDoc(doc(db, 'config', 'firma'), { nombre, cargo, actualizado: serverTimestamp() }); await logAudit('save_firma', 'Actualizó la firma del jefe de control'); toast('✍ Firma guardada', 'ok'); cerrarModales(); }
+    catch(e){ toast('Error al guardar', 'danger'); }
   });
 
   $('#diseno-guardar').addEventListener('click', async ()=>{
@@ -2257,23 +2036,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
       d.cols = parseInt($('#d-cols').value, 10) || 2;
       d.pageSize = $('#d-pagesize').value || 'letter';
       d.orient = $('#d-orient').value || 'portrait';
-      d.margin = parseInt($('#d-margin').value, 10);
-      if(isNaN(d.margin)) d.margin = 8;
+      d.margin = parseInt($('#d-margin').value, 10); if(isNaN(d.margin)) d.margin = 8;
       d.baseSize = parseInt($('#d-basesize').value, 10) || 7;
       const cellPad = parseInt($('#d-cellpad').value, 10);
       state.cellPad = isNaN(cellPad) ? 1 : cellPad;
       await setDoc(doc(db, 'config', 'word'), { design: d, cellPad: state.cellPad, actualizado: serverTimestamp() }, { merge: true });
       await logAudit('save_diseno', 'Actualizó el diseño del reporte');
-      toast('📐 Diseño guardado', 'ok');
-      cerrarModales();
+      toast('📐 Diseño guardado', 'ok'); cerrarModales();
     }catch(e){ toast('Error al guardar', 'danger'); }
   });
 
-  $('#import-file').addEventListener('change', (e)=>{
-    const file = e.target.files[0];
-    if(!file) return;
-    parseExcel(file);
-  });
+  $('#import-file').addEventListener('change', (e)=>{ const file = e.target.files[0]; if(!file) return; parseExcel(file); });
   $('#import-confirmar').addEventListener('click', confirmarImportacion);
 
   const page = $('#word-page');
@@ -2285,19 +2058,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
   document.addEventListener('selectionchange', ()=>{
     if($('#modal-word').classList.contains('show')){
       const sel = window.getSelection();
-      if(sel && sel.rangeCount && page.contains(sel.anchorNode)){
-        guardarRango();
-        actualizarEstadoBotones();
-      }
+      if(sel && sel.rangeCount && page.contains(sel.anchorNode)){ guardarRango(); actualizarEstadoBotones(); }
     }
   });
 
   $$('#tab-inicio .rbtn[data-cmd]').forEach(b=>{
     b.addEventListener('mousedown', e => e.preventDefault());
-    b.addEventListener('click', ()=>{
-      ejecutar(b.dataset.cmd, b.dataset.val || null);
-      actualizarEstadoBotones();
-    });
+    b.addEventListener('click', ()=>{ ejecutar(b.dataset.cmd, b.dataset.val || null); actualizarEstadoBotones(); });
   });
 
   const selFuente = $('#w-font');
@@ -2333,22 +2100,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
     $(s).addEventListener('click', ()=> aplicarInterlineado(v));
   });
   $('#w-spacing0').addEventListener('mousedown', e => e.preventDefault());
-  $('#w-spacing0').addEventListener('click', ()=>{
-    $$('#word-page p,#word-page div').forEach(el=>{ el.style.margin='0'; el.style.padding='0'; });
-    actualizarPreview();
-  });
+  $('#w-spacing0').addEventListener('click', ()=>{ $$('#word-page p,#word-page div').forEach(el=>{ el.style.margin='0'; el.style.padding='0'; }); actualizarPreview(); });
   $('#w-insert-salto').addEventListener('mousedown', e => e.preventDefault());
-  $('#w-insert-salto').addEventListener('click', ()=>{
-    page.focus(); restaurarRango();
-    document.execCommand('insertLineBreak');
-    guardarRango(); actualizarPreview();
-  });
+  $('#w-insert-salto').addEventListener('click', ()=>{ page.focus(); restaurarRango(); document.execCommand('insertLineBreak'); guardarRango(); actualizarPreview(); });
   $('#w-insert-firmas').addEventListener('mousedown', e => e.preventDefault());
-  $('#w-insert-firmas').addEventListener('click', ()=>{
-    page.focus(); restaurarRango();
-    document.execCommand('insertHTML', false, '<div style="margin-top:30px;text-align:center">_____________________________<br>Firma y sello</div>');
-    guardarRango(); actualizarPreview();
-  });
+  $('#w-insert-firmas').addEventListener('click', ()=>{ page.focus(); restaurarRango(); document.execCommand('insertHTML', false, '<div style="margin-top:30px;text-align:center">_____________________________<br>Firma y sello</div>'); guardarRango(); actualizarPreview(); });
 
   $('#word-guardar').addEventListener('click', guardarConfigWord);
   $('#word-salir').addEventListener('click', cerrarModales);
