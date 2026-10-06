@@ -302,6 +302,16 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   .print-copy{page-break-inside:avoid}
   .print-copy p,.print-copy div,.print-copy table{margin:0;padding:0}
   .print-batcys-block{page-break-inside:avoid}
+
+  .print-copy table,
+  .print-copy table td,
+  .print-copy table th{
+    border-width: 0.5px !important;
+    border-color: #000 !important;
+    border-style: solid !important;
+  }
+
+
 }
 
 @media (max-width:1000px){.word-main{grid-template-columns:1fr}.word-side{display:none}.word-app{height:84vh}}
