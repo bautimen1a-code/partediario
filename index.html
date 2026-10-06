@@ -287,40 +287,22 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
     <header class="app-head">
       <div><h1>Control de Personal</h1><div class="sub">Resumen general — DIV-10 / BAT. CYS-X</div></div>
       <div id="summary-userbox" class="user-box hidden">
-        <div>
-          <div class="u" id="summary-user-name">—</div>
-          <div class="r" id="summary-user-role">—</div>
-        </div>
+        <div><div class="u" id="summary-user-name">—</div><div class="r" id="summary-user-role">—</div></div>
         <button id="summary-btn-logout">Salir</button>
       </div>
     </header>
-
     <div class="summary-actions">
       <div class="info">Vista de solo lectura. Haz clic en cualquier fila para ver el detalle.</div>
       <button class="btn primary lg" id="btn-ingresar">🔓 Ingresar al Sistema</button>
     </div>
-
     <div class="summary-grid">
       <div class="totals-block">
-        <div class="totals-head">
-          <span>DIV-10</span>
-          <span class="count-badge" id="badge-div10">0 personas</span>
-        </div>
-        <table class="xl">
-          <thead><tr><th>DETALLE</th><th class="num">TOTAL</th></tr></thead>
-          <tbody id="totals-div10"></tbody>
-        </table>
+        <div class="totals-head"><span>DIV-10</span><span class="count-badge" id="badge-div10">0 personas</span></div>
+        <table class="xl"><thead><tr><th>DETALLE</th><th class="num">TOTAL</th></tr></thead><tbody id="totals-div10"></tbody></table>
       </div>
-
       <div class="totals-block">
-        <div class="totals-head batcys">
-          <span>BAT. CYS-X</span>
-          <span class="count-badge" id="badge-batcys">0 personas</span>
-        </div>
-        <table class="xl">
-          <thead><tr><th>DETALLE</th><th class="num">TOTAL</th></tr></thead>
-          <tbody id="totals-batcys"></tbody>
-        </table>
+        <div class="totals-head batcys"><span>BAT. CYS-X</span><span class="count-badge" id="badge-batcys">0 personas</span></div>
+        <table class="xl"><thead><tr><th>DETALLE</th><th class="num">TOTAL</th></tr></thead><tbody id="totals-batcys"></tbody></table>
       </div>
     </div>
   </div>
@@ -331,10 +313,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
     <header class="app-head">
       <div><h1>Control de Personal</h1><div class="sub">DIV-10 / BAT. CYS-X / Situación Especial</div></div>
       <div class="user-box">
-        <div>
-          <div class="u" id="system-user-name">—</div>
-          <div class="r" id="system-user-role">—</div>
-        </div>
+        <div><div class="u" id="system-user-name">—</div><div class="r" id="system-user-role">—</div></div>
         <button id="btn-logout">Salir</button>
       </div>
     </header>
@@ -388,9 +367,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
     <div class="section-block" data-destino="ESPECIAL">
       <div class="section-head especial-head">
         <div class="title especial">SITUACIÓN ESPECIAL</div>
-        <div class="mini-counters">
-          <span class="mc">Total: <b id="mc-total-especial">0</b></span>
-        </div>
+        <div class="mini-counters"><span class="mc">Total: <b id="mc-total-especial">0</b></span></div>
       </div>
       <div class="table-scroll">
         <table class="xl">
@@ -405,7 +382,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 <div id="login-screen">
   <div class="login-card">
     <div style="text-align:center"><span class="login-badge">CONTROL DE PERSONAL</span></div>
-
     <div id="panel-login">
       <h1>Iniciar sesión</h1>
       <div class="sub">Accede con tu correo y contraseña</div>
@@ -421,7 +397,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       </div>
       <div style="text-align:center;margin-top:16px"><button class="btn ghost sm" id="btn-cerrar-login">Volver al resumen</button></div>
     </div>
-
     <div id="panel-register" class="hidden">
       <h1>Crear cuenta</h1>
       <div class="sub">Completa tus datos para solicitar acceso</div>
@@ -435,13 +410,10 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       <button class="btn primary" id="btn-do-register">Registrarme</button>
       <div class="login-links"><a id="link-to-login">Ya tengo cuenta</a></div>
     </div>
-
     <div id="panel-pending" class="hidden">
       <h1 id="pending-title">Esperando aprobación</h1>
       <div class="sub" id="pending-sub">Tu cuenta está en revisión.</div>
-      <div class="pending-card" id="pending-msg">
-        El jefe de personal o un administrador validará tu cuenta pronto. Vuelve a intentarlo más tarde.
-      </div>
+      <div class="pending-card" id="pending-msg">El jefe de personal o un administrador validará tu cuenta pronto. Vuelve a intentarlo más tarde.</div>
       <button class="btn ghost" id="btn-pending-logout" style="width:100%;justify-content:center;margin-top:16px">Cerrar sesión</button>
     </div>
   </div>
@@ -450,10 +422,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 <div class="overlay" id="modal-detail">
   <div class="modal medium">
     <div class="detail-head">
-      <div>
-        <h2 id="detail-title">DETALLE</h2>
-        <div class="badge" id="detail-subtitle" style="margin-top:6px"></div>
-      </div>
+      <div><h2 id="detail-title">DETALLE</h2><div class="badge" id="detail-subtitle" style="margin-top:6px"></div></div>
       <button class="x" data-close style="background:transparent;font-size:1.5rem;color:var(--muted);width:36px;height:36px;border-radius:8px">×</button>
     </div>
     <div class="modal-body" style="padding:0;overflow:hidden">
@@ -473,22 +442,12 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       <div class="form-grid">
         <label>Nombre</label>
         <input type="text" id="e-nombre" placeholder="Apellidos, Nombres">
-
         <label>Destino</label>
-        <select id="e-destino">
-          <option value="DIV-10">DIV-10</option>
-          <option value="BAT. CYS-X">BAT. CYS-X</option>
-        </select>
-
+        <select id="e-destino"><option value="DIV-10">DIV-10</option><option value="BAT. CYS-X">BAT. CYS-X</option></select>
         <label>Lugar</label>
         <select id="e-lugar"></select>
-
         <label></label>
-        <label class="check-inline">
-          <input type="checkbox" id="e-especial">
-          <span>Marcar como situación especial</span>
-        </label>
-
+        <label class="check-inline"><input type="checkbox" id="e-especial"><span>Marcar como situación especial</span></label>
         <label>Desde</label>
         <div class="dates-row">
           <input type="date" id="e-desde">
@@ -496,7 +455,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
           <input type="date" id="e-hasta">
         </div>
       </div>
-
       <div class="form-grid" id="wrap-tipo-especial" style="margin-top:12px;display:none">
         <label>Tipo</label>
         <select id="e-tipo-especial"></select>
@@ -525,14 +483,12 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
           <div class="cfg-card data-perm" data-open="word"><div class="ic">📄</div><div class="tt">Word</div><div class="ds">Plantilla</div></div>
         </div>
       </div>
-
       <div class="cfg-section data-perm">
         <div class="cfg-section-title">Importar</div>
         <div class="cfg-grid">
           <div class="cfg-card" data-open="importar"><div class="ic">📥</div><div class="tt">Importar Excel</div><div class="ds">Desde archivo</div></div>
         </div>
       </div>
-
       <div class="cfg-section data-perm">
         <div class="cfg-section-title">Administración</div>
         <div class="cfg-grid">
@@ -686,7 +642,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
           <div class="ribbon-group">
             <div class="ribbon-row">
               <button class="rbtn big" id="w-insert-salto"><span class="ico">↵</span><span>Salto</span></button>
-              <button class="rbtn big" id="w-insert-firmas"><span class="ico">✍</span><span>Firmas</span></button>
+              <button class="rbtn big" id="w-insert-espacio-firma"><span class="ico">⬜</span><span>Espacio firma</span></button>
             </div>
             <div class="ribbon-label">Insertar</div>
           </div>
@@ -697,7 +653,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
           <div class="word-side">
             <h4>Vista previa</h4>
             <div class="preview-box" id="word-preview"></div>
-            <div class="word-help">Selecciona texto para aplicar formato solo a la selección.</div>
+            <div class="word-help">Solo se puede aplicar formato a las zonas editables. El título está bloqueado.</div>
           </div>
         </div>
       </div>
@@ -717,9 +673,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
         <div style="font-size:.9rem;color:var(--muted)">Valida, cambia roles o elimina usuarios.</div>
         <button class="btn ghost sm" id="users-refresh">↻ Actualizar</button>
       </div>
-      <div class="users-list" id="users-list">
-        <div style="padding:40px;text-align:center;color:var(--muted)">Cargando...</div>
-      </div>
+      <div class="users-list" id="users-list"><div style="padding:40px;text-align:center;color:var(--muted)">Cargando...</div></div>
     </div>
     <div class="modal-foot"><button class="btn ghost" data-close>Salir</button></div>
   </div>
@@ -758,9 +712,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
         <div style="font-size:.82rem;color:var(--muted)" id="audit-count">0 eventos</div>
         <button class="btn ghost sm" id="audit-refresh">↻ Actualizar</button>
       </div>
-      <div class="audit-list" id="audit-list">
-        <div style="padding:40px;text-align:center;color:var(--muted)">Cargando...</div>
-      </div>
+      <div class="audit-list" id="audit-list"><div style="padding:40px;text-align:center;color:var(--muted)">Cargando...</div></div>
     </div>
     <div class="modal-foot"><button class="btn ghost" data-close>Salir</button></div>
   </div>
@@ -768,10 +720,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 
 <div class="overlay" id="modal-print-date">
   <div class="modal" style="max-width:400px">
-    <div class="modal-head">
-      <h2>🖨 Imprimir reporte</h2>
-      <button class="x" data-close>×</button>
-    </div>
+    <div class="modal-head"><h2>🖨 Imprimir reporte</h2><button class="x" data-close>×</button></div>
     <div class="modal-body">
       <p style="font-size:.9rem;color:var(--muted);margin-bottom:14px">¿Con qué fecha deseas imprimir el parte diario?</p>
       <div class="field">
@@ -880,67 +829,35 @@ function toast(msg, tipo=''){
 async function logAudit(action, descripcion, extra = {}){
   if(!currentUser) return;
   try{
-    await addDoc(collection(db, 'audit'), {
-      action, descripcion,
-      uid: currentUser.uid,
-      email: currentUser.email,
-      nombre: currentUser.nombre,
-      role: currentUser.role,
-      fecha: serverTimestamp(),
-      ...extra
-    });
+    await addDoc(collection(db, 'audit'), { action, descripcion, uid: currentUser.uid, email: currentUser.email, nombre: currentUser.nombre, role: currentUser.role, fecha: serverTimestamp(), ...extra });
   }catch(e){ console.warn('No se pudo registrar auditoría:', e); }
 }
 
 function showLoginScreen(){ $('#login-screen').classList.add('show'); }
 function hideLoginScreen(){ $('#login-screen').classList.remove('show'); }
-function showPanel(panel){
-  ['login','register','pending'].forEach(p => {
-    $('#panel-' + p).classList.toggle('hidden', p !== panel);
-  });
-}
-function setLoginError(msg){
-  const el = $('#login-error');
-  el.textContent = msg;
-  el.style.display = msg ? 'block' : 'none';
-}
-function setRegisterError(msg){
-  const el = $('#register-error');
-  el.textContent = msg;
-  el.style.display = msg ? 'block' : 'none';
-}
+function showPanel(panel){ ['login','register','pending'].forEach(p => { $('#panel-' + p).classList.toggle('hidden', p !== panel); }); }
+function setLoginError(msg){ const el = $('#login-error'); el.textContent = msg; el.style.display = msg ? 'block' : 'none'; }
+function setRegisterError(msg){ const el = $('#register-error'); el.textContent = msg; el.style.display = msg ? 'block' : 'none'; }
 
 $('#link-to-register').addEventListener('click', ()=> { showPanel('register'); setRegisterError(''); });
 $('#link-to-login').addEventListener('click', ()=> { showPanel('login'); setLoginError(''); });
 $('#link-forgot').addEventListener('click', async ()=>{
   const email = prompt('Ingresa tu correo para enviarte el enlace de recuperación:');
   if(!email) return;
-  try{
-    await sendPasswordResetEmail(auth, email);
-    toast('Correo enviado, revisa tu bandeja', 'ok');
-  }catch(e){ toast('No se pudo enviar el correo', 'danger'); }
+  try{ await sendPasswordResetEmail(auth, email); toast('Correo enviado, revisa tu bandeja', 'ok'); }
+  catch(e){ toast('No se pudo enviar el correo', 'danger'); }
 });
 $('#btn-cerrar-login').addEventListener('click', ()=>{ hideLoginScreen(); window.scrollTo(0,0); });
-$('#btn-pending-logout').addEventListener('click', async ()=>{
-  await logAudit('logout', 'Cierre de sesión desde espera');
-  await signOut(auth);
-  hideLoginScreen();
-});
+$('#btn-pending-logout').addEventListener('click', async ()=>{ await logAudit('logout', 'Cierre de sesión desde espera'); await signOut(auth); hideLoginScreen(); });
 
 $('#btn-do-login').addEventListener('click', async ()=>{
   const email = $('#login-email').value.trim();
   const pass = $('#login-pass').value;
   setLoginError('');
   if(!email || !pass){ setLoginError('Ingrese correo y contraseña'); return; }
-  try{
-    await signInWithEmailAndPassword(auth, email, pass);
-  }catch(e){
-    const map = {
-      'auth/invalid-email':'Correo inválido',
-      'auth/user-not-found':'Usuario no existe',
-      'auth/wrong-password':'Contraseña incorrecta',
-      'auth/invalid-credential':'Credenciales inválidas'
-    };
+  try{ await signInWithEmailAndPassword(auth, email, pass); }
+  catch(e){
+    const map = { 'auth/invalid-email':'Correo inválido', 'auth/user-not-found':'Usuario no existe', 'auth/wrong-password':'Contraseña incorrecta', 'auth/invalid-credential':'Credenciales inválidas' };
     setLoginError(map[e.code] || 'Error al iniciar sesión');
   }
 });
@@ -960,22 +877,14 @@ $('#btn-do-register').addEventListener('click', async ()=>{
     await addDoc(collection(db, 'audit'), { action: 'user_register', descripcion: `Nuevo registro: ${email} (${nombre})`, uid: newUid, email, nombre, role: 'user', fecha: serverTimestamp() });
     toast('Cuenta creada. Espera la validación.', 'ok');
   }catch(e){
-    const map = {
-      'auth/email-already-in-use':'El correo ya está registrado',
-      'auth/invalid-email':'Correo inválido',
-      'auth/weak-password':'Contraseña muy débil'
-    };
+    const map = { 'auth/email-already-in-use':'El correo ya está registrado', 'auth/invalid-email':'Correo inválido', 'auth/weak-password':'Contraseña muy débil' };
     setRegisterError(map[e.code] || 'Error al crear la cuenta');
   }
 });
 
 $('#btn-logout').addEventListener('click', doLogout);
 $('#summary-btn-logout').addEventListener('click', doLogout);
-async function doLogout(){
-  await logAudit('logout', 'Cierre de sesión');
-  await signOut(auth);
-  irAResumen();
-}
+async function doLogout(){ await logAudit('logout', 'Cierre de sesión'); await signOut(auth); irAResumen(); }
 
 $('#btn-ingresar').addEventListener('click', ()=>{
   if(currentUser && currentUser.estado === 'activo'){ irAlSistema(); }
@@ -991,9 +900,7 @@ onAuthStateChanged(auth, async (user)=>{
     if(unsubConfigFirma) unsubConfigFirma();
     if(unsubConfigWord) unsubConfigWord();
     $('#summary-userbox').classList.add('hidden');
-    irAResumen();
-    showLoginScreen();
-    showPanel('login');
+    irAResumen(); showLoginScreen(); showPanel('login');
     return;
   }
 
@@ -1011,8 +918,7 @@ onAuthStateChanged(auth, async (user)=>{
   $('#summary-userbox').classList.remove('hidden');
 
   if(currentUser.estado !== 'activo'){
-    showLoginScreen();
-    showPanel('pending');
+    showLoginScreen(); showPanel('pending');
     if(currentUser.estado === 'rechazado'){ $('#pending-title').textContent = 'Acceso rechazado'; $('#pending-sub').textContent = 'Tu solicitud fue rechazada.'; $('#pending-msg').textContent = 'Contacta al jefe de personal o al administrador para más información.'; }
     else if(currentUser.estado === 'bloqueado'){ $('#pending-title').textContent = 'Acceso bloqueado'; $('#pending-sub').textContent = 'Tu cuenta ha sido bloqueada.'; $('#pending-msg').textContent = 'Contacta al administrador para más información.'; }
     else { $('#pending-title').textContent = 'Esperando aprobación'; $('#pending-sub').textContent = 'Tu cuenta está en revisión.'; $('#pending-msg').textContent = 'El jefe de personal o un administrador validará tu cuenta pronto.'; }
@@ -1072,17 +978,8 @@ function sincronizarTodo(){
   });
 }
 
-function irAResumen(){
-  $('#screen-summary').style.display = 'block';
-  $('#screen-system').style.display = 'none';
-  renderResumen(); window.scrollTo(0,0);
-}
-function irAlSistema(){
-  $('#screen-summary').style.display = 'none';
-  $('#screen-system').style.display = 'block';
-  renderTablas(); refrescarContadores();
-  window.scrollTo(0,0);
-}
+function irAResumen(){ $('#screen-summary').style.display = 'block'; $('#screen-system').style.display = 'none'; renderResumen(); window.scrollTo(0,0); }
+function irAlSistema(){ $('#screen-summary').style.display = 'none'; $('#screen-system').style.display = 'block'; renderTablas(); refrescarContadores(); window.scrollTo(0,0); }
 
 function calcularPorDestino(destino){
   const normales = state.personal.filter(p => (p.destino || 'DIV-10') === destino && !p.especial);
@@ -1255,14 +1152,12 @@ async function moverRegistro(fromId, toId){
 }
 
 function llenarSelectLugares(){
-  const sel = $('#e-lugar');
-  if(!sel) return;
+  const sel = $('#e-lugar'); if(!sel) return;
   sel.innerHTML = '<option value="">— Sin lugar / observación —</option>';
   state.lugares.forEach(l => { const o=document.createElement('option'); o.value=l; o.textContent=l; sel.appendChild(o); });
 }
 function llenarSelectTiposEspecial(){
-  const sel = $('#e-tipo-especial');
-  if(!sel) return;
+  const sel = $('#e-tipo-especial'); if(!sel) return;
   sel.innerHTML = '';
   state.tiposEspecial.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; sel.appendChild(o); });
 }
@@ -1484,7 +1379,6 @@ async function confirmarImportacion(){
   }catch(e){ console.error(e); toast('Error al importar', 'danger'); }
 }
 
-/* ⭐ BORDES ULTRA FINOS */
 const BORDE = 'border:0.2mm solid #000';
 const BORDE_PAD = 'padding:0.5px 3px';
 
@@ -1687,10 +1581,10 @@ function inyectarDatosDinamicos(html){
   if(s2) s2.innerHTML = generarSecciones(div10.lista, div10.porLugar, pad);
   const s3 = cont.querySelector('[data-dynamic="normales-batcys"]');
   if(s3) s3.innerHTML = generarSecciones(batcys.lista, batcys.porLugar, pad);
-  const firmas = cont.querySelectorAll('.print-firma');
-  firmas.forEach(f => f.remove());
-  const bB = cont.querySelector('.print-batcys-block');
-  if(bB) bB.insertAdjacentHTML('beforeend', generarBloqueFirma());
+
+  // ⭐ NO regenerar la firma en el Word (solo se añade al imprimir)
+  // Así el usuario puede agregar espacios manualmente
+
   // ⭐ Regenerar el título con la fecha de HOY cada vez que se inyecta
   const tituloElCont = cont.querySelector('[data-field="tituloDiv10"]');
   if(tituloElCont){
@@ -1757,10 +1651,57 @@ function aplicarEstiloSeleccion(propiedad, valor){
 }
 function aplicarFuente(n){ aplicarEstiloSeleccion('fontFamily', n); actualizarPreview(); }
 function aplicarTamanoPt(pt){ aplicarEstiloSeleccion('fontSize', pt + 'pt'); actualizarPreview(); }
+
+/* ⭐ ejecutar() con validación de rango */
 function ejecutar(cmd, val){
   const page = $('#word-page');
-  if(document.activeElement !== page) page.focus();
-  restaurarRango();
+  page.focus();
+  
+  let sel = window.getSelection();
+  let rangoValido = false;
+  if(sel && sel.rangeCount){
+    const r = sel.getRangeAt(0);
+    if(page.contains(r.startContainer) && page.contains(r.endContainer)){
+      // Verificar que NO esté dentro de un elemento bloqueado
+      let n = r.startContainer;
+      let bloqueado = false;
+      while(n && n !== page){
+        if(n.nodeType === 1 && n.hasAttribute && n.hasAttribute('data-locked')){
+          bloqueado = true;
+          break;
+        }
+        n = n.parentNode;
+      }
+      rangoValido = !bloqueado;
+    }
+  }
+  
+  // Si no hay rango válido, intentar restaurar el guardado
+  if(!rangoValido){
+    restaurarRango();
+    sel = window.getSelection();
+    if(sel && sel.rangeCount){
+      const r = sel.getRangeAt(0);
+      if(page.contains(r.startContainer) && page.contains(r.endContainer)){
+        let n = r.startContainer;
+        let bloqueado = false;
+        while(n && n !== page){
+          if(n.nodeType === 1 && n.hasAttribute && n.hasAttribute('data-locked')){
+            bloqueado = true;
+            break;
+          }
+          n = n.parentNode;
+        }
+        rangoValido = !bloqueado;
+      }
+    }
+  }
+  
+  if(!rangoValido){
+    toast('Coloca el cursor en un área editable (no en el título)', 'warn');
+    return;
+  }
+  
   try{ document.execCommand(cmd, false, val == null ? null : val); }catch(e){}
   guardarRango(); actualizarPreview();
 }
@@ -1805,12 +1746,12 @@ async function imprimirConFecha(fechaTexto){
   const tmp = document.createElement('div');
   tmp.innerHTML = htmlActualizado;
 
-  // ⭐ TÍTULO DINÁMICO: sobrescribir con la fecha elegida (sin regex)
+  // ⭐ TÍTULO: sobrescribir siempre con la fecha elegida
   const tituloEl = tmp.querySelector('[data-field="tituloDiv10"]');
   if(tituloEl){
     tituloEl.textContent = `PARTE DIARIO DEL PERSONAL DE LA DIV-10 DEL ${fechaTexto}`;
   } else {
-    // Fallback: buscar por texto si el data-field se perdió
+    // Fallback: buscar por texto
     const todos = tmp.querySelectorAll('div, p, span');
     for(const el of todos){
       const t = (el.textContent || '').trim();
@@ -1821,10 +1762,19 @@ async function imprimirConFecha(fechaTexto){
     }
   }
 
+  // Asegurar bloque BAT. CYS-X
   if(!tmp.querySelector('.print-batcys-block')) tmp.innerHTML = `<div class="print-batcys-block">${tmp.innerHTML}</div>`;
+  
+  // ⭐ Añadir firma solo al imprimir (no en el Word)
   if(!tmp.querySelector('.print-firma')){
     const bB = tmp.querySelector('.print-batcys-block');
     if(bB) bB.insertAdjacentHTML('beforeend', generarBloqueFirma());
+  } else {
+    // Refrescar contenido de la firma con datos actuales
+    const firmas = tmp.querySelectorAll('.print-firma');
+    firmas.forEach((f, idx)=>{
+      if(idx === firmas.length - 1) f.outerHTML = generarBloqueFirma();
+    });
   }
   htmlActualizado = tmp.innerHTML;
 
@@ -1969,7 +1919,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   $('#btn-volver').addEventListener('click', irAResumen);
   $('#btn-imprimir').addEventListener('click', imprimir);
-
   $('#btn-cfg').addEventListener('click', ()=>{ $('#modal-cfg').classList.add('show'); });
 
   $$('.cfg-card').forEach(card => {
@@ -2103,8 +2052,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
   $('#w-spacing0').addEventListener('click', ()=>{ $$('#word-page p,#word-page div').forEach(el=>{ el.style.margin='0'; el.style.padding='0'; }); actualizarPreview(); });
   $('#w-insert-salto').addEventListener('mousedown', e => e.preventDefault());
   $('#w-insert-salto').addEventListener('click', ()=>{ page.focus(); restaurarRango(); document.execCommand('insertLineBreak'); guardarRango(); actualizarPreview(); });
-  $('#w-insert-firmas').addEventListener('mousedown', e => e.preventDefault());
-  $('#w-insert-firmas').addEventListener('click', ()=>{ page.focus(); restaurarRango(); document.execCommand('insertHTML', false, '<div style="margin-top:30px;text-align:center">_____________________________<br>Firma y sello</div>'); guardarRango(); actualizarPreview(); });
+
+  /* ⭐ Botón "Espacio firma" — inserta un div con altura */
+  $('#w-insert-espacio-firma').addEventListener('mousedown', e => e.preventDefault());
+  $('#w-insert-espacio-firma').addEventListener('click', ()=>{
+    page.focus(); restaurarRango();
+    // Preguntar la altura en px
+    const altura = prompt('¿Cuánta altura quieres para el espacio de firma? (px)', '60');
+    const h = parseInt(altura, 10) || 60;
+    document.execCommand('insertHTML', false, `<div style="height:${h}px">&nbsp;</div>`);
+    guardarRango(); actualizarPreview();
+    toast(`Espacio de ${h}px insertado`, 'ok');
+  });
 
   $('#word-guardar').addEventListener('click', guardarConfigWord);
   $('#word-salir').addEventListener('click', cerrarModales);
