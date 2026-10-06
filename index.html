@@ -1,0 +1,2218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control de Personal — Parte Diario</title>
+
+<!-- SheetJS para importar Excel -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root{
+  --bg:#eef1f5; --panel:#fff; --ink:#2b3440; --muted:#6b7683;
+  --line:#d4dae1; --accent:#4a6b8a; --accent-soft:#e4ebf2;
+  --danger:#b04a4a; --ok:#4a7a5a; --warn:#b0873a;
+  --div10:#4a6b8a; --batcys:#7a5a4a; --especial:#8a6b3a;
+  --xl-border:#c8ccd0; --xl-header:#e8eaed; --xl-zebra:#f7f8fa; --xl-hover:#eef1f4; --xl-text:#202124;
+}
+html,body{height:100%}
+body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:8px}
+input,select{font-family:inherit;font-size:1rem}
+
+.app{max-width:1200px;margin:0 auto;padding:16px;min-height:100vh}
+header.app-head{background:var(--panel);border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+header.app-head h1{font-size:1.35rem;font-weight:600;color:var(--accent);letter-spacing:.3px}
+header.app-head .sub{font-size:.85rem;color:var(--muted)}
+header.app-head .user-box{display:flex;align-items:center;gap:10px;background:var(--accent-soft);border-radius:10px;padding:8px 14px}
+header.app-head .user-box .u{font-weight:600;color:var(--accent);font-size:.9rem}
+header.app-head .user-box .r{font-size:.7rem;text-transform:uppercase;color:var(--muted);letter-spacing:.5px}
+header.app-head .user-box button{background:transparent;color:var(--accent);font-weight:600;padding:4px 8px;border-radius:6px;font-size:.8rem}
+header.app-head .user-box button:hover{background:rgba(255,255,255,.5)}
+
+.toolbar{background:var(--panel);border-radius:12px;padding:12px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+.btn{padding:12px 16px;font-size:1rem;font-weight:600;border-radius:8px;transition:.15s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);color:#fff} .btn.primary:hover{background:#3d5a75}
+.btn.ghost{background:var(--accent-soft);color:var(--accent)} .btn.ghost:hover{background:#d6e0ea}
+.btn.danger{background:#f3e2e2;color:var(--danger)} .btn.danger:hover{background:#ecd2d2}
+.btn.ok{background:#e2efe6;color:var(--ok)} .btn.ok:hover{background:#d2e6d9}
+.btn.icon{padding:12px;min-width:46px;justify-content:center}
+.btn.on{background:var(--accent);color:#fff}
+.btn.lg{padding:16px 24px;font-size:1.05rem}
+.btn.sm{padding:8px 12px;font-size:.85rem}
+.hidden{display:none !important}
+
+/* Login screen */
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#4a6b8a,#2b3440);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;overflow-y:auto}
+#login-screen.show{display:flex}
+.login-card{background:#fff;border-radius:16px;padding:32px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4);margin:auto}
+.login-card h1{font-size:1.5rem;color:var(--accent);margin-bottom:6px;text-align:center}
+.login-card .sub{font-size:.85rem;color:var(--muted);text-align:center;margin-bottom:20px}
+.login-card label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;margin-top:14px}
+.login-card input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#fafbfc}
+.login-card input:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.login-card .btn{width:100%;justify-content:center;margin-top:16px}
+.login-error{background:#f3e2e2;color:var(--danger);padding:10px 14px;border-radius:8px;font-size:.85rem;margin-top:12px;display:none}
+.login-links{text-align:center;margin-top:16px;font-size:.85rem}
+.login-links a{color:var(--accent);cursor:pointer;text-decoration:underline;display:inline-block;margin:0 8px}
+.login-badge{background:var(--accent-soft);color:var(--accent);font-size:.72rem;padding:3px 8px;border-radius:20px;display:inline-block;margin-bottom:14px;font-weight:600;letter-spacing:.4px}
+.pending-card{background:#fff4ce;border-left:4px solid #ffb900;padding:14px;border-radius:8px;font-size:.9rem;color:#6b5a1a;margin-top:16px;line-height:1.5}
+
+/* Summary */
+#screen-summary{display:block}
+#screen-system{display:none}
+.summary-actions{background:var(--panel);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.summary-actions .info{font-size:.9rem;color:var(--muted)}
+.summary-grid{display:grid;grid-template-columns:1fr;gap:14px}
+
+.totals-block{background:var(--panel);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.totals-head{padding:14px 18px;background:var(--accent-soft);border-bottom:1px solid var(--line);font-size:1.05rem;font-weight:700;color:var(--accent);letter-spacing:.4px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.totals-head.batcys{color:var(--batcys)}
+.totals-head .count-badge{background:#fff;color:var(--muted);font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.3px}
+
+/* Excel-like tables */
+table.xl{width:100%;border-collapse:collapse;font-size:.92rem;font-family:'Segoe UI',Calibri,Arial,sans-serif;color:var(--xl-text);background:#fff}
+table.xl thead th{background:var(--xl-header);color:#3c4043;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:left;padding:8px 12px;border:1px solid var(--xl-border);border-top:none}
+table.xl thead th.num{text-align:center;width:90px}
+table.xl tbody td{padding:7px 12px;border:1px solid var(--xl-border);vertical-align:middle}
+table.xl tbody tr:nth-child(even) td{background:var(--xl-zebra)}
+table.xl tbody tr:hover td{background:var(--xl-hover)}
+table.xl tbody tr{cursor:pointer;transition:background .1s}
+table.xl tbody tr.row-destacada td{background:#e9eef3;font-weight:700}
+table.xl tbody tr.row-destacada:hover td{background:#dde5ec}
+table.xl tbody tr.row-especial td{background:#fbf6ea}
+table.xl tbody tr.row-especial:hover td{background:#f5eddb}
+table.xl td.num{text-align:center;font-variant-numeric:tabular-nums}
+table.xl td.empty{color:#9aa0a6;font-style:italic;text-transform:none;text-align:center}
+table.xl td.name{font-weight:600}
+table.xl td.lugar{color:#5f6368}
+table.xl td.lugar.vacio{color:#c0c8d0;font-style:italic}
+table.xl tbody td.num-det{text-align:center;width:50px;color:var(--muted);font-weight:600}
+table.xl tbody td.date{text-align:center;width:110px;color:var(--muted);font-variant-numeric:tabular-nums}
+table.xl tbody tr.empty-row{cursor:default}
+table.xl tbody tr.empty-row:hover td{background:#fff}
+table.xl tbody tr.empty-row td{text-align:center;color:var(--muted);font-style:italic;padding:24px;background:#fff !important}
+
+.section-block{background:var(--panel);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:14px}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--accent-soft);border-bottom:1px solid var(--line);flex-wrap:wrap;gap:10px}
+.section-head .title{font-size:1.05rem;font-weight:700;color:var(--accent);letter-spacing:.4px;text-transform:uppercase}
+.section-head .title.batcys{color:var(--batcys)}
+.section-head .title.especial{color:var(--especial)}
+.section-head.especial-head{background:#f5efe2}
+.section-head .mini-counters{display:flex;gap:8px;flex-wrap:wrap;font-size:.78rem}
+.section-head .mini-counters .mc{background:#fff;border-radius:20px;padding:4px 10px;color:var(--muted);font-weight:600;letter-spacing:.3px}
+.section-head .mini-counters .mc b{color:var(--accent)}
+.handle{display:inline-block;color:#b8c2cc;cursor:grab;margin-right:8px;font-size:1.1rem;user-select:none}
+tr.dragging td{opacity:.4;background:var(--accent-soft)!important}
+tr.drag-over td{border-top:2px solid var(--accent)!important}
+
+/* Modales */
+.overlay{position:fixed;inset:0;background:rgba(30,40,50,.45);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.overlay.show{display:flex}
+.modal{background:var(--panel);border-radius:14px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,.25);animation:pop .18s ease}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+.modal.wide{max-width:1200px}
+.modal.medium{max-width:780px}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--panel);border-radius:14px 14px 0 0;z-index:2}
+.modal-head h2{font-size:1.15rem;color:var(--accent)}
+.modal-head .x{background:transparent;font-size:1.5rem;color:var(--muted);width:36px;height:36px;border-radius:8px}
+.modal-head .x:hover{background:#eef1f5}
+.modal-body{padding:20px}
+.modal-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;position:sticky;bottom:0;background:var(--panel);border-radius:0 0 14px 14px}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.82rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.field input,.field select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#fafbfc}
+.field input:focus,.field select:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.field .hint{font-size:.78rem;color:var(--muted);margin-top:4px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.list-item{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.list-item input{flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+
+.check-especial{display:flex;align-items:center;gap:10px;background:#f7f1e5;border:1px solid #e5d9be;border-radius:8px;padding:12px 14px;cursor:pointer;user-select:none}
+.check-especial input{width:auto;margin:0;transform:scale(1.2)}
+.check-especial span{font-weight:600;color:#7a5a2a;font-size:.95rem}
+
+.detail-head{padding:14px 20px;background:var(--accent-soft);border-radius:14px 14px 0 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.detail-head h2{font-size:1.05rem;color:var(--accent);text-transform:uppercase;letter-spacing:.4px}
+.detail-head .badge{background:#fff;border-radius:20px;padding:4px 12px;font-size:.78rem;font-weight:600;color:var(--muted)}
+
+/* Auditoría y usuarios */
+.filters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.filters input,.filters select{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fafbfc}
+.audit-list{max-height:60vh;overflow-y:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+.audit-item{padding:12px 14px;border-bottom:1px solid #eef1f5;font-size:.88rem}
+.audit-item:last-child{border-bottom:none}
+.audit-item .meta{display:flex;gap:10px;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:4px}
+.audit-item .meta .badge{background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:20px;font-weight:600;letter-spacing:.3px}
+.audit-item .meta .badge.danger{background:#f3e2e2;color:var(--danger)}
+.audit-item .meta .badge.ok{background:#e2efe6;color:var(--ok)}
+.audit-item .meta .badge.warn{background:#f7ecd6;color:var(--warn)}
+
+.users-list{max-height:60vh;overflow-y:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+.user-item{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid #eef1f5;gap:10px;flex-wrap:wrap}
+.user-item:last-child{border-bottom:none}
+.user-item .info{flex:1;min-width:200px}
+.user-item .info .email{font-weight:600}
+.user-item .info .role{font-size:.72rem;text-transform:uppercase;color:var(--muted);letter-spacing:.5px}
+.user-item .info .role.admin{color:var(--danger)}
+.user-item .info .role.jefe{color:var(--warn)}
+.user-item .info .estado{font-size:.7rem;padding:2px 8px;border-radius:20px;font-weight:600;letter-spacing:.3px;display:inline-block;margin-left:6px}
+.user-item .info .estado.pendiente{background:#fff4ce;color:#8a6d1a}
+.user-item .info .estado.activo{background:#e2efe6;color:#2f5c40}
+.user-item .info .estado.rechazado,.user-item .info .estado.bloqueado{background:#f3e2e2;color:#7a2e2e}
+.user-item .actions{display:flex;gap:6px;flex-wrap:wrap}
+.utabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:2px solid var(--line)}
+.utab{padding:8px 16px;background:transparent;color:var(--muted);font-weight:600;font-size:.9rem;border-bottom:3px solid transparent;border-radius:0;cursor:pointer}
+.utab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+#toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:#2b3440;color:#fff;padding:12px 18px;border-radius:10px;font-size:.92rem;box-shadow:0 6px 20px rgba(0,0,0,.25);animation:toastIn .2s ease;max-width:90vw}
+.toast.warn{background:var(--warn)} .toast.ok{background:var(--ok)} .toast.danger{background:var(--danger)}
+@keyframes toastIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* Word */
+.word-app{display:flex;flex-direction:column;height:82vh;min-height:600px;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:13px;color:#323130;background:#f3f2f1;border-radius:0 0 14px 14px;overflow:hidden}
+.word-titlebar{background:#2b579a;color:#fff;padding:6px 12px;display:flex;align-items:center;gap:12px;font-size:12px;flex-shrink:0}
+.word-titlebar .wname{flex:1;text-align:center;opacity:.95}
+.word-tabs{background:#2b579a;display:flex;padding:0 8px;gap:2px;flex-shrink:0}
+.word-tabs .tab{padding:6px 16px;background:transparent;color:#fff;font-size:12px;border-radius:3px 3px 0 0;border:none}
+.word-tabs .tab.active{background:#f3f2f1;color:#2b579a;font-weight:600}
+.word-ribbon{background:#f3f2f1;border-bottom:1px solid #d2d0ce;padding:5px 8px 3px;display:flex;flex-wrap:wrap;gap:0;align-items:stretch;flex-shrink:0}
+.ribbon-group{display:flex;flex-direction:column;align-items:center;padding:2px 8px;border-right:1px solid #e1dfdd;min-height:84px}
+.ribbon-group:last-child{border-right:none}
+.ribbon-row{display:flex;gap:2px;align-items:center;flex:1}
+.ribbon-label{font-size:10px;color:#605e5c;margin-top:3px;text-align:center;letter-spacing:.3px}
+.rbtn{background:transparent;border:1px solid transparent;border-radius:3px;min-width:26px;height:24px;padding:0 5px;font-size:12px;color:#323130;display:inline-flex;align-items:center;justify-content:center;transition:.1s}
+.rbtn:hover{background:#e1efff;border-color:#c7e0f4}
+.rbtn.on{background:#c7e0f4;border-color:#7aa8e0}
+.rbtn.big{height:48px;min-width:46px;flex-direction:column;font-size:11px;gap:2px;padding:2px 6px}
+.rbtn.big .ico{font-size:16px}
+.rbtn.sel{border:1px solid #d2d0ce;background:#fff;font-size:12px;height:24px;cursor:pointer;border-radius:2px;padding:0 2px}
+.ribbon-row .sep{width:1px;height:20px;background:#d2d0ce;margin:0 3px}
+.word-main{flex:1;display:grid;grid-template-columns:1fr 300px;overflow:hidden;background:#e6e6e6}
+.word-canvas{overflow:auto;padding:24px 12px;display:flex;justify-content:center;align-items:flex-start}
+.word-page{background:#fff;width:100%;max-width:780px;padding:40px 50px;box-shadow:0 2px 10px rgba(0,0,0,.18);min-height:1000px;font-family:Arial,sans-serif;font-size:8pt;line-height:1.15;color:#000;outline:none}
+.word-page [contenteditable="true"]:focus{outline:2px dashed #7aa8e0;outline-offset:2px}
+.word-page table{border-collapse:collapse}
+.word-page table td,.word-page table th{border:1px solid #000;padding:1px 4px}
+.word-side{background:#faf9f8;border-left:1px solid #d2d0ce;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.word-side h4{font-size:11px;text-transform:uppercase;color:#605e5c;letter-spacing:.5px;font-weight:700}
+.preview-box{background:#fff;border:1px solid #d2d0ce;border-radius:4px;padding:6px;flex:1;overflow:auto;min-height:200px}
+.preview-box .mini{transform-origin:top left;transform:scale(.4);width:250%;pointer-events:none}
+.word-help{font-size:10.5px;color:#605e5c;line-height:1.4;background:#fff4ce;border-left:3px solid #ffb900;padding:6px 8px;border-radius:2px}
+
+.design-panel-block{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.design-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:16px}
+.design-grid .field{margin-bottom:0}
+.design-actions{display:flex;flex-wrap:wrap;gap:10px;padding-top:12px;border-top:1px solid var(--line)}
+
+#print-root{display:none}
+@media print{
+  @page{size:letter portrait;margin:8mm}
+  body *{visibility:hidden !important}
+  #print-root,#print-root *{visibility:visible !important}
+  #print-root{display:block !important;position:absolute;top:0;left:0;width:100%}
+  .print-sheet{width:100%;display:grid;gap:6mm;font-family:Arial,sans-serif;font-size:8pt;color:#000}
+  .print-sheet.cols-2{grid-template-columns:1fr 1fr}
+  .print-sheet.cols-1{grid-template-columns:1fr}
+  .print-copy{page-break-inside:avoid}
+  .print-copy p,.print-copy div,.print-copy table{margin:0;padding:0}
+  .print-batcys-block{page-break-inside:avoid}
+}
+
+@media (max-width:1000px){.word-main{grid-template-columns:1fr}.word-side{display:none}.word-app{height:84vh}}
+@media (max-width:720px){
+  body{font-size:17px}
+  header.app-head h1{font-size:1.15rem}
+  .toolbar .btn{flex:1 1 45%;justify-content:center}
+  table.xl thead th:nth-child(4),table.xl thead th:nth-child(5),
+  table.xl tbody td:nth-child(4),table.xl tbody td:nth-child(5){display:none}
+  .row2{grid-template-columns:1fr}
+  .modal.wide{max-width:100%}
+  .word-ribbon{flex-wrap:wrap}
+  .ribbon-group{min-height:auto;padding:2px 4px}
+  .filters{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== PANTALLA RESUMEN (pública) ==================== -->
+<div id="screen-summary">
+  <div class="app">
+    <header class="app-head">
+      <div><h1>Control de Personal</h1><div class="sub">Resumen general — DIV-10 / BAT. CYS-X</div></div>
+      <div id="summary-userbox" class="user-box hidden">
+        <div>
+          <div class="u" id="summary-user-name">—</div>
+          <div class="r" id="summary-user-role">—</div>
+        </div>
+        <button id="summary-btn-logout">Salir</button>
+      </div>
+    </header>
+
+    <div class="summary-actions">
+      <div class="info">Vista de solo lectura. Haz clic en cualquier fila para ver el detalle.</div>
+      <button class="btn primary lg" id="btn-ingresar">🔓 Ingresar al Sistema</button>
+    </div>
+
+    <div class="summary-grid">
+      <div class="totals-block">
+        <div class="totals-head">
+          <span>DIV-10</span>
+          <span class="count-badge" id="badge-div10">0 personas</span>
+        </div>
+        <table class="xl">
+          <thead><tr><th>DETALLE</th><th class="num">TOTAL</th></tr></thead>
+          <tbody id="totals-div10"></tbody>
+        </table>
+      </div>
+
+      <div class="totals-block">
+        <div class="totals-head batcys">
+          <span>BAT. CYS-X</span>
+          <span class="count-badge" id="badge-batcys">0 personas</span>
+        </div>
+        <table class="xl">
+          <thead><tr><th>DETALLE</th><th class="num">TOTAL</th></tr></thead>
+          <tbody id="totals-batcys"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PANTALLA SISTEMA (CRUD) ==================== -->
+<div id="screen-system">
+  <div class="app">
+    <header class="app-head">
+      <div><h1>Control de Personal</h1><div class="sub">DIV-10 / BAT. CYS-X / Situación Especial</div></div>
+      <div class="user-box">
+        <div>
+          <div class="u" id="system-user-name">—</div>
+          <div class="r" id="system-user-role">—</div>
+        </div>
+        <button id="btn-logout">Salir</button>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <button class="btn ghost" id="btn-volver">← Volver al resumen</button>
+      <button class="btn primary" id="btn-nuevo">＋ Nuevo</button>
+      <button class="btn ghost" id="btn-imprimir">🖨 Imprimir</button>
+      <button class="btn ghost" id="btn-config-lista">⚙ Lugares</button>
+      <button class="btn ghost" id="btn-config-tipos">🏷 Tipos Especial</button>
+      <button class="btn ghost perm-admin-jefe" id="btn-config-firma">✍ Firma</button>
+      <button class="btn ghost perm-admin-jefe" id="btn-config-diseno">📐 Diseño</button>
+      <button class="btn ghost perm-admin-jefe" id="btn-config-word">📄 Word</button>
+      <button class="btn ok perm-admin-jefe" id="btn-importar">📥 Importar Excel</button>
+      <button class="btn ghost perm-admin-jefe" id="btn-audit">🔍 Auditoría</button>
+      <button class="btn ghost perm-admin-jefe" id="btn-users">👥 Usuarios</button>
+      <button class="btn icon ghost" id="btn-mover" title="Reordenamiento">↕</button>
+      <input type="file" id="input-excel" accept=".xlsx,.xls,.csv" style="display:none">
+    </div>
+
+    <div class="section-block" data-destino="DIV-10">
+      <div class="section-head">
+        <div class="title">DIV-10</div>
+        <div class="mini-counters">
+          <span class="mc">Forman: <b id="mc-forman-div10">0</b></span>
+          <span class="mc">No forman: <b id="mc-noforman-div10">0</b></span>
+          <span class="mc">Total: <b id="mc-total-div10">0</b></span>
+        </div>
+      </div>
+      <table class="xl">
+        <thead><tr><th style="width:36px"></th><th>Nombre completo</th><th>Lugar u observación</th><th>Desde</th><th>Hasta</th></tr></thead>
+        <tbody id="tbody-div10"></tbody>
+      </table>
+    </div>
+
+    <div class="section-block" data-destino="BAT. CYS-X">
+      <div class="section-head">
+        <div class="title batcys">BAT. CYS-X</div>
+        <div class="mini-counters">
+          <span class="mc">Forman: <b id="mc-forman-batcys">0</b></span>
+          <span class="mc">No forman: <b id="mc-noforman-batcys">0</b></span>
+          <span class="mc">Total: <b id="mc-total-batcys">0</b></span>
+        </div>
+      </div>
+      <table class="xl">
+        <thead><tr><th style="width:36px"></th><th>Nombre completo</th><th>Lugar u observación</th><th>Desde</th><th>Hasta</th></tr></thead>
+        <tbody id="tbody-batcys"></tbody>
+      </table>
+    </div>
+
+    <div class="section-block" data-destino="ESPECIAL">
+      <div class="section-head especial-head">
+        <div class="title especial">SITUACIÓN ESPECIAL</div>
+        <div class="mini-counters">
+          <span class="mc">Total: <b id="mc-total-especial">0</b></span>
+        </div>
+      </div>
+      <table class="xl">
+        <thead><tr><th style="width:36px"></th><th>Nombre completo</th><th>Tipo de situación</th><th>Desde</th><th>Hasta</th></tr></thead>
+        <tbody id="tbody-especial"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LOGIN / REGISTRO ==================== -->
+<div id="login-screen">
+  <div class="login-card">
+    <div style="text-align:center"><span class="login-badge">CONTROL DE PERSONAL</span></div>
+
+    <!-- Login -->
+    <div id="panel-login">
+      <h1>Iniciar sesión</h1>
+      <div class="sub">Accede con tu correo y contraseña</div>
+      <label>Correo electrónico</label>
+      <input type="email" id="login-email" placeholder="usuario@dominio.com" autocomplete="username">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+      <div class="login-error" id="login-error"></div>
+      <button class="btn primary" id="btn-do-login">Ingresar</button>
+      <div class="login-links">
+        <a id="link-to-register">Crear cuenta nueva</a> ·
+        <a id="link-forgot">Olvidé mi contraseña</a>
+      </div>
+      <div style="text-align:center;margin-top:16px"><button class="btn ghost sm" id="btn-cerrar-login">Volver al resumen</button></div>
+    </div>
+
+    <!-- Registro -->
+    <div id="panel-register" class="hidden">
+      <h1>Crear cuenta</h1>
+      <div class="sub">Completa tus datos para solicitar acceso</div>
+      <label>Nombre completo</label>
+      <input type="text" id="reg-nombre" placeholder="Apellidos, Nombres">
+      <label>Correo electrónico</label>
+      <input type="email" id="reg-email" placeholder="usuario@dominio.com">
+      <label>Contraseña</label>
+      <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres">
+      <div class="login-error" id="register-error"></div>
+      <button class="btn primary" id="btn-do-register">Registrarme</button>
+      <div class="login-links"><a id="link-to-login">Ya tengo cuenta</a></div>
+    </div>
+
+    <!-- Esperando / Rechazado / Bloqueado -->
+    <div id="panel-pending" class="hidden">
+      <h1 id="pending-title">Esperando aprobación</h1>
+      <div class="sub" id="pending-sub">Tu cuenta está en revisión.</div>
+      <div class="pending-card" id="pending-msg">
+        El jefe de personal o un administrador validará tu cuenta pronto. Vuelve a intentarlo más tarde.
+      </div>
+      <button class="btn ghost" id="btn-pending-logout" style="width:100%;justify-content:center;margin-top:16px">Cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODALES ==================== -->
+
+<!-- Modal detalle -->
+<div class="overlay" id="modal-detail">
+  <div class="modal medium">
+    <div class="detail-head">
+      <div>
+        <h2 id="detail-title">DETALLE</h2>
+        <div class="badge" id="detail-subtitle" style="margin-top:6px"></div>
+      </div>
+      <button class="x" data-close style="background:transparent;font-size:1.5rem;color:var(--muted);width:36px;height:36px;border-radius:8px">×</button>
+    </div>
+    <div class="modal-body" style="padding:0;overflow:hidden">
+      <table class="xl" style="border-radius:0">
+        <thead>
+          <tr>
+            <th style="width:50px;text-align:center">N°</th>
+            <th>GRADO, NOMBRES Y APELLIDOS</th>
+            <th style="width:110px;text-align:center">DESDE</th>
+            <th style="width:110px;text-align:center">HASTA</th>
+          </tr>
+        </thead>
+        <tbody id="detail-body"></tbody>
+      </table>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" data-close>Cerrar</button></div>
+  </div>
+</div>
+
+<!-- Modal edición -->
+<div class="overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-head"><h2 id="edit-title">Editar registro</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Nombre completo</label><input type="text" id="e-nombre" placeholder="Apellidos, Nombres"></div>
+      <div class="field">
+        <label class="check-especial" for="e-especial">
+          <input type="checkbox" id="e-especial">
+          <span>Marcar como SITUACIÓN ESPECIAL</span>
+        </label>
+        <div class="hint">El personal especial <b>NO</b> pertenece a DIV-10 ni BAT. CYS-X.</div>
+      </div>
+      <div class="field hidden" id="wrap-tipo-especial">
+        <label>Tipo de situación especial</label>
+        <select id="e-tipo-especial"></select>
+      </div>
+      <div class="field" id="wrap-destino">
+        <label>Destino</label>
+        <select id="e-destino"><option value="DIV-10">DIV-10</option><option value="BAT. CYS-X">BAT. CYS-X</option></select>
+      </div>
+      <div class="field" id="wrap-lugar">
+        <label>Lugar u observación</label>
+        <select id="e-lugar"></select>
+        <div class="hint">Si se deja vacío, se borrarán automáticamente las fechas.</div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Fecha desde</label><input type="date" id="e-desde"></div>
+        <div class="field"><label>Fecha hasta</label><input type="date" id="e-hasta"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn danger" id="e-eliminar">🗑 Eliminar</button>
+      <button class="btn ghost" id="e-limpiar">Limpiar</button>
+      <button class="btn primary" id="e-guardar">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal lugares -->
+<div class="overlay" id="modal-lista">
+  <div class="modal">
+    <div class="modal-head"><h2>Configurar lugares / observaciones</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body"><div id="lista-items"></div><button class="btn ghost" id="lista-add" style="margin-top:8px">＋ Agregar opción</button></div>
+    <div class="modal-foot"><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="lista-guardar">Guardar</button></div>
+  </div>
+</div>
+
+<!-- Modal tipos -->
+<div class="overlay" id="modal-tipos">
+  <div class="modal">
+    <div class="modal-head"><h2>Tipos de situación especial</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body">
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:12px">Cada tipo aparecerá como fila adicional en la tabla de totales (solo DIV-10) y como subtítulo con su tabla al inicio de DEMOSTRACIÓN.</p>
+      <div id="tipos-items"></div>
+      <button class="btn ghost" id="tipos-add" style="margin-top:8px">＋ Agregar tipo</button>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="tipos-guardar">Guardar</button></div>
+  </div>
+</div>
+
+<!-- Modal firma -->
+<div class="overlay" id="modal-firma">
+  <div class="modal">
+    <div class="modal-head"><h2>✍ Configurar firma</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body">
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:14px">Aparecerá al final de <b>cada copia</b> de la hoja impresa, centrada.</p>
+      <div class="field"><label>Nombre del jefe de control</label><input type="text" id="f-nombre" placeholder="Ej: JUAN PÉREZ GÓMEZ"></div>
+      <div class="field"><label>Cargo</label><input type="text" id="f-cargo" placeholder="Ej: JEFE DE CONTROL DE PERSONAL"></div>
+      <div style="background:#f7f9fb;border:1px solid var(--line);border-radius:8px;padding:14px;text-align:center;margin-top:8px">
+        <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Vista previa</div>
+        <div id="preview-nombre" style="font-size:.85rem;margin-bottom:4px">JUAN PÉREZ GÓMEZ</div>
+        <div id="preview-cargo" style="font-size:.85rem;font-weight:700">JEFE DE CONTROL DE PERSONAL</div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="firma-guardar">Guardar</button></div>
+  </div>
+</div>
+
+<!-- Modal diseño -->
+<div class="overlay" id="modal-diseno">
+  <div class="modal">
+    <div class="modal-head"><h2>📐 Diseño del reporte</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="design-grid">
+        <div class="field"><label>Copias por hoja</label><select id="d-cols"><option value="2">2 copias</option><option value="1">1 copia</option></select></div>
+        <div class="field"><label>Tamaño de hoja</label><select id="d-pagesize"><option value="letter">Carta</option><option value="a4">A4</option><option value="legal">Oficio</option></select></div>
+        <div class="field"><label>Orientación</label><select id="d-orient"><option value="portrait">Vertical</option><option value="landscape">Horizontal</option></select></div>
+        <div class="field"><label>Margen (mm)</label><input type="number" id="d-margin" min="0" max="30" value="8"></div>
+        <div class="field"><label>Padding celdas (px)</label><input type="number" id="d-cellpad" min="0" max="10" value="1"></div>
+        <div class="field"><label>Tamaño base (pt)</label><input type="number" id="d-basesize" min="5" max="20" value="8"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="diseno-guardar">Guardar</button></div>
+  </div>
+</div>
+
+<!-- Modal importar -->
+<div class="overlay" id="modal-import">
+  <div class="modal">
+    <div class="modal-head"><h2>📥 Importar desde Excel</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body">
+      <p style="font-size:.9rem;color:var(--muted);margin-bottom:14px">El archivo debe tener <b>una sola columna</b> con el encabezado <code>NOMBRES</code>. Cada fila se agregará a DIV-10.</p>
+      <div class="field"><label>Archivo Excel</label><input type="file" id="import-file" accept=".xlsx,.xls,.csv"></div>
+      <div id="import-preview" class="hidden" style="margin-top:14px">
+        <div class="field"><label>Vista previa (primeros 10)</label></div>
+        <div id="import-preview-list" style="background:#fafbfc;border:1px solid var(--line);border-radius:8px;padding:10px;font-size:.85rem;max-height:240px;overflow-y:auto"></div>
+        <div class="hint" id="import-count"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="import-confirmar" disabled>Importar</button></div>
+  </div>
+</div>
+
+<!-- Modal Word -->
+<div class="overlay" id="modal-word">
+  <div class="modal wide">
+    <div class="modal-head"><h2>Configuración del reporte (Word)</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body" style="padding:0">
+      <div class="word-app">
+        <div class="word-titlebar"><div class="wname">Reporte — Parte Diario</div></div>
+        <div class="word-tabs"><button class="tab active">Inicio</button></div>
+
+        <div class="word-ribbon" id="tab-inicio">
+          <div class="ribbon-group">
+            <div class="ribbon-row">
+              <button class="rbtn" id="w-undo">↶</button>
+              <button class="rbtn" id="w-redo">↷</button>
+              <button class="rbtn" id="w-clear">🧹</button>
+            </div>
+            <div class="ribbon-label">Historial</div>
+          </div>
+          <div class="ribbon-group">
+            <div class="ribbon-row">
+              <select id="w-font" class="rbtn sel" style="min-width:120px">
+                <option>Arial</option><option>Calibri</option><option>Times New Roman</option>
+                <option>Courier New</option><option>Verdana</option><option>Tahoma</option>
+                <option>Georgia</option><option>Cambria</option><option>Consolas</option>
+              </select>
+              <select id="w-size" class="rbtn sel" style="min-width:56px">
+                <option>6</option><option>7</option><option selected>8</option>
+                <option>9</option><option>10</option><option>11</option>
+                <option>12</option><option>14</option><option>16</option>
+                <option>18</option><option>20</option><option>24</option>
+                <option>28</option><option>36</option>
+              </select>
+            </div>
+            <div class="ribbon-row" style="margin-top:2px">
+              <button class="rbtn" data-cmd="bold"><b>B</b></button>
+              <button class="rbtn" data-cmd="italic"><i>I</i></button>
+              <button class="rbtn" data-cmd="underline"><u>U</u></button>
+              <button class="rbtn" data-cmd="strikeThrough"><s>S</s></button>
+              <button class="rbtn" data-cmd="subscript">X₂</button>
+              <button class="rbtn" data-cmd="superscript">X²</button>
+            </div>
+            <div class="ribbon-row" style="margin-top:2px">
+              <button class="rbtn" data-cmd="foreColor" data-val="#c00000"><b style="color:#c00000">A</b></button>
+              <button class="rbtn" data-cmd="foreColor" data-val="#000000"><b>A</b></button>
+              <button class="rbtn" data-cmd="hiliteColor" data-val="#ffff00"><span style="background:#ffff00;padding:0 2px">🖍</span></button>
+            </div>
+            <div class="ribbon-label">Fuente</div>
+          </div>
+          <div class="ribbon-group">
+            <div class="ribbon-row">
+              <button class="rbtn" data-cmd="insertUnorderedList">• ≡</button>
+              <button class="rbtn" data-cmd="insertOrderedList">1. ≡</button>
+              <span class="sep"></span>
+              <button class="rbtn" data-cmd="outdent">⇤</button>
+              <button class="rbtn" data-cmd="indent">⇥</button>
+            </div>
+            <div class="ribbon-row" style="margin-top:2px">
+              <button class="rbtn" data-cmd="justifyLeft">⯇</button>
+              <button class="rbtn" data-cmd="justifyCenter">≡</button>
+              <button class="rbtn" data-cmd="justifyRight">⯈</button>
+              <button class="rbtn" data-cmd="justifyFull">☰</button>
+            </div>
+            <div class="ribbon-row" style="margin-top:2px">
+              <button class="rbtn" id="w-lh-1">↕1</button>
+              <button class="rbtn" id="w-lh-125">↕1.25</button>
+              <button class="rbtn" id="w-lh-15">↕1.5</button>
+              <button class="rbtn" id="w-spacing0">↕0</button>
+            </div>
+            <div class="ribbon-label">Párrafo</div>
+          </div>
+          <div class="ribbon-group">
+            <div class="ribbon-row">
+              <button class="rbtn big" id="w-insert-salto"><span class="ico">↵</span><span>Salto</span></button>
+              <button class="rbtn big" id="w-insert-firmas"><span class="ico">✍</span><span>Firmas</span></button>
+            </div>
+            <div class="ribbon-label">Insertar</div>
+          </div>
+        </div>
+
+        <div class="word-main">
+          <div class="word-canvas"><div class="word-page" id="word-page" contenteditable="true"></div></div>
+          <div class="word-side">
+            <h4>Vista previa</h4>
+            <div class="preview-box" id="word-preview"></div>
+            <div class="word-help">Selecciona texto para aplicar formato solo a la selección.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="word-salir">Salir</button>
+      <button class="btn primary" id="word-guardar">💾 Guardar configuración</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal usuarios -->
+<div class="overlay" id="modal-users">
+  <div class="modal medium">
+    <div class="modal-head"><h2>👥 Gestión de usuarios</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <div style="font-size:.9rem;color:var(--muted)">Valida, cambia roles o elimina usuarios.</div>
+        <button class="btn ghost sm" id="users-refresh">↻ Actualizar</button>
+      </div>
+      <div class="users-list" id="users-list">
+        <div class="empty" style="padding:40px;text-align:center;color:var(--muted)">Cargando...</div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" data-close>Salir</button></div>
+  </div>
+</div>
+
+<!-- Modal auditoría -->
+<div class="overlay" id="modal-audit">
+  <div class="modal wide">
+    <div class="modal-head"><h2>🔍 Auditoría de movimientos</h2><button class="x" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="filters">
+        <input type="text" id="audit-search" placeholder="Buscar (acción, usuario, descripción)...">
+        <select id="audit-user"><option value="">Todos los usuarios</option></select>
+        <select id="audit-action">
+          <option value="">Todas las acciones</option>
+          <option value="login">Login</option>
+          <option value="logout">Logout</option>
+          <option value="create">Crear</option>
+          <option value="update">Editar</option>
+          <option value="delete">Eliminar</option>
+          <option value="print">Imprimir</option>
+          <option value="save_word">Guardar Word</option>
+          <option value="save_diseno">Guardar Diseño</option>
+          <option value="save_firma">Guardar Firma</option>
+          <option value="save_list">Guardar Lugares</option>
+          <option value="save_tipos">Guardar Tipos</option>
+          <option value="import_excel">Importar Excel</option>
+          <option value="user_register">Registro de usuario</option>
+          <option value="user_validate">Validar usuario</option>
+          <option value="user_reject">Rechazar usuario</option>
+          <option value="user_block">Bloquear usuario</option>
+          <option value="user_role">Cambiar rol</option>
+          <option value="user_delete">Eliminar usuario</option>
+        </select>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:.82rem;color:var(--muted)" id="audit-count">0 eventos</div>
+        <button class="btn ghost sm" id="audit-refresh">↻ Actualizar</button>
+      </div>
+      <div class="audit-list" id="audit-list">
+        <div style="padding:40px;text-align:center;color:var(--muted)">Cargando...</div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" data-close>Salir</button></div>
+  </div>
+</div>
+
+<div id="toast-wrap"></div>
+<div id="print-root"></div>
+
+<!-- ==================== SCRIPT ==================== -->
+<script type="module">
+/* ============================================================
+   IMPORTS FIREBASE
+   ============================================================ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+  sendPasswordResetEmail, createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc,
+  deleteDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp,
+  writeBatch
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAw7CG02hxkzwl4QdyVeOVFC-SBdtDvhBg",
+  authDomain: "control-personal-parte.firebaseapp.com",
+  databaseURL: "https://control-personal-parte-default-rtdb.firebaseio.com",
+  projectId: "control-personal-parte",
+  storageBucket: "control-personal-parte.firebasestorage.app",
+  messagingSenderId: "729970099576",
+  appId: "1:729970099576:web:d7d9bdf283cd373f82748d"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+/* ============================================================
+   ESTADO GLOBAL
+   ============================================================ */
+let currentUser = null;       // { uid, email, nombre, role, estado }
+let unsubPersonal = null;
+let unsubConfigLugares = null;
+let unsubConfigTipos = null;
+let unsubConfigFirma = null;
+let unsubConfigWord = null;
+
+let state = {
+  personal: [],
+  lugares: ['Permiso cumpleaños','Comisión puesto','Permiso vacaciones','Comisión servicio','Permiso personal'],
+  tiposEspecial: ['Comisión','Visita Temporal','Visita Diaria'],
+  firma: { nombre: 'JUAN PÉREZ GÓMEZ', cargo: 'JEFE DE CONTROL DE PERSONAL' },
+  moverActivo: false,
+  cellPad: 1,
+  word: {
+    html: '',
+    design: { cols: 2, pageSize: 'letter', orient: 'portrait', margin: 8, baseFont: 'Arial', baseSize: 8 }
+  }
+};
+
+let editandoId = null;
+let dragId = null;
+let savedRange = null;
+let importRows = [];
+let auditCache = [];
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const uid = () => '_' + Math.random().toString(36).slice(2,9);
+const norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const fmtDate = iso => { if(!iso) return ''; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; };
+const escapeHtml = s => (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const upper = s => (s||'').toString().toUpperCase();
+const MESES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+function fechaHoy(){
+  const d = new Date();
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mmm = MESES[d.getMonth()];
+  const aa = String(d.getFullYear()).slice(-2);
+  return `${dd}-${mmm}-${aa}`;
+}
+function toast(msg, tipo=''){
+  const t = document.createElement('div');
+  t.className = 'toast ' + tipo;
+  t.textContent = msg;
+  $('#toast-wrap').appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='.3s'; }, 2200);
+  setTimeout(()=> t.remove(), 2600);
+}
+
+/* ============================================================
+   AUDITORÍA
+   ============================================================ */
+async function logAudit(action, descripcion, extra = {}){
+  if(!currentUser) return;
+  try{
+    await addDoc(collection(db, 'audit'), {
+      action, descripcion,
+      uid: currentUser.uid,
+      email: currentUser.email,
+      nombre: currentUser.nombre,
+      role: currentUser.role,
+      fecha: serverTimestamp(),
+      ...extra
+    });
+  }catch(e){ console.warn('No se pudo registrar auditoría:', e); }
+}
+
+/* ============================================================
+   LOGIN / LOGOUT / REGISTRO
+   ============================================================ */
+function showLoginScreen(){ $('#login-screen').classList.add('show'); }
+function hideLoginScreen(){ $('#login-screen').classList.remove('show'); }
+function showPanel(panel){
+  ['login','register','pending'].forEach(p => {
+    $('#panel-' + p).classList.toggle('hidden', p !== panel);
+  });
+}
+function setLoginError(msg){
+  const el = $('#login-error');
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+function setRegisterError(msg){
+  const el = $('#register-error');
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+$('#link-to-register').addEventListener('click', ()=> { showPanel('register'); setRegisterError(''); });
+$('#link-to-login').addEventListener('click', ()=> { showPanel('login'); setLoginError(''); });
+$('#link-forgot').addEventListener('click', async ()=>{
+  const email = prompt('Ingresa tu correo para enviarte el enlace de recuperación:');
+  if(!email) return;
+  try{
+    await sendPasswordResetEmail(auth, email);
+    toast('Correo enviado, revisa tu bandeja', 'ok');
+  }catch(e){ toast('No se pudo enviar el correo', 'danger'); }
+});
+$('#btn-cerrar-login').addEventListener('click', ()=>{
+  hideLoginScreen();
+  window.scrollTo(0,0);
+});
+$('#btn-pending-logout').addEventListener('click', async ()=>{
+  await logAudit('logout', 'Cierre de sesión desde espera');
+  await signOut(auth);
+  hideLoginScreen();
+});
+
+$('#btn-do-login').addEventListener('click', async ()=>{
+  const email = $('#login-email').value.trim();
+  const pass = $('#login-pass').value;
+  setLoginError('');
+  if(!email || !pass){ setLoginError('Ingrese correo y contraseña'); return; }
+  try{
+    await signInWithEmailAndPassword(auth, email, pass);
+  }catch(e){
+    const map = {
+      'auth/invalid-email':'Correo inválido',
+      'auth/user-not-found':'Usuario no existe',
+      'auth/wrong-password':'Contraseña incorrecta',
+      'auth/invalid-credential':'Credenciales inválidas'
+    };
+    setLoginError(map[e.code] || 'Error al iniciar sesión');
+  }
+});
+$('#login-pass').addEventListener('keydown', e => { if(e.key === 'Enter') $('#btn-do-login').click(); });
+
+$('#btn-do-register').addEventListener('click', async ()=>{
+  const nombre = $('#reg-nombre').value.trim();
+  const email = $('#reg-email').value.trim();
+  const pass = $('#reg-pass').value;
+  setRegisterError('');
+  if(!nombre || !email || !pass){ setRegisterError('Complete todos los campos'); return; }
+  if(pass.length < 6){ setRegisterError('La contraseña debe tener al menos 6 caracteres'); return; }
+  try{
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    const newUid = cred.user.uid;
+
+    // Registrar doc de usuario como PENDIENTE
+    await setDoc(doc(db, 'users', newUid), {
+      email, nombre,
+      role: 'user',
+      estado: 'pendiente',
+      creado: serverTimestamp()
+    });
+
+    // Registrar en auditoría
+    await addDoc(collection(db, 'audit'), {
+      action: 'user_register',
+      descripcion: `Nuevo registro: ${email} (${nombre})`,
+      uid: newUid, email, nombre, role: 'user',
+      fecha: serverTimestamp()
+    });
+
+    toast('Cuenta creada. Espera la validación.', 'ok');
+    // Se muestra el panel pending automáticamente por onAuthStateChanged
+  }catch(e){
+    console.error(e);
+    const map = {
+      'auth/email-already-in-use':'El correo ya está registrado',
+      'auth/invalid-email':'Correo inválido',
+      'auth/weak-password':'Contraseña muy débil'
+    };
+    setRegisterError(map[e.code] || 'Error al crear la cuenta');
+  }
+});
+
+$('#btn-logout').addEventListener('click', doLogout);
+$('#summary-btn-logout').addEventListener('click', doLogout);
+async function doLogout(){
+  await logAudit('logout', 'Cierre de sesión');
+  await signOut(auth);
+  irAResumen();
+}
+
+$('#btn-ingresar').addEventListener('click', ()=>{
+  if(currentUser && currentUser.estado === 'activo'){
+    irAlSistema();
+  } else {
+    showLoginScreen();
+    showPanel('login');
+    setLoginError('');
+  }
+});
+
+/* ============================================================
+   AUTH STATE
+   ============================================================ */
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){
+    currentUser = null;
+    // Limpiar suscripciones
+    if(unsubPersonal) unsubPersonal();
+    if(unsubConfigLugares) unsubConfigLugares();
+    if(unsubConfigTipos) unsubConfigTipos();
+    if(unsubConfigFirma) unsubConfigFirma();
+    if(unsubConfigWord) unsubConfigWord();
+    // UI pública
+    $('#summary-userbox').classList.add('hidden');
+    irAResumen();
+    showLoginScreen();
+    showPanel('login');
+    return;
+  }
+
+  // Cargar perfil
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if(!snap.exists()){
+    // Sin perfil: error raro
+    toast('Perfil no encontrado. Contacta al administrador.', 'danger');
+    await signOut(auth);
+    return;
+  }
+  const data = snap.data();
+  currentUser = {
+    uid: user.uid,
+    email: user.email,
+    nombre: data.nombre || user.email,
+    role: data.role || 'user',
+    estado: data.estado || 'pendiente'
+  };
+
+  // Actualizar último login
+  try{
+    await updateDoc(doc(db, 'users', user.uid), { ultimoLogin: serverTimestamp() });
+  }catch(e){}
+
+  // Actualizar UI de usuario en header
+  $('#summary-user-name').textContent = currentUser.nombre;
+  $('#summary-user-role').textContent = labelRol(currentUser.role);
+  $('#system-user-name').textContent = currentUser.nombre;
+  $('#system-user-role').textContent = labelRol(currentUser.role);
+  $('#summary-userbox').classList.remove('hidden');
+
+  // Estado de la cuenta
+  if(currentUser.estado !== 'activo'){
+    showLoginScreen();
+    showPanel('pending');
+    if(currentUser.estado === 'rechazado'){
+      $('#pending-title').textContent = 'Acceso rechazado';
+      $('#pending-sub').textContent = 'Tu solicitud fue rechazada.';
+      $('#pending-msg').textContent = 'Contacta al jefe de personal o al administrador para más información.';
+    } else if(currentUser.estado === 'bloqueado'){
+      $('#pending-title').textContent = 'Acceso bloqueado';
+      $('#pending-sub').textContent = 'Tu cuenta ha sido bloqueada.';
+      $('#pending-msg').textContent = 'Contacta al administrador para más información.';
+    } else {
+      $('#pending-title').textContent = 'Esperando aprobación';
+      $('#pending-sub').textContent = 'Tu cuenta está en revisión.';
+      $('#pending-msg').textContent = 'El jefe de personal o un administrador validará tu cuenta pronto.';
+    }
+    await logAudit('login', `Intento de login con estado ${currentUser.estado}`);
+    return;
+  }
+
+  // Cuenta activa: entra
+  hideLoginScreen();
+  await logAudit('login', `Inicio de sesión como ${currentUser.role}`);
+  aplicarPermisos();
+  sincronizarTodo();
+  irAlSistema();
+});
+
+function labelRol(role){
+  if(role === 'admin') return '👑 Administrador';
+  if(role === 'jefe') return '🧑‍💼 Jefe de Personal';
+  return '👤 Usuario';
+}
+
+/* ============================================================
+   PERMISOS
+   ============================================================ */
+function aplicarPermisos(){
+  const esAdminOJefe = currentUser && (currentUser.role === 'admin' || currentUser.role === 'jefe');
+  $$('.perm-admin-jefe').forEach(btn => {
+    btn.classList.toggle('hidden', !esAdminOJefe);
+  });
+}
+
+/* ============================================================
+   SINCRONIZACIÓN FIRESTORE
+   ============================================================ */
+function sincronizarTodo(){
+  // Personal
+  if(unsubPersonal) unsubPersonal();
+  const qPersonal = query(collection(db, 'personal'), orderBy('orden', 'asc'));
+  unsubPersonal = onSnapshot(qPersonal, (snap)=>{
+    state.personal = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderTablas();
+    refrescarContadores();
+    renderResumen();
+  }, err => console.warn('personal:', err));
+
+  // Lugares
+  if(unsubConfigLugares) unsubConfigLugares();
+  unsubConfigLugares = onSnapshot(doc(db, 'config', 'lugares'), (snap)=>{
+    if(snap.exists() && Array.isArray(snap.data().items)){
+      state.lugares = snap.data().items;
+      llenarSelectLugares();
+      renderResumen();
+    }
+  });
+
+  // Tipos Especial
+  if(unsubConfigTipos) unsubConfigTipos();
+  unsubConfigTipos = onSnapshot(doc(db, 'config', 'tiposEspecial'), (snap)=>{
+    if(snap.exists() && Array.isArray(snap.data().items)){
+      state.tiposEspecial = snap.data().items;
+      llenarSelectTiposEspecial();
+      renderResumen();
+    }
+  });
+
+  // Firma
+  if(unsubConfigFirma) unsubConfigFirma();
+  unsubConfigFirma = onSnapshot(doc(db, 'config', 'firma'), (snap)=>{
+    if(snap.exists()){
+      state.firma = {
+        nombre: snap.data().nombre || '',
+        cargo: snap.data().cargo || ''
+      };
+    }
+  });
+
+  // Word
+  if(unsubConfigWord) unsubConfigWord();
+  unsubConfigWord = onSnapshot(doc(db, 'config', 'word'), (snap)=>{
+    if(snap.exists()){
+      const d = snap.data();
+      state.word.html = d.html || '';
+      state.word.design = Object.assign(state.word.design, d.design || {});
+      state.cellPad = d.cellPad != null ? d.cellPad : 1;
+    }
+  });
+}
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+function irAResumen(){
+  $('#screen-summary').style.display = 'block';
+  $('#screen-system').style.display = 'none';
+  renderResumen();
+  window.scrollTo(0,0);
+}
+function irAlSistema(){
+  $('#screen-summary').style.display = 'none';
+  $('#screen-system').style.display = 'block';
+  renderTablas();
+  refrescarContadores();
+  window.scrollTo(0,0);
+}
+
+/* ============================================================
+   CÁLCULOS
+   ============================================================ */
+function calcularPorDestino(destino){
+  const normales = state.personal.filter(p => (p.destino || 'DIV-10') === destino && !p.especial);
+  const total = normales.length;
+  const forman = normales.filter(x => !x.lugar || !x.lugar.trim()).length;
+  const noforman = total - forman;
+  const porLugar = {};
+  state.lugares.forEach(l => porLugar[l] = 0);
+  normales.forEach(x => { if(x.lugar && x.lugar.trim()) porLugar[x.lugar] = (porLugar[x.lugar]||0) + 1; });
+  return { lista: normales, total, forman, noforman, porLugar };
+}
+function calcularEspecialesPorTipo(){
+  const mapa = {};
+  state.tiposEspecial.forEach(t => mapa[t] = 0);
+  state.personal.filter(p => p.especial).forEach(p => {
+    const t = p.tipoEspecial || state.tiposEspecial[0] || 'Comisión';
+    if(!mapa[t]) mapa[t] = 0;
+    mapa[t]++;
+  });
+  return mapa;
+}
+
+/* ============================================================
+   RENDER RESUMEN
+   ============================================================ */
+function renderResumen(){
+  const div10 = calcularPorDestino('DIV-10');
+  const batcys = calcularPorDestino('BAT. CYS-X');
+  const esp = calcularEspecialesPorTipo();
+
+  const tbDiv = $('#totals-div10');
+  tbDiv.innerHTML = '';
+  tbDiv.appendChild(filaResumen('EFECTIVO', div10.total, 'DIV-10', 'EFECTIVO', 'destacada'));
+  Object.entries(div10.porLugar).filter(([k,v]) => v > 0).forEach(([k,v]) => {
+    tbDiv.appendChild(filaResumen(upper(k), v, 'DIV-10', k, ''));
+  });
+  tbDiv.appendChild(filaResumen('NO FORMAN', div10.noforman, 'DIV-10', '__NOFORMAN__', 'destacada'));
+  tbDiv.appendChild(filaResumen('FORMAN', div10.forman, 'DIV-10', '__FORMAN__', 'destacada'));
+  tbDiv.appendChild(filaResumen('TOTAL', div10.total, 'DIV-10', '__TOTAL__', 'destacada'));
+  Object.entries(esp).filter(([k,v]) => v > 0).forEach(([k,v]) => {
+    tbDiv.appendChild(filaResumen(upper(k), v, 'ESPECIAL', k, 'especial'));
+  });
+  $('#badge-div10').textContent = div10.total + ' personas';
+
+  const tbBat = $('#totals-batcys');
+  tbBat.innerHTML = '';
+  tbBat.appendChild(filaResumen('EFECTIVO', batcys.total, 'BAT. CYS-X', 'EFECTIVO', 'destacada'));
+  Object.entries(batcys.porLugar).filter(([k,v]) => v > 0).forEach(([k,v]) => {
+    tbBat.appendChild(filaResumen(upper(k), v, 'BAT. CYS-X', k, ''));
+  });
+  tbBat.appendChild(filaResumen('NO FORMAN', batcys.noforman, 'BAT. CYS-X', '__NOFORMAN__', 'destacada'));
+  tbBat.appendChild(filaResumen('FORMAN', batcys.forman, 'BAT. CYS-X', '__FORMAN__', 'destacada'));
+  tbBat.appendChild(filaResumen('TOTAL', batcys.total, 'BAT. CYS-X', '__TOTAL__', 'destacada'));
+  $('#badge-batcys').textContent = batcys.total + ' personas';
+}
+function filaResumen(label, valor, tabla, key, estilo){
+  const tr = document.createElement('tr');
+  if(estilo === 'destacada') tr.classList.add('row-destacada');
+  if(estilo === 'especial') tr.classList.add('row-especial');
+  tr.innerHTML = `<td>${escapeHtml(label)}</td><td class="num">${valor}</td>`;
+  tr.addEventListener('click', ()=> abrirDetalle(tabla, key, label));
+  return tr;
+}
+
+/* ============================================================
+   MODAL DETALLE
+   ============================================================ */
+function abrirDetalle(tabla, key, label){
+  const div10 = calcularPorDestino('DIV-10');
+  const batcys = calcularPorDestino('BAT. CYS-X');
+  let personas = [], subtitulo = '';
+
+  if(tabla === 'DIV-10'){
+    if(key === 'EFECTIVO' || key === '__TOTAL__'){ personas = div10.lista; subtitulo = 'DIV-10 · TODOS'; }
+    else if(key === '__NOFORMAN__'){ personas = div10.lista.filter(p => p.lugar && p.lugar.trim()); subtitulo = 'DIV-10 · NO FORMAN'; }
+    else if(key === '__FORMAN__'){ personas = div10.lista.filter(p => !p.lugar || !p.lugar.trim()); subtitulo = 'DIV-10 · FORMAN'; }
+    else { personas = div10.lista.filter(p => p.lugar === key); subtitulo = 'DIV-10 · ' + upper(key); }
+  } else if(tabla === 'BAT. CYS-X'){
+    if(key === 'EFECTIVO' || key === '__TOTAL__'){ personas = batcys.lista; subtitulo = 'BAT. CYS-X · TODOS'; }
+    else if(key === '__NOFORMAN__'){ personas = batcys.lista.filter(p => p.lugar && p.lugar.trim()); subtitulo = 'BAT. CYS-X · NO FORMAN'; }
+    else if(key === '__FORMAN__'){ personas = batcys.lista.filter(p => !p.lugar || !p.lugar.trim()); subtitulo = 'BAT. CYS-X · FORMAN'; }
+    else { personas = batcys.lista.filter(p => p.lugar === key); subtitulo = 'BAT. CYS-X · ' + upper(key); }
+  } else if(tabla === 'ESPECIAL'){
+    const todos = state.personal.filter(p => p.especial);
+    personas = todos.filter(p => p.tipoEspecial === key);
+    subtitulo = 'SITUACIÓN ESPECIAL · ' + upper(key);
+  }
+
+  $('#detail-title').textContent = label;
+  $('#detail-subtitle').textContent = subtitulo + ' · ' + personas.length + (personas.length === 1 ? ' persona' : ' personas');
+  const tbody = $('#detail-body');
+  tbody.innerHTML = personas.length ? personas.map((p,i)=>`
+    <tr>
+      <td class="num-det">${i+1}</td>
+      <td class="name">${escapeHtml(p.nombre)}</td>
+      <td class="date">${p.desde ? fmtDate(p.desde) : '—'}</td>
+      <td class="date">${p.hasta ? fmtDate(p.hasta) : '—'}</td>
+    </tr>`).join('') : '<tr class="empty-row"><td colspan="4">No hay registros</td></tr>';
+  $('#modal-detail').classList.add('show');
+}
+
+/* ============================================================
+   RENDER TABLAS CRUD
+   ============================================================ */
+function renderTablaPorDestino(destino, tbodyId){
+  const tbody = $(tbodyId);
+  tbody.innerHTML = '';
+  let lista;
+  if(destino === 'ESPECIAL') lista = state.personal.filter(p => p.especial);
+  else lista = state.personal.filter(p => (p.destino || 'DIV-10') === destino && !p.especial);
+
+  if(!lista.length){
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Sin registros</td></tr>';
+    return;
+  }
+  lista.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.dataset.id = p.id;
+    tr.draggable = state.moverActivo;
+    let col3 = '—', col3Class = 'lugar';
+    if(destino === 'ESPECIAL'){ col3 = p.tipoEspecial || state.tiposEspecial[0] || '—'; }
+    else {
+      col3 = p.lugar && p.lugar.trim() ? p.lugar : '—';
+      col3Class = 'lugar' + (!p.lugar || !p.lugar.trim() ? ' vacio' : '');
+    }
+    tr.innerHTML = `
+      <td>${state.moverActivo ? '<span class="handle">⠿</span>' : ''}</td>
+      <td class="name">${escapeHtml(p.nombre)}</td>
+      <td class="${col3Class}">${escapeHtml(col3)}</td>
+      <td>${p.desde?fmtDate(p.desde):'—'}</td>
+      <td>${p.hasta?fmtDate(p.hasta):'—'}</td>
+    `;
+    tr.addEventListener('click', (e)=>{
+      if(state.moverActivo && e.target.classList.contains('handle')) return;
+      abrirEdicion(p.id);
+    });
+    if(state.moverActivo){
+      tr.addEventListener('dragstart', e=>{ dragId = p.id; tr.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+      tr.addEventListener('dragend', ()=>{ tr.classList.remove('dragging'); $$('tr.drag-over').forEach(x=>x.classList.remove('drag-over')); });
+      tr.addEventListener('dragover', e=>{ e.preventDefault(); tr.classList.add('drag-over'); });
+      tr.addEventListener('dragleave', ()=> tr.classList.remove('drag-over'));
+      tr.addEventListener('drop', async e=>{
+        e.preventDefault(); tr.classList.remove('drag-over');
+        if(!dragId || dragId === p.id) return;
+        await moverRegistro(dragId, p.id);
+      });
+    }
+    tbody.appendChild(tr);
+  });
+}
+function renderTablas(){
+  renderTablaPorDestino('DIV-10', '#tbody-div10');
+  renderTablaPorDestino('BAT. CYS-X', '#tbody-batcys');
+  renderTablaPorDestino('ESPECIAL', '#tbody-especial');
+}
+function refrescarContadores(){
+  const d1 = calcularPorDestino('DIV-10');
+  $('#mc-forman-div10').textContent = d1.forman;
+  $('#mc-noforman-div10').textContent = d1.noforman;
+  $('#mc-total-div10').textContent = d1.total;
+  const d2 = calcularPorDestino('BAT. CYS-X');
+  $('#mc-forman-batcys').textContent = d2.forman;
+  $('#mc-noforman-batcys').textContent = d2.noforman;
+  $('#mc-total-batcys').textContent = d2.total;
+  $('#mc-total-especial').textContent = state.personal.filter(p => p.especial).length;
+}
+async function moverRegistro(fromId, toId){
+  const arr = [...state.personal];
+  const iFrom = arr.findIndex(x => x.id === fromId);
+  const iTo = arr.findIndex(x => x.id === toId);
+  if(iFrom<0 || iTo<0) return;
+  const [item] = arr.splice(iFrom, 1);
+  arr.splice(iTo, 0, item);
+  try{
+    const batch = writeBatch(db);
+    arr.forEach((p, i) => batch.update(doc(db, 'personal', p.id), { orden: i }));
+    await batch.commit();
+    await logAudit('update', `Reordenó registro "${item.nombre}"`);
+    toast('Registro reordenado', 'ok');
+  }catch(e){ toast('Error al reordenar', 'danger'); }
+}
+
+/* ============================================================
+   MODAL EDICIÓN
+   ============================================================ */
+function llenarSelectLugares(){
+  const sel = $('#e-lugar');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">— Sin lugar / observación —</option>';
+  state.lugares.forEach(l => { const o=document.createElement('option'); o.value=l; o.textContent=l; sel.appendChild(o); });
+}
+function llenarSelectTiposEspecial(){
+  const sel = $('#e-tipo-especial');
+  if(!sel) return;
+  sel.innerHTML = '';
+  state.tiposEspecial.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; sel.appendChild(o); });
+}
+function actualizarVisibilidadCamposEdicion(){
+  const esEsp = $('#e-especial').checked;
+  $('#wrap-tipo-especial').classList.toggle('hidden', !esEsp);
+  $('#wrap-destino').classList.toggle('hidden', esEsp);
+  $('#wrap-lugar').classList.toggle('hidden', esEsp);
+}
+function abrirEdicion(id){
+  editandoId = id;
+  const p = state.personal.find(x => x.id === id);
+  if(!p) return;
+  $('#edit-title').textContent = 'Editar registro';
+  $('#e-nombre').value = p.nombre || '';
+  $('#e-especial').checked = !!p.especial;
+  llenarSelectTiposEspecial();
+  $('#e-tipo-especial').value = p.tipoEspecial || state.tiposEspecial[0] || '';
+  $('#e-destino').value = p.destino || 'DIV-10';
+  llenarSelectLugares();
+  $('#e-lugar').value = p.lugar || '';
+  $('#e-desde').value = p.desde || '';
+  $('#e-hasta').value = p.hasta || '';
+  actualizarVisibilidadCamposEdicion();
+  $('#modal-edit').classList.add('show');
+  setTimeout(()=> $('#e-nombre').focus(), 100);
+}
+function abrirNuevo(){
+  editandoId = null;
+  $('#edit-title').textContent = 'Nuevo registro';
+  $('#e-nombre').value = '';
+  $('#e-especial').checked = false;
+  llenarSelectTiposEspecial();
+  $('#e-tipo-especial').value = state.tiposEspecial[0] || '';
+  $('#e-destino').value = 'DIV-10';
+  llenarSelectLugares();
+  $('#e-lugar').value = '';
+  $('#e-desde').value = '';
+  $('#e-hasta').value = '';
+  actualizarVisibilidadCamposEdicion();
+  $('#modal-edit').classList.add('show');
+  setTimeout(()=> $('#e-nombre').focus(), 100);
+}
+async function guardarEdicion(){
+  const nombre = $('#e-nombre').value.trim();
+  if(!nombre){ toast('Ingrese el nombre', 'warn'); return; }
+  const especial = $('#e-especial').checked;
+  let destino, tipoEspecial = null, lugar;
+  if(especial){
+    destino = ''; tipoEspecial = $('#e-tipo-especial').value; lugar = '';
+    if(!tipoEspecial){ toast('Seleccione un tipo de situación', 'warn'); return; }
+  } else {
+    destino = $('#e-destino').value || 'DIV-10';
+    lugar = $('#e-lugar').value;
+  }
+  let desde = $('#e-desde').value;
+  let hasta = $('#e-hasta').value;
+  if(!especial && (!lugar || !lugar.trim())){
+    if(desde || hasta){ desde=''; hasta=''; toast('Lugar vacío: se borraron las fechas', 'warn'); }
+  }
+  try{
+    if(editandoId){
+      const data = especial
+        ? { nombre, especial, tipoEspecial, destino, lugar, desde, hasta }
+        : { nombre, especial, destino, lugar, desde, hasta, tipoEspecial: null };
+      await updateDoc(doc(db, 'personal', editandoId), data);
+      await logAudit('update', `Editó registro "${nombre}"`, { targetId: editandoId });
+      toast('Registro actualizado', 'ok');
+    } else {
+      const maxOrden = state.personal.reduce((m,x)=> Math.max(m, x.orden || 0), 0);
+      const data = especial
+        ? { nombre, especial, tipoEspecial, destino, lugar, desde, hasta, orden: maxOrden + 1, creado: serverTimestamp(), creadoPor: currentUser.uid }
+        : { nombre, especial, destino, lugar, desde, hasta, tipoEspecial: null, orden: maxOrden + 1, creado: serverTimestamp(), creadoPor: currentUser.uid };
+      const ref = await addDoc(collection(db, 'personal'), data);
+      await logAudit('create', `Creó registro "${nombre}"`, { targetId: ref.id });
+      toast('Registro creado', 'ok');
+    }
+    cerrarModales();
+  }catch(e){ console.error(e); toast('Error al guardar', 'danger'); }
+}
+async function eliminarRegistro(){
+  if(!editandoId) return;
+  const p = state.personal.find(x => x.id === editandoId);
+  if(!confirm('¿Eliminar este registro?')) return;
+  try{
+    await deleteDoc(doc(db, 'personal', editandoId));
+    await logAudit('delete', `Eliminó registro "${p ? p.nombre : editandoId}"`, { targetId: editandoId });
+    toast('Registro eliminado', 'danger');
+    cerrarModales();
+  }catch(e){ toast('Error al eliminar', 'danger'); }
+}
+function limpiarForm(){
+  if($('#e-especial').checked) $('#e-tipo-especial').value = state.tiposEspecial[0] || '';
+  else $('#e-lugar').value = '';
+  $('#e-desde').value = ''; $('#e-hasta').value = '';
+  toast('Campos limpiados', 'warn');
+}
+
+/* ============================================================
+   MODALES: LUGARES, TIPOS, FIRMA, DISEÑO
+   ============================================================ */
+function abrirLista(){ renderListaItems(state.lugares); $('#modal-lista').classList.add('show'); }
+function renderListaItems(items){
+  const cont = $('#lista-items'); cont.innerHTML = '';
+  items.forEach((it,i)=>{
+    const div = document.createElement('div');
+    div.className = 'list-item';
+    div.innerHTML = `<input type="text" value="${escapeHtml(it)}" data-idx="${i}"><button class="btn icon danger" data-del="${i}">✕</button>`;
+    cont.appendChild(div);
+  });
+  cont.querySelectorAll('[data-del]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const idx = +b.dataset.del;
+      const actuales = leerListaActual();
+      actuales.splice(idx, 1);
+      renderListaItems(actuales);
+    });
+  });
+}
+function leerListaActual(){ return [...$('#lista-items').querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean); }
+
+function abrirTipos(){ renderTiposItems(state.tiposEspecial); $('#modal-tipos').classList.add('show'); }
+function renderTiposItems(items){
+  const cont = $('#tipos-items'); cont.innerHTML = '';
+  items.forEach((it,i)=>{
+    const div = document.createElement('div');
+    div.className = 'list-item';
+    div.innerHTML = `<input type="text" value="${escapeHtml(it)}" data-idx="${i}"><button class="btn icon danger" data-del="${i}">✕</button>`;
+    cont.appendChild(div);
+  });
+  cont.querySelectorAll('[data-del]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const idx = +b.dataset.del;
+      const actuales = leerTiposActual();
+      actuales.splice(idx, 1);
+      renderTiposItems(actuales);
+    });
+  });
+}
+function leerTiposActual(){ return [...$('#tipos-items').querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean); }
+
+function abrirFirma(){
+  $('#f-nombre').value = state.firma.nombre || '';
+  $('#f-cargo').value = state.firma.cargo || '';
+  actualizarPreviewFirma();
+  $('#modal-firma').classList.add('show');
+}
+function actualizarPreviewFirma(){
+  $('#preview-nombre').textContent = $('#f-nombre').value.trim() || 'NOMBRE DEL JEFE';
+  $('#preview-cargo').textContent = $('#f-cargo').value.trim() || 'CARGO';
+}
+
+function abrirDiseno(){
+  const d = state.word.design;
+  $('#d-cols').value = d.cols || 2;
+  $('#d-pagesize').value = d.pageSize || 'letter';
+  $('#d-orient').value = d.orient || 'portrait';
+  $('#d-margin').value = d.margin != null ? d.margin : 8;
+  $('#d-cellpad').value = state.cellPad != null ? state.cellPad : 1;
+  $('#d-basesize').value = d.baseSize || 8;
+  $('#modal-diseno').classList.add('show');
+}
+
+/* ============================================================
+   IMPORTAR EXCEL
+   ============================================================ */
+function abrirImport(){
+  importRows = [];
+  $('#import-file').value = '';
+  $('#import-preview').classList.add('hidden');
+  $('#import-confirmar').disabled = true;
+  $('#import-preview-list').innerHTML = '';
+  $('#import-count').textContent = '';
+  $('#modal-import').classList.add('show');
+}
+function parseExcel(file){
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    try{
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: 'array' });
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+      let headerRow = -1, colIdx = 0;
+      for(let r = 0; r < Math.min(rows.length, 10); r++){
+        const row = rows[r];
+        for(let c = 0; c < row.length; c++){
+          if(norm(row[c]) === 'nombres'){ headerRow = r; colIdx = c; break; }
+        }
+        if(headerRow >= 0) break;
+      }
+      if(headerRow < 0){ toast('No se encontró la columna "NOMBRES"', 'danger'); return; }
+      importRows = [];
+      for(let r = headerRow + 1; r < rows.length; r++){
+        const v = (rows[r][colIdx] || '').toString().trim();
+        if(v) importRows.push(v);
+      }
+      $('#import-preview').classList.remove('hidden');
+      $('#import-preview-list').innerHTML = importRows.slice(0, 10)
+        .map((n,i) => `<div style="padding:4px 0;border-bottom:1px solid #eef1f5">${i+1}. ${escapeHtml(n)}</div>`).join('');
+      $('#import-count').textContent = `Total: ${importRows.length} nombres detectados`;
+      $('#import-confirmar').disabled = importRows.length === 0;
+    }catch(err){ console.error(err); toast('Error al leer el archivo', 'danger'); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+async function confirmarImportacion(){
+  if(!importRows.length) return;
+  try{
+    const maxOrden = state.personal.reduce((m,x)=> Math.max(m, x.orden || 0), 0);
+    const batch = writeBatch(db);
+    importRows.forEach((nombre, idx) => {
+      const ref = doc(collection(db, 'personal'));
+      batch.set(ref, {
+        nombre, destino: 'DIV-10', especial: false, tipoEspecial: null,
+        lugar: '', desde: '', hasta: '',
+        orden: maxOrden + 1 + idx,
+        creado: serverTimestamp(),
+        creadoPor: currentUser.uid
+      });
+    });
+    await batch.commit();
+    await logAudit('import_excel', `Importó ${importRows.length} registros desde Excel`);
+    toast(`Se importaron ${importRows.length} registros a DIV-10`, 'ok');
+    cerrarModales();
+  }catch(e){ console.error(e); toast('Error al importar', 'danger'); }
+}
+
+/* ============================================================
+   GENERAR PLANTILLA Y REPORTE (mismas funciones que v16)
+   ============================================================ */
+function generarSecciones(lista, porLugar, pad){
+  return Object.entries(porLugar)
+    .filter(([k,v]) => v > 0)
+    .map(([k,v]) => {
+      const personas = lista.filter(p => p.lugar === k);
+      const filas = personas.map((p,i)=>`
+        <tr>
+          <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${i+1}</td>
+          <td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(p.nombre)}</td>
+          <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${p.desde?fmtDate(p.desde):''}</td>
+          <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${p.hasta?fmtDate(p.hasta):''}</td>
+        </tr>`).join('');
+      return `
+        <div style="text-align:left;font-weight:bold;margin-top:6px">${escapeHtml(upper(k))}</div>
+        <table style="width:100%;border-collapse:collapse;border:1px solid #000;margin-bottom:6px">
+          <thead><tr>
+            <th style="border:1px solid #000;width:6%;text-align:center;padding:${pad}px 4px">N°</th>
+            <th style="border:1px solid #000;text-align:center;padding:${pad}px 4px">GRADO, NOMBRES Y APELLIDOS</th>
+            <th style="border:1px solid #000;width:16%;text-align:center;padding:${pad}px 4px">DESDE</th>
+            <th style="border:1px solid #000;width:16%;text-align:center;padding:${pad}px 4px">HASTA</th>
+          </tr></thead>
+          <tbody>${filas || '<tr><td colspan="4" style="border:1px solid #000">&nbsp;</td></tr>'}</tbody>
+        </table>`;
+    }).join('');
+}
+function generarTablaTotalesDiv10(porLugar, total, noforman, forman, tiposConteo, pad){
+  const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
+    .map(([k,v]) => `<tr><td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
+  const filasEsp = Object.entries(tiposConteo).filter(([k,v]) => v > 0)
+    .map(([k,v]) => `<tr data-especial-tipo="${escapeHtml(k)}"><td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="esp-tipo:${escapeHtml(k)}">${v}</td></tr>`).join('');
+  return `
+    <table style="border-collapse:collapse;border:1px solid #000;margin:4px auto;width:70%">
+      <thead><tr>
+        <th style="border:1px solid #000;padding:${pad}px 4px;text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
+        <th style="border:1px solid #000;padding:${pad}px 4px;width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="border:1px solid #000;padding:${pad}px 4px">EFECTIVO</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="efectivo">${total}</td></tr>
+        ${detalle}
+        <tr><td style="border:1px solid #000;padding:${pad}px 4px">NO FORMAN</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="noforman">${noforman}</td></tr>
+        <tr><td style="border:1px solid #000;padding:${pad}px 4px">FORMAN</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="forman">${forman}</td></tr>
+        <tr><td style="border:1px solid #000;padding:${pad}px 4px;font-weight:bold">TOTAL</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
+        ${filasEsp}
+      </tbody>
+    </table>`;
+}
+function generarTablaTotalesBatcys(porLugar, total, noforman, forman, pad){
+  const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
+    .map(([k,v]) => `<tr><td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
+  return `
+    <table style="border-collapse:collapse;border:1px solid #000;margin:4px auto;width:70%">
+      <thead><tr>
+        <th style="border:1px solid #000;padding:${pad}px 4px;text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
+        <th style="border:1px solid #000;padding:${pad}px 4px;width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="border:1px solid #000;padding:${pad}px 4px">EFECTIVO</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="efectivo">${total}</td></tr>
+        ${detalle}
+        <tr><td style="border:1px solid #000;padding:${pad}px 4px">NO FORMAN</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="noforman">${noforman}</td></tr>
+        <tr><td style="border:1px solid #000;padding:${pad}px 4px">FORMAN</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="forman">${forman}</td></tr>
+        <tr><td style="border:1px solid #000;padding:${pad}px 4px;font-weight:bold">TOTAL</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
+      </tbody>
+    </table>`;
+}
+function generarSeccionesTiposEspecial(pad){
+  return state.tiposEspecial.map(tipo => {
+    const personas = state.personal.filter(p => p.especial && (p.tipoEspecial === tipo));
+    if(!personas.length) return '';
+    const filas = personas.map((p,i)=>`
+      <tr>
+        <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${i+1}</td>
+        <td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(p.nombre)}</td>
+        <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${p.desde?fmtDate(p.desde):''}</td>
+        <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${p.hasta?fmtDate(p.hasta):''}</td>
+      </tr>`).join('');
+    return `
+      <div style="text-align:left;font-weight:bold;margin-top:6px">${escapeHtml(upper(tipo))}</div>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #000;margin-bottom:6px">
+        <thead><tr>
+          <th style="border:1px solid #000;width:6%;text-align:center;padding:${pad}px 4px">N°</th>
+          <th style="border:1px solid #000;text-align:center;padding:${pad}px 4px">GRADO, NOMBRES Y APELLIDOS</th>
+          <th style="border:1px solid #000;width:16%;text-align:center;padding:${pad}px 4px">DESDE</th>
+          <th style="border:1px solid #000;width:16%;text-align:center;padding:${pad}px 4px">HASTA</th>
+        </tr></thead>
+        <tbody>${filas}</tbody>
+      </table>`;
+  }).join('');
+}
+function generarBloqueFirma(){
+  const f = state.firma || {};
+  const nombre = escapeHtml(f.nombre || '');
+  const cargo = escapeHtml(f.cargo || '');
+  if(!nombre && !cargo) return '';
+  return `
+    <div class="print-firma" style="text-align:center;margin-top:24px;padding-top:8px">
+      <div style="font-size:8pt">${nombre}</div>
+      <div style="font-size:8pt;font-weight:bold">${cargo}</div>
+    </div>`;
+}
+function generarPlantilla(){
+  const pad = state.cellPad != null ? state.cellPad : 1;
+  const div10 = calcularPorDestino('DIV-10');
+  const batcys = calcularPorDestino('BAT. CYS-X');
+  const tiposConteo = calcularEspecialesPorTipo();
+  const fecha = fechaHoy();
+  const tituloDiv10 = `PARTE DIARIO DEL PERSONAL DE LA DIV-10 DEL ${fecha}`;
+  const secTiposEsp = generarSeccionesTiposEspecial(pad);
+  const seccionesDiv10 = generarSecciones(div10.lista, div10.porLugar, pad);
+  const seccionesBatcys = generarSecciones(batcys.lista, batcys.porLugar, pad);
+  const tablaDiv10 = generarTablaTotalesDiv10(div10.porLugar, div10.total, div10.noforman, div10.forman, tiposConteo, pad);
+  const tablaBatcys = generarTablaTotalesBatcys(batcys.porLugar, batcys.total, batcys.noforman, batcys.forman, pad);
+  return `
+    <div contenteditable="true" data-field="h1" style="font-weight:bold">COMANDO PRINCIPAL</div>
+    <div contenteditable="true" data-field="h2">COMANDO SECUNDARIO</div>
+    <div contenteditable="true" data-field="h3">PERSONAL</div>
+    <div style="text-align:center;font-weight:bold;margin:4px 0" contenteditable="true" data-field="tituloDiv10">${escapeHtml(tituloDiv10)}</div>
+    <div data-block="totales-div10">${tablaDiv10}</div>
+    <div style="text-align:center;font-weight:bold;margin:6px 0 4px" contenteditable="true" data-field="subtitulo">DEMOSTRACIÓN</div>
+    <div data-dynamic="secciones-div10">
+      <div data-dynamic="tipos-especial-div10">${secTiposEsp}</div>
+      <div data-dynamic="normales-div10">${seccionesDiv10}</div>
+    </div>
+    <div class="print-batcys-block">
+      <div style="text-align:center;font-weight:bold;margin:10px 0 4px" contenteditable="true" data-field="tituloBatcys">PARTE DIARIO DEL PERSONAL DEL BAT. C Y S -X</div>
+      <div data-block="totales-batcys">${tablaBatcys}</div>
+      <div data-dynamic="secciones-batcys">
+        <div data-dynamic="normales-batcys">${seccionesBatcys}</div>
+      </div>
+      ${generarBloqueFirma()}
+    </div>`;
+}
+function inyectarDatosDinamicos(html){
+  const cont = document.createElement('div');
+  cont.innerHTML = html;
+  const pad = state.cellPad != null ? state.cellPad : 1;
+  const div10 = calcularPorDestino('DIV-10');
+  const batcys = calcularPorDestino('BAT. CYS-X');
+  const tiposConteo = calcularEspecialesPorTipo();
+  cont.querySelectorAll('[data-total]').forEach(el=>{
+    const key = el.getAttribute('data-total');
+    const enBat = el.closest('[data-block="totales-batcys"]');
+    const bloque = enBat ? batcys : div10;
+    if(key === 'efectivo') el.textContent = bloque.total;
+    else if(key === 'noforman') el.textContent = bloque.noforman;
+    else if(key === 'forman') el.textContent = bloque.forman;
+    else if(key === 'total') el.textContent = bloque.total;
+    else if(key.startsWith('lugar:')){ el.textContent = bloque.porLugar[key.substring(6)] || 0; }
+    else if(key.startsWith('esp-tipo:')){ el.textContent = tiposConteo[key.substring(9)] || 0; }
+  });
+  const blockDiv = cont.querySelector('[data-block="totales-div10"]');
+  if(blockDiv){
+    const tb = blockDiv.querySelector('table tbody');
+    if(tb){
+      tb.querySelectorAll('tr').forEach(tr=>{
+        if(tr.querySelector('[data-total^="lugar:"]')) tr.remove();
+        if(tr.hasAttribute('data-especial-tipo')) tr.remove();
+      });
+      const ref0 = [...tb.querySelectorAll('tr')].find(tr=>{
+        const td = tr.querySelector('td'); return td && /efectivo/i.test(td.textContent);
+      });
+      if(ref0){
+        const nuevas = Object.entries(div10.porLugar).filter(([k,v]) => v > 0).map(([k,v]) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
+          return tr;
+        });
+        let ref = ref0;
+        nuevas.forEach(tr=>{ ref.parentNode.insertBefore(tr, ref.nextSibling); ref = tr; });
+      }
+      Object.entries(tiposConteo).filter(([k,v]) => v > 0).forEach(([k,v]) => {
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-especial-tipo', k);
+        tr.innerHTML = `<td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="esp-tipo:${escapeHtml(k)}">${v}</td>`;
+        tb.appendChild(tr);
+      });
+    }
+  }
+  const blockBat = cont.querySelector('[data-block="totales-batcys"]');
+  if(blockBat){
+    const tb = blockBat.querySelector('table tbody');
+    if(tb){
+      tb.querySelectorAll('tr').forEach(tr=>{
+        if(tr.querySelector('[data-total^="lugar:"]')) tr.remove();
+      });
+      const ref0 = [...tb.querySelectorAll('tr')].find(tr=>{
+        const td = tr.querySelector('td'); return td && /efectivo/i.test(td.textContent);
+      });
+      if(ref0){
+        const nuevas = Object.entries(batcys.porLugar).filter(([k,v]) => v > 0).map(([k,v]) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
+          return tr;
+        });
+        let ref = ref0;
+        nuevas.forEach(tr=>{ ref.parentNode.insertBefore(tr, ref.nextSibling); ref = tr; });
+      }
+    }
+  }
+  const s1 = cont.querySelector('[data-dynamic="tipos-especial-div10"]');
+  if(s1) s1.innerHTML = generarSeccionesTiposEspecial(pad);
+  const s2 = cont.querySelector('[data-dynamic="normales-div10"]');
+  if(s2) s2.innerHTML = generarSecciones(div10.lista, div10.porLugar, pad);
+  const s3 = cont.querySelector('[data-dynamic="normales-batcys"]');
+  if(s3) s3.innerHTML = generarSecciones(batcys.lista, batcys.porLugar, pad);
+  const firmas = cont.querySelectorAll('.print-firma');
+  firmas.forEach(f => f.remove());
+  const bB = cont.querySelector('.print-batcys-block');
+  if(bB) bB.insertAdjacentHTML('beforeend', generarBloqueFirma());
+  return cont.innerHTML;
+}
+
+/* ============================================================
+   WORD
+   ============================================================ */
+function abrirWord(){
+  const w = state.word;
+  const d = w.design;
+  $('#w-font').value = d.baseFont;
+  $('#w-size').value = d.baseSize;
+  const page = $('#word-page');
+  page.style.fontFamily = d.baseFont;
+  page.style.fontSize = d.baseSize + 'pt';
+  page.innerHTML = (w.html && w.html.trim()) ? inyectarDatosDinamicos(w.html) : generarPlantilla();
+  actualizarPreview();
+  $('#modal-word').classList.add('show');
+  setTimeout(()=> page.focus(), 100);
+}
+function actualizarPreview(){ $('#word-preview').innerHTML = '<div class="mini">' + $('#word-page').innerHTML + '</div>'; }
+function guardarRango(){
+  const sel = window.getSelection();
+  if(!sel || !sel.rangeCount) return;
+  const r = sel.getRangeAt(0);
+  const page = $('#word-page');
+  if(page.contains(r.startContainer) && page.contains(r.endContainer)) savedRange = r.cloneRange();
+}
+function restaurarRango(){
+  if(!savedRange) return false;
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  try{ sel.addRange(savedRange); return true; }catch(e){ return false; }
+}
+function aplicarEstiloSeleccion(propiedad, valor){
+  const page = $('#word-page');
+  page.focus();
+  let sel = window.getSelection();
+  if(!sel.rangeCount || sel.isCollapsed){ restaurarRango(); sel = window.getSelection(); }
+  let range = null;
+  if(sel && sel.rangeCount){
+    const r = sel.getRangeAt(0);
+    if(page.contains(r.startContainer) && page.contains(r.endContainer)) range = r;
+  }
+  if(!range || range.collapsed){
+    const span = document.createElement('span');
+    span.style[propiedad] = valor;
+    span.appendChild(document.createTextNode('\u200B'));
+    if(range) range.insertNode(span); else page.appendChild(span);
+    const r = document.createRange();
+    r.setStart(span.firstChild, 1); r.setEnd(span.firstChild, 1);
+    sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    savedRange = r.cloneRange();
+    return;
+  }
+  const span = document.createElement('span');
+  span.style[propiedad] = valor;
+  try{ range.surroundContents(span); }
+  catch(e){ const frag = range.extractContents(); span.appendChild(frag); range.insertNode(span); }
+  const r2 = document.createRange(); r2.selectNodeContents(span);
+  sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r2);
+  savedRange = r2.cloneRange();
+}
+function aplicarFuente(n){ aplicarEstiloSeleccion('fontFamily', n); actualizarPreview(); }
+function aplicarTamanoPt(pt){ aplicarEstiloSeleccion('fontSize', pt + 'pt'); actualizarPreview(); }
+function ejecutar(cmd, val){
+  const page = $('#word-page');
+  if(document.activeElement !== page) page.focus();
+  restaurarRango();
+  try{ document.execCommand(cmd, false, val == null ? null : val); }catch(e){}
+  guardarRango(); actualizarPreview();
+}
+function actualizarEstadoBotones(){
+  const cmds = ['bold','italic','underline','strikeThrough','subscript','superscript',
+                'justifyLeft','justifyCenter','justifyRight','justifyFull',
+                'insertUnorderedList','insertOrderedList'];
+  $$('#tab-inicio .rbtn[data-cmd]').forEach(b=>{
+    const cmd = b.dataset.cmd;
+    if(cmds.includes(cmd)){ try{ b.classList.toggle('on', !!document.queryCommandState(cmd)); }catch(e){} }
+  });
+}
+async function guardarConfigWord(){
+  try{
+    const html = $('#word-page').innerHTML;
+    const d = state.word.design;
+    d.baseFont = $('#w-font').value || 'Arial';
+    d.baseSize = parseInt($('#w-size').value, 10) || 8;
+    await setDoc(doc(db, 'config', 'word'), {
+      html,
+      design: d,
+      cellPad: state.cellPad,
+      actualizado: serverTimestamp()
+    }, { merge: true });
+    state.word.html = html;
+    await logAudit('save_word', 'Guardó la configuración del reporte Word');
+    toast('💾 Configuración guardada', 'ok');
+  }catch(e){ console.error(e); toast('Error al guardar', 'danger'); }
+}
+function aplicarEstiloPagina(d){
+  let styleEl = document.getElementById('print-page-style');
+  if(!styleEl){ styleEl = document.createElement('style'); styleEl.id = 'print-page-style'; document.head.appendChild(styleEl); }
+  styleEl.textContent = `@media print { @page { size: ${d.pageSize||'letter'} ${d.orient||'portrait'}; margin: ${(d.margin!=null?d.margin:8)}mm; } }`;
+}
+async function imprimir(){
+  const w = state.word;
+  const d = w.design || {};
+  let baseHtml = (w.html && w.html.trim()) ? w.html : generarPlantilla();
+  let htmlActualizado = inyectarDatosDinamicos(baseHtml);
+  const tmp = document.createElement('div');
+  tmp.innerHTML = htmlActualizado;
+  if(!tmp.querySelector('.print-batcys-block')) tmp.innerHTML = `<div class="print-batcys-block">${tmp.innerHTML}</div>`;
+  if(!tmp.querySelector('.print-firma')){
+    const bB = tmp.querySelector('.print-batcys-block');
+    if(bB) bB.insertAdjacentHTML('beforeend', generarBloqueFirma());
+  }
+  htmlActualizado = tmp.innerHTML;
+  const copias = d.cols === 1 ? 1 : 2;
+  const copyHtml = `<div class="print-copy" style="font-family:${d.baseFont||'Arial'};font-size:${d.baseSize||8}pt;line-height:1.15;color:#000">${htmlActualizado}</div>`;
+  aplicarEstiloPagina(d);
+  const sheet = document.createElement('div');
+  sheet.className = 'print-sheet cols-' + copias;
+  for(let i=0;i<copias;i++) sheet.insertAdjacentHTML('beforeend', copyHtml);
+  const root = $('#print-root');
+  root.innerHTML = '';
+  root.appendChild(sheet);
+  await logAudit('print', `Imprimió el reporte (${copias} copia${copias>1?'s':''})`);
+  setTimeout(()=> window.print(), 150);
+}
+
+/* ============================================================
+   USUARIOS (admin / jefe)
+   ============================================================ */
+async function abrirUsers(){
+  if(!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'jefe')) return;
+  $('#modal-users').classList.add('show');
+  await cargarUsuarios();
+}
+async function cargarUsuarios(){
+  const list = $('#users-list');
+  list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Cargando...</div>';
+  try{
+    const snap = await getDocs(query(collection(db, 'users'), orderBy('creado', 'desc')));
+    const users = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+    if(!users.length){ list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Sin usuarios</div>'; return; }
+    list.innerHTML = users.map(u => {
+      const esYo = u.uid === currentUser.uid;
+      const puedeEditarRol = currentUser.role === 'admin' && !esYo;
+      const puedeValidar = (currentUser.role === 'admin' || currentUser.role === 'jefe') && !esYo;
+      const puedeEliminar = currentUser.role === 'admin' && !esYo;
+      return `
+        <div class="user-item">
+          <div class="info">
+            <div class="email">${escapeHtml(u.email || '—')} <span class="estado ${u.estado || 'pendiente'}">${(u.estado || 'pendiente').toUpperCase()}</span></div>
+            <div class="role ${u.role || 'user'}">${labelRol(u.role)} · ${escapeHtml(u.nombre || '')}</div>
+          </div>
+          <div class="actions">
+            ${u.estado === 'pendiente' && puedeValidar ? `<button class="btn sm ok" data-uid="${u.uid}" data-action="activar">✔ Validar</button>` : ''}
+            ${u.estado === 'pendiente' && puedeValidar ? `<button class="btn sm danger" data-uid="${u.uid}" data-action="rechazar">✕ Rechazar</button>` : ''}
+            ${u.estado === 'activo' && puedeValidar ? `<button class="btn sm danger" data-uid="${u.uid}" data-action="bloquear">🚫 Bloquear</button>` : ''}
+            ${(u.estado === 'rechazado' || u.estado === 'bloqueado') && puedeValidar ? `<button class="btn sm ok" data-uid="${u.uid}" data-action="activar">↺ Reactivar</button>` : ''}
+            ${puedeEditarRol ? `<button class="btn sm ghost" data-uid="${u.uid}" data-action="rol">Cambiar rol</button>` : ''}
+            ${puedeEliminar ? `<button class="btn sm danger" data-uid="${u.uid}" data-action="del">🗑</button>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+    list.querySelectorAll('[data-action]').forEach(b => {
+      b.addEventListener('click', () => accionUsuario(b.dataset.uid, b.dataset.action, users));
+    });
+  }catch(e){ console.error(e); list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Error al cargar</div>'; }
+}
+async function accionUsuario(uid, accion, users){
+  const u = users.find(x => x.uid === uid);
+  if(!u) return;
+  try{
+    if(accion === 'activar'){
+      await updateDoc(doc(db, 'users', uid), { estado: 'activo', validadoPor: currentUser.uid, validadoEn: serverTimestamp() });
+      await logAudit('user_validate', `Validó usuario ${u.email}`, { targetId: uid });
+      toast('Usuario validado', 'ok');
+    } else if(accion === 'rechazar'){
+      await updateDoc(doc(db, 'users', uid), { estado: 'rechazado' });
+      await logAudit('user_reject', `Rechazó usuario ${u.email}`, { targetId: uid });
+      toast('Usuario rechazado', 'warn');
+    } else if(accion === 'bloquear'){
+      await updateDoc(doc(db, 'users', uid), { estado: 'bloqueado' });
+      await logAudit('user_block', `Bloqueó usuario ${u.email}`, { targetId: uid });
+      toast('Usuario bloqueado', 'warn');
+    } else if(accion === 'rol'){
+      if(currentUser.role !== 'admin'){ toast('Solo el admin puede cambiar roles', 'warn'); return; }
+      const nuevo = prompt(`Nuevo rol para ${u.email} (user/jefe/admin):`, u.role);
+      if(!nuevo) return;
+      if(!['user','jefe','admin'].includes(nuevo)){ toast('Rol inválido', 'warn'); return; }
+      await updateDoc(doc(db, 'users', uid), { role: nuevo });
+      await logAudit('user_role', `Cambió rol de ${u.email} a ${nuevo}`, { targetId: uid });
+      toast('Rol actualizado', 'ok');
+    } else if(accion === 'del'){
+      if(currentUser.role !== 'admin'){ toast('Solo el admin puede eliminar', 'warn'); return; }
+      if(!confirm(`¿Eliminar el perfil del usuario ${u.email}? (La cuenta de Auth queda activa pero sin acceso)`)) return;
+      await deleteDoc(doc(db, 'users', uid));
+      await logAudit('user_delete', `Eliminó usuario ${u.email}`, { targetId: uid });
+      toast('Usuario eliminado', 'danger');
+    }
+    await cargarUsuarios();
+  }catch(e){ console.error(e); toast('Error: ' + e.code, 'danger'); }
+}
+
+/* ============================================================
+   AUDITORÍA (modal)
+   ============================================================ */
+async function abrirAudit(){
+  if(!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'jefe')) return;
+  $('#modal-audit').classList.add('show');
+  await cargarAuditoria();
+}
+async function cargarAuditoria(){
+  const list = $('#audit-list');
+  list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Cargando...</div>';
+  try{
+    const q = query(collection(db, 'audit'), orderBy('fecha', 'desc'), limit(500));
+    const snap = await getDocs(q);
+    auditCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    // Poblar dropdown de usuarios
+    const sel = $('#audit-user');
+    sel.innerHTML = '<option value="">Todos los usuarios</option>';
+    const usuarios = [...new Set(auditCache.map(a => a.uid))];
+    usuarios.forEach(uid => {
+      const ev = auditCache.find(a => a.uid === uid);
+      const o = document.createElement('option');
+      o.value = uid;
+      o.textContent = ev ? (ev.nombre || ev.email || uid) : uid;
+      sel.appendChild(o);
+    });
+    renderAuditoria();
+  }catch(e){ console.error(e); list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Error al cargar</div>'; }
+}
+function renderAuditoria(){
+  const q = norm($('#audit-search').value);
+  const fUser = $('#audit-user').value;
+  const fAction = $('#audit-action').value;
+  let filtered = auditCache;
+  if(q) filtered = filtered.filter(a => norm((a.descripcion||'') + ' ' + (a.action||'') + ' ' + (a.email||'')).includes(q));
+  if(fUser) filtered = filtered.filter(a => a.uid === fUser);
+  if(fAction) filtered = filtered.filter(a => a.action === fAction);
+  $('#audit-count').textContent = filtered.length + ' eventos';
+  const list = $('#audit-list');
+  if(!filtered.length){ list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Sin eventos</div>'; return; }
+  list.innerHTML = filtered.map(e => {
+    const fecha = e.fecha && e.fecha.toDate ? e.fecha.toDate().toLocaleString('es-PE') : '—';
+    const badgeClass = {
+      create:'ok', update:'warn', delete:'danger', login:'ok', logout:'warn',
+      user_create:'ok', user_delete:'danger', user_role:'warn',
+      user_register:'', user_validate:'ok', user_reject:'warn', user_block:'danger'
+    }[e.action] || '';
+    return `
+      <div class="audit-item">
+        <div class="meta">
+          <span class="badge ${badgeClass}">${e.action}</span>
+          <span>👤 ${escapeHtml(e.nombre || e.email || '—')}</span>
+          <span>🕐 ${fecha}</span>
+        </div>
+        <div>${escapeHtml(e.descripcion || '')}</div>
+      </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   EVENTOS
+   ============================================================ */
+function cerrarModales(){
+  $$('.overlay').forEach(o => o.classList.remove('show'));
+  savedRange = null;
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+
+  // Render inicial (público)
+  renderResumen();
+  renderTablas();
+  refrescarContadores();
+
+  // Navegación
+  $('#btn-volver').addEventListener('click', irAResumen);
+
+  // Toolbar
+  $('#btn-nuevo').addEventListener('click', abrirNuevo);
+  $('#btn-imprimir').addEventListener('click', imprimir);
+  $('#btn-config-lista').addEventListener('click', abrirLista);
+  $('#btn-config-tipos').addEventListener('click', abrirTipos);
+  $('#btn-config-firma').addEventListener('click', abrirFirma);
+  $('#btn-config-diseno').addEventListener('click', abrirDiseno);
+  $('#btn-config-word').addEventListener('click', abrirWord);
+  $('#btn-importar').addEventListener('click', abrirImport);
+  $('#btn-audit').addEventListener('click', abrirAudit);
+  $('#btn-users').addEventListener('click', abrirUsers);
+  $('#btn-mover').addEventListener('click', ()=>{
+    state.moverActivo = !state.moverActivo;
+    $('#btn-mover').classList.toggle('on', state.moverActivo);
+    renderTablas();
+    toast(state.moverActivo ? 'Reordenamiento activado' : 'Reordenamiento desactivado');
+  });
+
+  // Edición
+  $('#e-especial').addEventListener('change', actualizarVisibilidadCamposEdicion);
+  $('#e-guardar').addEventListener('click', guardarEdicion);
+  $('#e-eliminar').addEventListener('click', eliminarRegistro);
+  $('#e-limpiar').addEventListener('click', limpiarForm);
+
+  // Lista lugares
+  $('#lista-add').addEventListener('click', ()=>{
+    const a = leerListaActual(); a.push(''); renderListaItems(a);
+    const ins = $('#lista-items').querySelectorAll('input');
+    if(ins.length) ins[ins.length-1].focus();
+  });
+  $('#lista-guardar').addEventListener('click', async ()=>{
+    try{
+      const items = leerListaActual();
+      await setDoc(doc(db, 'config', 'lugares'), { items, actualizado: serverTimestamp() });
+      await logAudit('save_list', `Actualizó la lista de lugares (${items.length} opciones)`);
+      toast('Lugares guardados', 'ok');
+      cerrarModales();
+    }catch(e){ toast('Error al guardar', 'danger'); }
+  });
+
+  // Tipos
+  $('#tipos-add').addEventListener('click', ()=>{
+    const a = leerTiposActual(); a.push(''); renderTiposItems(a);
+    const ins = $('#tipos-items').querySelectorAll('input');
+    if(ins.length) ins[ins.length-1].focus();
+  });
+  $('#tipos-guardar').addEventListener('click', async ()=>{
+    try{
+      const items = leerTiposActual();
+      if(!items.length){ toast('Debe haber al menos un tipo', 'warn'); return; }
+      await setDoc(doc(db, 'config', 'tiposEspecial'), { items, actualizado: serverTimestamp() });
+      await logAudit('save_tipos', `Actualizó los tipos especiales (${items.length})`);
+      toast('Tipos guardados', 'ok');
+      cerrarModales();
+    }catch(e){ toast('Error al guardar', 'danger'); }
+  });
+
+  // Firma
+  $('#f-nombre').addEventListener('input', actualizarPreviewFirma);
+  $('#f-cargo').addEventListener('input', actualizarPreviewFirma);
+  $('#firma-guardar').addEventListener('click', async ()=>{
+    try{
+      const nombre = $('#f-nombre').value.trim();
+      const cargo = $('#f-cargo').value.trim();
+      await setDoc(doc(db, 'config', 'firma'), { nombre, cargo, actualizado: serverTimestamp() });
+      await logAudit('save_firma', 'Actualizó la firma del jefe de control');
+      toast('✍ Firma guardada', 'ok');
+      cerrarModales();
+    }catch(e){ toast('Error al guardar', 'danger'); }
+  });
+
+  // Diseño
+  $('#diseno-guardar').addEventListener('click', async ()=>{
+    try{
+      const d = state.word.design;
+      d.cols = parseInt($('#d-cols').value, 10) || 2;
+      d.pageSize = $('#d-pagesize').value || 'letter';
+      d.orient = $('#d-orient').value || 'portrait';
+      d.margin = parseInt($('#d-margin').value, 10);
+      if(isNaN(d.margin)) d.margin = 8;
+      d.baseSize = parseInt($('#d-basesize').value, 10) || 8;
+      const cellPad = parseInt($('#d-cellpad').value, 10);
+      state.cellPad = isNaN(cellPad) ? 1 : cellPad;
+      await setDoc(doc(db, 'config', 'word'), { design: d, cellPad: state.cellPad, actualizado: serverTimestamp() }, { merge: true });
+      await logAudit('save_diseno', 'Actualizó el diseño del reporte');
+      toast('📐 Diseño guardado', 'ok');
+      cerrarModales();
+    }catch(e){ toast('Error al guardar', 'danger'); }
+  });
+
+  // Importar
+  $('#import-file').addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    parseExcel(file);
+  });
+  $('#import-confirmar').addEventListener('click', confirmarImportacion);
+
+  // Word
+  const page = $('#word-page');
+  page.addEventListener('mouseup', guardarRango);
+  page.addEventListener('keyup', guardarRango);
+  page.addEventListener('input', ()=>{ actualizarPreview(); guardarRango(); });
+  page.addEventListener('focus', guardarRango);
+
+  document.addEventListener('selectionchange', ()=>{
+    if($('#modal-word').classList.contains('show')){
+      const sel = window.getSelection();
+      if(sel && sel.rangeCount && page.contains(sel.anchorNode)){
+        guardarRango();
+        actualizarEstadoBotones();
+      }
+    }
+  });
+
+  $$('#tab-inicio .rbtn[data-cmd]').forEach(b=>{
+    b.addEventListener('mousedown', e => e.preventDefault());
+    b.addEventListener('click', ()=>{
+      ejecutar(b.dataset.cmd, b.dataset.val || null);
+      actualizarEstadoBotones();
+    });
+  });
+
+  const selFuente = $('#w-font');
+  const selTamano = $('#w-size');
+  selFuente.addEventListener('focus', guardarRango);
+  selTamano.addEventListener('focus', guardarRango);
+  selFuente.addEventListener('change', ()=>{ restaurarRango(); aplicarFuente(selFuente.value); setTimeout(()=> page.focus(), 0); });
+  selTamano.addEventListener('change', ()=>{ restaurarRango(); aplicarTamanoPt(parseInt(selTamano.value, 10) || 8); setTimeout(()=> page.focus(), 0); });
+
+  $('#w-undo').addEventListener('mousedown', e => e.preventDefault());
+  $('#w-undo').addEventListener('click', ()=> ejecutar('undo'));
+  $('#w-redo').addEventListener('mousedown', e => e.preventDefault());
+  $('#w-redo').addEventListener('click', ()=> ejecutar('redo'));
+  $('#w-clear').addEventListener('mousedown', e => e.preventDefault());
+  $('#w-clear').addEventListener('click', ()=> ejecutar('removeFormat'));
+
+  function aplicarInterlineado(v){
+    page.focus(); restaurarRango();
+    const sel = window.getSelection();
+    if(sel && sel.rangeCount && !sel.getRangeAt(0).collapsed){
+      const range = sel.getRangeAt(0);
+      const root = range.commonAncestorContainer;
+      const cont = root.nodeType===1 ? root : root.parentElement;
+      cont.querySelectorAll('p,div,td,th').forEach(el=>{ if(range.intersectsNode(el)) el.style.lineHeight = v; });
+    } else {
+      $$('#word-page p,#word-page div,#word-page td,#word-page th').forEach(el=> el.style.lineHeight = v);
+    }
+    actualizarPreview();
+  }
+  ['#w-lh-1','#w-lh-125','#w-lh-15'].forEach((s,i)=>{
+    const v = ['1','1.25','1.5'][i];
+    $(s).addEventListener('mousedown', e => e.preventDefault());
+    $(s).addEventListener('click', ()=> aplicarInterlineado(v));
+  });
+  $('#w-spacing0').addEventListener('mousedown', e => e.preventDefault());
+  $('#w-spacing0').addEventListener('click', ()=>{
+    $$('#word-page p,#word-page div').forEach(el=>{ el.style.margin='0'; el.style.padding='0'; });
+    actualizarPreview();
+  });
+  $('#w-insert-salto').addEventListener('mousedown', e => e.preventDefault());
+  $('#w-insert-salto').addEventListener('click', ()=>{
+    page.focus(); restaurarRango();
+    document.execCommand('insertLineBreak');
+    guardarRango(); actualizarPreview();
+  });
+  $('#w-insert-firmas').addEventListener('mousedown', e => e.preventDefault());
+  $('#w-insert-firmas').addEventListener('click', ()=>{
+    page.focus(); restaurarRango();
+    document.execCommand('insertHTML', false, '<div style="margin-top:30px;text-align:center">_____________________________<br>Firma y sello</div>');
+    guardarRango(); actualizarPreview();
+  });
+
+  $('#word-guardar').addEventListener('click', guardarConfigWord);
+  $('#word-salir').addEventListener('click', cerrarModales);
+
+  // Usuarios refresh
+  $('#users-refresh').addEventListener('click', cargarUsuarios);
+  // Auditoría
+  $('#audit-search').addEventListener('input', renderAuditoria);
+  $('#audit-user').addEventListener('change', renderAuditoria);
+  $('#audit-action').addEventListener('change', renderAuditoria);
+  $('#audit-refresh').addEventListener('click', cargarAuditoria);
+
+  // Cierre de modales
+  document.addEventListener('click', e => { if(e.target.matches('.overlay')) e.target.classList.remove('show'); });
+  $$('[data-close]').forEach(b => b.addEventListener('click', cerrarModales));
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape') cerrarModales();
+    if(e.ctrlKey && e.key === 'p'){ e.preventDefault(); imprimir(); }
+  });
+});
+</script>
+</body>
+</html>
