@@ -246,7 +246,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 
 #print-root{display:none}
 
-/* ⭐⭐⭐ IMPRESIÓN: BORDES ULTRA FINOS ⭐⭐⭐ */
+/* ⭐⭐⭐ IMPRESIÓN: BORDES ULTRA FINOS + ESPACIADO COMPACTO ⭐⭐⭐ */
 @media print{
   @page{size:letter portrait;margin:8mm}
   body *{visibility:hidden !important}
@@ -259,11 +259,22 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
   .print-copy p,.print-copy div,.print-copy table{margin:0;padding:0}
   .print-batcys-block{page-break-inside:avoid}
 
-  /* BORDES DELGADOS EN IMPRESIÓN */
+  /* Sin espacio entre líneas del membrete y el título */
+  .print-copy > div{
+    line-height:1.05 !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  .print-copy > div[contenteditable="true"]{
+    line-height:1.05 !important;
+    margin:0 !important;
+  }
+
+  /* Bordes ultra finos */
   .print-copy table,
   .print-copy table td,
   .print-copy table th{
-    border-width: 0.5px !important;
+    border-width: 0.2mm !important;
     border-color: #000 !important;
     border-style: solid !important;
   }
@@ -1635,9 +1646,9 @@ async function confirmarImportacion(){
   }catch(e){ console.error(e); toast('Error al importar', 'danger'); }
 }
 
-/* ⭐⭐⭐ FUNCIONES DE REPORTE CON BORDES ULTRA FINOS ⭐⭐⭐ */
-const BORDE = 'border:0.5px solid #000';           // grosor 0.5px
-const BORDE_PAD = 'padding:1px 3px';
+/* ⭐ BORDES ULTRA FINOS en el HTML generado */
+const BORDE = 'border:0.2mm solid #000';
+const BORDE_PAD = 'padding:0.5px 3px';
 
 function generarSecciones(lista, porLugar, pad){
   return Object.entries(porLugar)
@@ -1652,8 +1663,8 @@ function generarSecciones(lista, porLugar, pad){
           <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.hasta?fmtDate(p.hasta):''}</td>
         </tr>`).join('');
       return `
-        <div style="text-align:left;font-weight:bold;margin-top:4px">${escapeHtml(upper(k))}</div>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:3px">
+        <div style="text-align:left;font-weight:bold;margin:1px 0 0 0;line-height:1.05">${escapeHtml(upper(k))}</div>
+        <table style="width:100%;border-collapse:collapse;margin:0 0 2px 0">
           <thead><tr>
             <th style="${BORDE};width:6%;text-align:center;${BORDE_PAD}">N°</th>
             <th style="${BORDE};text-align:center;${BORDE_PAD}">GRADO, NOMBRES Y APELLIDOS</th>
@@ -1670,7 +1681,7 @@ function generarTablaTotalesDiv10(porLugar, total, noforman, forman, tiposConteo
   const filasEsp = Object.entries(tiposConteo).filter(([k,v]) => v > 0)
     .map(([k,v]) => `<tr data-especial-tipo="${escapeHtml(k)}"><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="esp-tipo:${escapeHtml(k)}">${v}</td></tr>`).join('');
   return `
-    <table style="border-collapse:collapse;margin:3px auto;width:70%">
+    <table style="border-collapse:collapse;margin:0 auto;width:70%">
       <thead><tr>
         <th style="${BORDE};${BORDE_PAD};text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
         <th style="${BORDE};${BORDE_PAD};width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
@@ -1689,7 +1700,7 @@ function generarTablaTotalesBatcys(porLugar, total, noforman, forman, pad){
   const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
     .map(([k,v]) => `<tr><td style="${BORDE};${BORDE_PAD}">${escapeHtml(upper(k))}</td><td style="${BORDE};text-align:center;${BORDE_PAD}" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
   return `
-    <table style="border-collapse:collapse;margin:3px auto;width:70%">
+    <table style="border-collapse:collapse;margin:0 auto;width:70%">
       <thead><tr>
         <th style="${BORDE};${BORDE_PAD};text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
         <th style="${BORDE};${BORDE_PAD};width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
@@ -1715,8 +1726,8 @@ function generarSeccionesTiposEspecial(pad){
         <td style="${BORDE};text-align:center;${BORDE_PAD}">${p.hasta?fmtDate(p.hasta):''}</td>
       </tr>`).join('');
     return `
-      <div style="text-align:left;font-weight:bold;margin-top:4px">${escapeHtml(upper(tipo))}</div>
-      <table style="width:100%;border-collapse:collapse;margin-bottom:3px">
+      <div style="text-align:left;font-weight:bold;margin:1px 0 0 0;line-height:1.05">${escapeHtml(upper(tipo))}</div>
+      <table style="width:100%;border-collapse:collapse;margin:0 0 2px 0">
         <thead><tr>
           <th style="${BORDE};width:6%;text-align:center;${BORDE_PAD}">N°</th>
           <th style="${BORDE};text-align:center;${BORDE_PAD}">GRADO, NOMBRES Y APELLIDOS</th>
@@ -1733,9 +1744,9 @@ function generarBloqueFirma(){
   const cargo = escapeHtml(f.cargo || '');
   if(!nombre && !cargo) return '';
   return `
-    <div class="print-firma" style="text-align:center;margin-top:18px;padding-top:6px">
-      <div style="font-size:7pt">${nombre}</div>
-      <div style="font-size:7pt;font-weight:bold">${cargo}</div>
+    <div class="print-firma" style="text-align:center;margin-top:12px;padding-top:4px">
+      <div style="font-size:7pt;line-height:1.05">${nombre}</div>
+      <div style="font-size:7pt;font-weight:bold;line-height:1.05">${cargo}</div>
     </div>`;
 }
 function generarPlantilla(){
@@ -1751,18 +1762,18 @@ function generarPlantilla(){
   const tablaDiv10 = generarTablaTotalesDiv10(div10.porLugar, div10.total, div10.noforman, div10.forman, tiposConteo, pad);
   const tablaBatcys = generarTablaTotalesBatcys(batcys.porLugar, batcys.total, batcys.noforman, batcys.forman, pad);
   return `
-    <div contenteditable="true" data-field="h1" style="font-weight:bold">COMANDO PRINCIPAL</div>
-    <div contenteditable="true" data-field="h2">COMANDO SECUNDARIO</div>
-    <div contenteditable="true" data-field="h3">PERSONAL</div>
-    <div style="text-align:center;font-weight:bold;margin:3px 0" contenteditable="true" data-field="tituloDiv10">${escapeHtml(tituloDiv10)}</div>
+    <div contenteditable="true" data-field="h1" style="font-weight:bold;line-height:1.05;margin:0">COMANDO PRINCIPAL</div>
+    <div contenteditable="true" data-field="h2" style="line-height:1.05;margin:0">COMANDO SECUNDARIO</div>
+    <div contenteditable="true" data-field="h3" style="line-height:1.05;margin:0">PERSONAL</div>
+    <div style="text-align:center;font-weight:bold;margin:0;line-height:1.05" contenteditable="true" data-field="tituloDiv10">${escapeHtml(tituloDiv10)}</div>
     <div data-block="totales-div10">${tablaDiv10}</div>
-    <div style="text-align:center;font-weight:bold;margin:4px 0 2px" contenteditable="true" data-field="subtitulo">DEMOSTRACIÓN</div>
+    <div style="text-align:center;font-weight:bold;margin:1px 0 0 0;line-height:1.05" contenteditable="true" data-field="subtitulo">DEMOSTRACIÓN</div>
     <div data-dynamic="secciones-div10">
       <div data-dynamic="tipos-especial-div10">${secTiposEsp}</div>
       <div data-dynamic="normales-div10">${seccionesDiv10}</div>
     </div>
     <div class="print-batcys-block">
-      <div style="text-align:center;font-weight:bold;margin:8px 0 2px" contenteditable="true" data-field="tituloBatcys">PARTE DIARIO DEL PERSONAL DEL BAT. C Y S -X</div>
+      <div style="text-align:center;font-weight:bold;margin:6px 0 0 0;line-height:1.05" contenteditable="true" data-field="tituloBatcys">PARTE DIARIO DEL PERSONAL DEL BAT. C Y S -X</div>
       <div data-block="totales-batcys">${tablaBatcys}</div>
       <div data-dynamic="secciones-batcys">
         <div data-dynamic="normales-batcys">${seccionesBatcys}</div>
@@ -1960,11 +1971,16 @@ async function imprimirConFecha(fechaTexto){
   const tmp = document.createElement('div');
   tmp.innerHTML = htmlActualizado;
 
+  // ⭐ REEMPLAZO ROBUSTO DE LA FECHA
   const tituloDiv10El = tmp.querySelector('[data-field="tituloDiv10"]');
   if(tituloDiv10El){
+    const regexFecha = /\d{2}-[A-ZÁÉÍÓÚ]{3}-\d{2}/;
     const textoActual = tituloDiv10El.textContent || '';
-    const nuevoTexto = textoActual.replace(/\d{2}-[A-Z]{3}-\d{2}\s*$/, fechaTexto);
-    tituloDiv10El.textContent = nuevoTexto;
+    if(regexFecha.test(textoActual)){
+      tituloDiv10El.textContent = textoActual.replace(regexFecha, fechaTexto);
+    } else {
+      tituloDiv10El.textContent = `PARTE DIARIO DEL PERSONAL DE LA DIV-10 DEL ${fechaTexto}`;
+    }
   }
 
   if(!tmp.querySelector('.print-batcys-block')) tmp.innerHTML = `<div class="print-batcys-block">${tmp.innerHTML}</div>`;
@@ -1975,7 +1991,7 @@ async function imprimirConFecha(fechaTexto){
   htmlActualizado = tmp.innerHTML;
 
   const copias = d.cols === 1 ? 1 : 2;
-  const copyHtml = `<div class="print-copy" style="font-family:${d.baseFont||'Arial'};font-size:${d.baseSize||7}pt;line-height:1.1;color:#000">${htmlActualizado}</div>`;
+  const copyHtml = `<div class="print-copy" style="font-family:${d.baseFont||'Arial'};font-size:${d.baseSize||7}pt;line-height:1.05;color:#000">${htmlActualizado}</div>`;
   aplicarEstiloPagina(d);
 
   const sheet = document.createElement('div');
