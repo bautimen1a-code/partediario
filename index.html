@@ -280,7 +280,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
 .word-page{background:#fff;width:100%;max-width:780px;padding:40px 50px;box-shadow:0 2px 10px rgba(0,0,0,.18);min-height:1000px;font-family:Arial,sans-serif;font-size:8pt;line-height:1.15;color:#000;outline:none}
 .word-page [contenteditable="true"]:focus{outline:2px dashed #7aa8e0;outline-offset:2px}
 .word-page table{border-collapse:collapse}
-.word-page table td,.word-page table th{border:1px solid #000;padding:1px 4px}
+.word-page table td,.word-page table th{border:0.5px solid #000;padding:1px 4px}
 .word-side{background:#faf9f8;border-left:1px solid #d2d0ce;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
 .word-side h4{font-size:11px;text-transform:uppercase;color:#605e5c;letter-spacing:.5px;font-weight:700}
 .preview-box{background:#fff;border:1px solid #d2d0ce;border-radius:4px;padding:6px;flex:1;overflow:auto;min-height:200px}
@@ -1758,60 +1758,60 @@ function generarSecciones(lista, porLugar, pad){
       const personas = lista.filter(p => p.lugar === k);
       const filas = personas.map((p,i)=>`
         <tr>
-          <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${i+1}</td>
-          <td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(p.nombre)}</td>
-          <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${p.desde?fmtDate(p.desde):''}</td>
-          <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${p.hasta?fmtDate(p.hasta):''}</td>
+          <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${i+1}</td>
+          <td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(p.nombre)}</td>
+          <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${p.desde?fmtDate(p.desde):''}</td>
+          <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${p.hasta?fmtDate(p.hasta):''}</td>
         </tr>`).join('');
       return `
         <div style="text-align:left;font-weight:bold;margin-top:6px">${escapeHtml(upper(k))}</div>
-        <table style="width:100%;border-collapse:collapse;border:1px solid #000;margin-bottom:6px">
+        <table style="width:100%;border-collapse:collapse;border:0.5px solid #000;margin-bottom:6px">
           <thead><tr>
-            <th style="border:1px solid #000;width:6%;text-align:center;padding:${pad}px 4px">N°</th>
-            <th style="border:1px solid #000;text-align:center;padding:${pad}px 4px">GRADO, NOMBRES Y APELLIDOS</th>
-            <th style="border:1px solid #000;width:16%;text-align:center;padding:${pad}px 4px">DESDE</th>
-            <th style="border:1px solid #000;width:16%;text-align:center;padding:${pad}px 4px">HASTA</th>
+            <th style="border:0.5px solid #000;width:6%;text-align:center;padding:${pad}px 4px">N°</th>
+            <th style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">GRADO, NOMBRES Y APELLIDOS</th>
+            <th style="border:0.5px solid #000;width:16%;text-align:center;padding:${pad}px 4px">DESDE</th>
+            <th style="border:0.5px solid #000;width:16%;text-align:center;padding:${pad}px 4px">HASTA</th>
           </tr></thead>
-          <tbody>${filas || '<tr><td colspan="4" style="border:1px solid #000">&nbsp;</td></tr>'}</tbody>
+          <tbody>${filas || '<tr><td colspan="4" style="border:0.5px solid #000">&nbsp;</td></tr>'}</tbody>
         </table>`;
     }).join('');
 }
 function generarTablaTotalesDiv10(porLugar, total, noforman, forman, tiposConteo, pad){
   const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr><td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
+    .map(([k,v]) => `<tr><td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
   const filasEsp = Object.entries(tiposConteo).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr data-especial-tipo="${escapeHtml(k)}"><td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="esp-tipo:${escapeHtml(k)}">${v}</td></tr>`).join('');
+    .map(([k,v]) => `<tr data-especial-tipo="${escapeHtml(k)}"><td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="esp-tipo:${escapeHtml(k)}">${v}</td></tr>`).join('');
   return `
-    <table style="border-collapse:collapse;border:1px solid #000;margin:4px auto;width:70%">
+    <table style="border-collapse:collapse;border:0.5px solid #000;margin:4px auto;width:70%">
       <thead><tr>
-        <th style="border:1px solid #000;padding:${pad}px 4px;text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
-        <th style="border:1px solid #000;padding:${pad}px 4px;width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
+        <th style="border:0.5px solid #000;padding:${pad}px 4px;text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
+        <th style="border:0.5px solid #000;padding:${pad}px 4px;width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
       </tr></thead>
       <tbody>
-        <tr><td style="border:1px solid #000;padding:${pad}px 4px">EFECTIVO</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="efectivo">${total}</td></tr>
+        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">EFECTIVO</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="efectivo">${total}</td></tr>
         ${detalle}
-        <tr><td style="border:1px solid #000;padding:${pad}px 4px">NO FORMAN</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="noforman">${noforman}</td></tr>
-        <tr><td style="border:1px solid #000;padding:${pad}px 4px">FORMAN</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="forman">${forman}</td></tr>
-        <tr><td style="border:1px solid #000;padding:${pad}px 4px;font-weight:bold">TOTAL</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
+        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">NO FORMAN</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="noforman">${noforman}</td></tr>
+        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">FORMAN</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="forman">${forman}</td></tr>
+        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px;font-weight:bold">TOTAL</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
         ${filasEsp}
       </tbody>
     </table>`;
 }
 function generarTablaTotalesBatcys(porLugar, total, noforman, forman, pad){
   const detalle = Object.entries(porLugar).filter(([k,v]) => v > 0)
-    .map(([k,v]) => `<tr><td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
+    .map(([k,v]) => `<tr><td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td></tr>`).join('');
   return `
-    <table style="border-collapse:collapse;border:1px solid #000;margin:4px auto;width:70%">
+    <table style="border-collapse:collapse;border:0.5px solid #000;margin:4px auto;width:70%">
       <thead><tr>
-        <th style="border:1px solid #000;padding:${pad}px 4px;text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
-        <th style="border:1px solid #000;padding:${pad}px 4px;width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
+        <th style="border:0.5px solid #000;padding:${pad}px 4px;text-align:left" contenteditable="true" data-field="detLabel">DETALLE</th>
+        <th style="border:0.5px solid #000;padding:${pad}px 4px;width:60px;text-align:center" contenteditable="true" data-field="totLabel">TOTAL</th>
       </tr></thead>
       <tbody>
-        <tr><td style="border:1px solid #000;padding:${pad}px 4px">EFECTIVO</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="efectivo">${total}</td></tr>
+        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">EFECTIVO</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="efectivo">${total}</td></tr>
         ${detalle}
-        <tr><td style="border:1px solid #000;padding:${pad}px 4px">NO FORMAN</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="noforman">${noforman}</td></tr>
-        <tr><td style="border:1px solid #000;padding:${pad}px 4px">FORMAN</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="forman">${forman}</td></tr>
-        <tr><td style="border:1px solid #000;padding:${pad}px 4px;font-weight:bold">TOTAL</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
+        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">NO FORMAN</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="noforman">${noforman}</td></tr>
+        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px">FORMAN</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="forman">${forman}</td></tr>
+        <tr><td style="border:0.5px solid #000;padding:${pad}px 4px;font-weight:bold">TOTAL</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center;font-weight:bold" data-total="total">${total}</td></tr>
       </tbody>
     </table>`;
 }
@@ -1821,19 +1821,19 @@ function generarSeccionesTiposEspecial(pad){
     if(!personas.length) return '';
     const filas = personas.map((p,i)=>`
       <tr>
-        <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${i+1}</td>
-        <td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(p.nombre)}</td>
-        <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${p.desde?fmtDate(p.desde):''}</td>
-        <td style="border:1px solid #000;text-align:center;padding:${pad}px 4px">${p.hasta?fmtDate(p.hasta):''}</td>
+        <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${i+1}</td>
+        <td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(p.nombre)}</td>
+        <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${p.desde?fmtDate(p.desde):''}</td>
+        <td style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">${p.hasta?fmtDate(p.hasta):''}</td>
       </tr>`).join('');
     return `
       <div style="text-align:left;font-weight:bold;margin-top:6px">${escapeHtml(upper(tipo))}</div>
-      <table style="width:100%;border-collapse:collapse;border:1px solid #000;margin-bottom:6px">
+      <table style="width:100%;border-collapse:collapse;border:0.5px solid #000;margin-bottom:6px">
         <thead><tr>
-          <th style="border:1px solid #000;width:6%;text-align:center;padding:${pad}px 4px">N°</th>
-          <th style="border:1px solid #000;text-align:center;padding:${pad}px 4px">GRADO, NOMBRES Y APELLIDOS</th>
-          <th style="border:1px solid #000;width:16%;text-align:center;padding:${pad}px 4px">DESDE</th>
-          <th style="border:1px solid #000;width:16%;text-align:center;padding:${pad}px 4px">HASTA</th>
+          <th style="border:0.5px solid #000;width:6%;text-align:center;padding:${pad}px 4px">N°</th>
+          <th style="border:0.5px solid #000;text-align:center;padding:${pad}px 4px">GRADO, NOMBRES Y APELLIDOS</th>
+          <th style="border:0.5px solid #000;width:16%;text-align:center;padding:${pad}px 4px">DESDE</th>
+          <th style="border:0.5px solid #000;width:16%;text-align:center;padding:${pad}px 4px">HASTA</th>
         </tr></thead>
         <tbody>${filas}</tbody>
       </table>`;
@@ -1914,7 +1914,7 @@ function inyectarDatosDinamicos(html){
       if(ref0){
         const nuevas = Object.entries(div10.porLugar).filter(([k,v]) => v > 0).map(([k,v]) => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
+          tr.innerHTML = `<td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
           return tr;
         });
         let ref = ref0;
@@ -1923,7 +1923,7 @@ function inyectarDatosDinamicos(html){
       Object.entries(tiposConteo).filter(([k,v]) => v > 0).forEach(([k,v]) => {
         const tr = document.createElement('tr');
         tr.setAttribute('data-especial-tipo', k);
-        tr.innerHTML = `<td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="esp-tipo:${escapeHtml(k)}">${v}</td>`;
+        tr.innerHTML = `<td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="esp-tipo:${escapeHtml(k)}">${v}</td>`;
         tb.appendChild(tr);
       });
     }
@@ -1941,7 +1941,7 @@ function inyectarDatosDinamicos(html){
       if(ref0){
         const nuevas = Object.entries(batcys.porLugar).filter(([k,v]) => v > 0).map(([k,v]) => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td style="border:1px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:1px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
+          tr.innerHTML = `<td style="border:0.5px solid #000;padding:${pad}px 4px">${escapeHtml(upper(k))}</td><td style="border:0.5px solid #000;padding:${pad}px 4px;text-align:center" data-total="lugar:${escapeHtml(k)}">${v}</td>`;
           return tr;
         });
         let ref = ref0;
