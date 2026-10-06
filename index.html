@@ -49,7 +49,6 @@ header.app-head .user-box button:hover{background:rgba(255,255,255,.5)}
 .toolbar .btn{flex-shrink:0}
 .toolbar-spacer{flex:1;min-width:20px}
 
-/* Buscador */
 .search-box{
   position:relative;
   flex:1;
@@ -160,7 +159,6 @@ table.xl tbody tr.empty-row td{text-align:center;color:var(--muted);font-style:i
 tr.dragging td{opacity:.4;background:var(--accent-soft)!important}
 tr.drag-over td{border-top:2px solid var(--accent)!important}
 
-/* Scroll interno de tablas */
 .table-scroll{
   max-height:420px;
   overflow-y:auto;
@@ -386,7 +384,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       </div>
     </header>
 
-    <!-- TOOLBAR LIMPIA Y FIJA -->
     <div class="toolbar">
       <button class="btn ghost" id="btn-volver">← Volver al resumen</button>
       <div class="search-box">
@@ -399,7 +396,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       <button class="btn cfg" id="btn-cfg" title="Configuraciones">⚙</button>
     </div>
 
-    <!-- TABLA DIV-10 -->
     <div class="section-block" data-destino="DIV-10">
       <div class="section-head">
         <div class="title">DIV-10</div>
@@ -425,7 +421,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       </div>
     </div>
 
-    <!-- TABLA BAT. CYS-X -->
     <div class="section-block" data-destino="BAT. CYS-X">
       <div class="section-head">
         <div class="title batcys">BAT. CYS-X</div>
@@ -451,7 +446,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       </div>
     </div>
 
-    <!-- TABLA SITUACIÓN ESPECIAL -->
     <div class="section-block" data-destino="ESPECIAL">
       <div class="section-head especial-head">
         <div class="title especial">SITUACIÓN ESPECIAL</div>
@@ -900,6 +894,7 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
     <div class="modal-foot"><button class="btn ghost" data-close>Salir</button></div>
   </div>
 </div>
+
 <!-- Modal fecha de impresión -->
 <div class="overlay" id="modal-print-date">
   <div class="modal" style="max-width:400px">
@@ -913,8 +908,8 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
       </p>
       <div class="field">
         <label>Fecha del reporte</label>
-        <input type="text" id="print-fecha" placeholder="Ej: 06-OCT-26" style="text-transform:uppercase">
-        <div class="hint">Formato: DD-MMM-AA · Por defecto se muestra la fecha actual</div>
+        <input type="text" id="print-fecha" placeholder="Ej: 06-OCT-26" style="text-transform:uppercase;font-size:1.05rem;text-align:center;font-weight:600;letter-spacing:1px">
+        <div class="hint" style="text-align:center">Formato: DD-MMM-AA · Por defecto la fecha actual</div>
       </div>
     </div>
     <div class="modal-foot">
@@ -923,7 +918,6 @@ tr.drag-over td{border-top:2px solid var(--accent)!important}
     </div>
   </div>
 </div>
-
 
 <div id="toast-wrap"></div>
 <div id="print-root"></div>
@@ -999,7 +993,6 @@ const norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u
 
 const MESES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
 
-// Formato DD-MMM-AA (01-OCT-26)
 const fmtDate = iso => {
   if(!iso) return '';
   const [y, m, d] = iso.split('-');
@@ -1517,12 +1510,7 @@ function llenarSelectTiposEspecial(){
 function actualizarVisibilidadCamposEdicion(){
   const esEsp = $('#e-especial').checked;
   $('#wrap-tipo-especial').style.display = esEsp ? 'grid' : 'none';
-  // Ocultar Destino y Lugar cuando es especial
-  const labels = $$('#modal-edit .form-grid label');
-  // El bloque de Destino y Lugar se oculta mostrando/ocultando sus elementos
-  const elDestinoLbl = $('#modal-edit label[for="e-destino"]') || null;
-  // Truco: buscar por texto hermano
-  $$('#modal-edit .form-grid > label').forEach((lbl, idx, arr)=>{
+  $$('#modal-edit .form-grid > label').forEach((lbl)=>{
     const txt = (lbl.textContent || '').trim().toLowerCase();
     if(txt === 'destino' || txt === 'lugar'){
       lbl.style.display = esEsp ? 'none' : '';
@@ -2060,34 +2048,34 @@ function aplicarEstiloPagina(d){
   if(!styleEl){ styleEl = document.createElement('style'); styleEl.id = 'print-page-style'; document.head.appendChild(styleEl); }
   styleEl.textContent = `@media print { @page { size: ${d.pageSize||'letter'} ${d.orient||'portrait'}; margin: ${(d.margin!=null?d.margin:8)}mm; } }`;
 }
-// Abre el modal preguntando la fecha
+
+/* ============================================================
+   IMPRIMIR — modal con fecha
+   ============================================================ */
 function imprimir(){
   const input = $('#print-fecha');
   input.value = fechaHoy();
   $('#modal-print-date').classList.add('show');
-  setTimeout(()=> input.focus(), 100);
+  setTimeout(()=> { input.focus(); input.select(); }, 120);
 }
 
-// Realiza la impresión con la fecha indicada
 async function imprimirConFecha(fechaTexto){
   const w = state.word;
   const d = w.design || {};
   let baseHtml = (w.html && w.html.trim()) ? w.html : generarPlantilla();
   let htmlActualizado = inyectarDatosDinamicos(baseHtml);
 
-  // ⭐ Reemplazar la fecha del título con la fecha indicada
   const tmp = document.createElement('div');
   tmp.innerHTML = htmlActualizado;
-  
-  // Actualizar título DIV-10
+
+  // Actualizar título DIV-10 con la fecha elegida
   const tituloDiv10El = tmp.querySelector('[data-field="tituloDiv10"]');
   if(tituloDiv10El){
     const textoActual = tituloDiv10El.textContent || '';
     const nuevoTexto = textoActual.replace(/\d{2}-[A-Z]{3}-\d{2}\s*$/, fechaTexto);
     tituloDiv10El.textContent = nuevoTexto;
   }
-  
-  // Asegurar bloque BAT.CYS-X + firma
+
   if(!tmp.querySelector('.print-batcys-block')) tmp.innerHTML = `<div class="print-batcys-block">${tmp.innerHTML}</div>`;
   if(!tmp.querySelector('.print-firma')){
     const bB = tmp.querySelector('.print-batcys-block');
@@ -2108,18 +2096,6 @@ async function imprimirConFecha(fechaTexto){
   root.appendChild(sheet);
 
   await logAudit('print', `Imprimió el reporte con fecha ${fechaTexto} (${copias} copia${copias>1?'s':''})`);
-  setTimeout(()=> window.print(), 150);
-}  htmlActualizado = tmp.innerHTML;
-  const copias = d.cols === 1 ? 1 : 2;
-  const copyHtml = `<div class="print-copy" style="font-family:${d.baseFont||'Arial'};font-size:${d.baseSize||8}pt;line-height:1.15;color:#000">${htmlActualizado}</div>`;
-  aplicarEstiloPagina(d);
-  const sheet = document.createElement('div');
-  sheet.className = 'print-sheet cols-' + copias;
-  for(let i=0;i<copias;i++) sheet.insertAdjacentHTML('beforeend', copyHtml);
-  const root = $('#print-root');
-  root.innerHTML = '';
-  root.appendChild(sheet);
-  await logAudit('print', `Imprimió el reporte (${copias} copia${copias>1?'s':''})`);
   setTimeout(()=> window.print(), 150);
 }
 
@@ -2273,33 +2249,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   $('#btn-volver').addEventListener('click', irAResumen);
   $('#btn-imprimir').addEventListener('click', imprimir);
-// Confirmar impresión con la fecha del modal
-$('#print-confirmar').addEventListener('click', async ()=>{
-  const fechaTexto = $('#print-fecha').value.trim().toUpperCase();
-  if(!fechaTexto){
-    toast('Ingrese una fecha', 'warn');
-    return;
-  }
-  // Validar formato DD-MMM-AA
-  if(!/^\d{2}-[A-Z]{3}-\d{2}$/.test(fechaTexto)){
-    toast('Formato inválido. Use DD-MMM-AA (ej: 06-OCT-26)', 'warn');
-    return;
-  }
-  cerrarModales();
-  await imprimirConFecha(fechaTexto);
-});
 
-// Enter en el input dispara la impresión
-$('#print-fecha').addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter') $('#print-confirmar').click();
-});
-
-  // Botón configuración
   $('#btn-cfg').addEventListener('click', ()=>{
     $('#modal-cfg').classList.add('show');
   });
 
-  // Acciones desde el modal de configuración
   $$('.cfg-card').forEach(card => {
     card.addEventListener('click', ()=>{
       const accion = card.dataset.open;
@@ -2318,7 +2272,6 @@ $('#print-fecha').addEventListener('keydown', (e)=>{
     });
   });
 
-  // Buscador
   const inputBuscador = $('#buscador-personal');
   const btnClearBuscador = $('#buscador-clear');
   if(inputBuscador){
@@ -2334,12 +2287,29 @@ $('#print-fecha').addEventListener('keydown', (e)=>{
     });
   }
 
+  // Modal de impresión
+  $('#print-confirmar').addEventListener('click', async ()=>{
+    const fechaTexto = $('#print-fecha').value.trim().toUpperCase();
+    if(!fechaTexto){
+      toast('Ingrese una fecha', 'warn');
+      return;
+    }
+    if(!/^\d{2}-[A-Z]{3}-\d{2}$/.test(fechaTexto)){
+      toast('Formato inválido. Use DD-MMM-AA (ej: 06-OCT-26)', 'warn');
+      return;
+    }
+    cerrarModales();
+    await imprimirConFecha(fechaTexto);
+  });
+  $('#print-fecha').addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter') $('#print-confirmar').click();
+  });
+
   $('#e-especial').addEventListener('change', actualizarVisibilidadCamposEdicion);
   $('#e-guardar').addEventListener('click', guardarEdicion);
   $('#e-eliminar').addEventListener('click', eliminarRegistro);
   $('#e-limpiar').addEventListener('click', limpiarForm);
 
-  // Lugares
   $('#lista-add').addEventListener('click', ()=>{
     const a = leerListaActual(); a.push(''); renderListaItems(a);
     const ins = $('#lista-items').querySelectorAll('input');
@@ -2355,7 +2325,6 @@ $('#print-fecha').addEventListener('keydown', (e)=>{
     }catch(e){ console.error(e); toast('Error al guardar: ' + (e.code || e.message), 'danger'); }
   });
 
-  // Tipos
   $('#tipos-add').addEventListener('click', ()=>{
     const a = leerTiposActual(); a.push(''); renderTiposItems(a);
     const ins = $('#tipos-items').querySelectorAll('input');
@@ -2372,7 +2341,6 @@ $('#print-fecha').addEventListener('keydown', (e)=>{
     }catch(e){ console.error(e); toast('Error al guardar: ' + (e.code || e.message), 'danger'); }
   });
 
-  // Firma
   $('#f-nombre').addEventListener('input', actualizarPreviewFirma);
   $('#f-cargo').addEventListener('input', actualizarPreviewFirma);
   $('#firma-guardar').addEventListener('click', async ()=>{
@@ -2386,7 +2354,6 @@ $('#print-fecha').addEventListener('keydown', (e)=>{
     }catch(e){ toast('Error al guardar', 'danger'); }
   });
 
-  // Diseño
   $('#diseno-guardar').addEventListener('click', async ()=>{
     try{
       const d = state.word.design;
@@ -2405,7 +2372,6 @@ $('#print-fecha').addEventListener('keydown', (e)=>{
     }catch(e){ toast('Error al guardar', 'danger'); }
   });
 
-  // Importar
   $('#import-file').addEventListener('change', (e)=>{
     const file = e.target.files[0];
     if(!file) return;
@@ -2413,7 +2379,6 @@ $('#print-fecha').addEventListener('keydown', (e)=>{
   });
   $('#import-confirmar').addEventListener('click', confirmarImportacion);
 
-  // Word
   const page = $('#word-page');
   page.addEventListener('mouseup', guardarRango);
   page.addEventListener('keyup', guardarRango);
